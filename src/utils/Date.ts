@@ -1,4 +1,4 @@
-import { differenceInHours, differenceInMinutes, format } from 'date-fns';
+import { differenceInHours, differenceInMinutes, format, isAfter as _isAfter } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { ValueOrNull } from './Typer';
 
@@ -30,4 +30,13 @@ export function getVarighet(fraDato: ValueOrNull<string>, tilDato: ValueOrNull<s
     const minuteDiff = padStart(differenceInMinutes(tilDatoDate.setHours(0), fraDatoDate.setHours(0)));
 
     return `${hourDiff}:${minuteDiff}`;
+}
+
+export function isAfter(date?: ValueOrNull<string>, dateToCompare?: ValueOrNull<string>) {
+    if (!date || !dateToCompare) return false;
+
+    const dateDate = new Date(date);
+    const dateToCompareDate = new Date(dateToCompare);
+
+    return _isAfter(dateDate, dateToCompareDate);
 }

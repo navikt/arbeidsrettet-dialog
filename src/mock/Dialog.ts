@@ -351,7 +351,7 @@ const dialoger: DialogData[] & JSONArray = [
         sisteDato: '2018-02-01T11:52:20.615+01:00',
         opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
-        lest: true,
+        lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
@@ -365,11 +365,11 @@ const dialoger: DialogData[] & JSONArray = [
                 avsenderId: 'Z123456',
                 sendt: '2018-02-01T11:52:20.615+01:00',
                 lest: false,
-                viktig: false,
+                viktig: true,
                 tekst: 'Hei. Jeg var hos kiropraktor i går. Han sa at jeg må komme tilbake om en uke'
             }
         ],
-        egenskaper: []
+        egenskaper: ['PARAGRAF8']
     },
     {
         id: '11',
@@ -435,6 +435,11 @@ export function lesDialog(dialogId: string) {
     const dialog: any = dialoger.find((dialog) => dialog.id === dialogId);
     if (dialog) {
         dialog.lest = true;
+
+        if (erEksternBruker()) {
+            dialog.lestAvBrukerTidspunkt = new Date();
+        }
+
         return ResponseUtils.jsonPromise(dialog);
     }
     return Promise.resolve({ status: 404 });

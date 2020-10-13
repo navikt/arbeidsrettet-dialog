@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { DialogData, OppfolgingData } from '../../utils/Typer';
 import { dataOrUndefined, useOppfolgingContext, UserInfoContext } from '../Provider';
 import { VenterSvarFraBruker, VenterSvarFraNAV, ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
+import { isAfter } from '../../utils/Date';
 
 interface Props {
     dialog: DialogData;
@@ -13,8 +14,10 @@ function erViktig(dialog: DialogData, oppfolging?: OppfolgingData): boolean {
         if (dialog.egenskaper[0] === 'ESKALERINGSVARSEL') {
             return oppfolging?.gjeldendeEskaleringsvarsel?.tilhorendeDialogId.toString() === dialog.id;
         }
-
-        return true;
+        return (
+            !dialog.lestAvBrukerTidspunkt ||
+            isAfter(dialog.henvendelser.find((mld) => mld.viktig)?.sendt, dialog.lestAvBrukerTidspunkt)
+        );
     }
 
     return false;
