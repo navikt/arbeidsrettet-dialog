@@ -24,7 +24,7 @@ spec:
   ingresses:
     - https://arbeidsrettet-dialog-{{namespace}}.nais.preprod.local
     - https://app-{{namespace}}.adeo.no/arbeidsrettet-dialog
-    - https://app-{{namespace}}.dev.adeo.no/arbeidsrettet-dialog
+    - https://{{namespace}}.dev.adeo.no/arbeidsrettet-dialog
   vault:
     enabled: true
   webproxy: true
