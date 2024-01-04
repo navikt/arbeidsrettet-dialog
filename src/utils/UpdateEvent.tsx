@@ -4,7 +4,7 @@ import { useAktivitetContext } from '../view/AktivitetProvider';
 import { useOppfolgingContext } from '../view/OppfolgingProvider';
 import { useEventListener } from '../view/utils/useEventListner';
 import { useFnrContext } from '../view/Provider';
-import { useHentDialoger } from '../view/dialogProvider/dialogStore';
+import { useHentDialoger } from '../view/dialogProvider/storeHooks';
 
 export enum UpdateTypes {
     Dialog = 'DIALOG',

@@ -4,7 +4,7 @@ import { Aktivitetskort } from './view/aktivitet/Aktivitetskort';
 import { DialogTrad } from './view/dialog/DialogTrad';
 import IkkeValgtDialogMelding from './view/dialog/IkkeValgtDialogMelding';
 import { Navigate, RouteObject, RouterProvider, createMemoryRouter, useParams } from 'react-router';
-import React from 'react';
+import React, { memo } from 'react';
 import { erInternFlate, USE_HASH_ROUTER } from './constants';
 import { createBrowserRouter, createHashRouter, useSearchParams } from 'react-router-dom';
 import { stripTrailingSlash } from './api/UseApiBasePath';
@@ -81,7 +81,7 @@ export const dialogRoutes: RouteObject[] = [
     }
 ];
 
-export const Routes = () => {
+export const Routes = memo(() => {
     if (USE_HASH_ROUTER) {
         const hashRouter = createHashRouter(dialogRoutes);
         return <RouterProvider router={hashRouter} />;
@@ -94,4 +94,4 @@ export const Routes = () => {
     if (erInternFlate) basename = `/`;
     const browserRouter = createBrowserRouter(dialogRoutes, { basename });
     return <RouterProvider router={browserRouter} />;
-};
+});

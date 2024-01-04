@@ -5,43 +5,36 @@ import { useLocation } from 'react-router';
 import { AKTIVITETSPLAN_URL, MINSIDE_URL } from '../../constants';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { useUserInfoContext } from '../BrukerProvider';
-import { useDialoger } from '../DialogProvider';
 import InfoVedIngenDialoger from '../info/InfoVedIngenDialoger';
 import OmDialogLenke from '../info/OmDialogLenke';
 import { useSelectedDialog } from '../utils/useAktivitetId';
 import DialogListe from './DialogListe';
 import NyDialogLink from './NyDialogLink';
+import { useAntallDialoger } from '../dialogProvider/storeHooks';
 
-const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
-    if (erVeileder) return null;
+const DialogOversiktHeader = () => {
     return (
         <div className="flex flex-col gap-y-2 border-b border-border-divider  px-4 py-1">
             <div className="flex gap-x-4 ">
-                {!erVeileder ? (
-                    <>
-                        <Link href={MINSIDE_URL}>Min side</Link>
-                        <Link href={AKTIVITETSPLAN_URL}>Aktivitetsplan</Link>
-                    </>
-                ) : null}
+                <Link href={MINSIDE_URL}>Min side</Link>
+                <Link href={AKTIVITETSPLAN_URL}>Aktivitetsplan</Link>
             </div>
-            {!erVeileder ? (
-                <Heading level="1" size="medium">
-                    Dialog med veilederen din
-                </Heading>
-            ) : null}
+            <Heading level="1" size="medium">
+                Dialog med veilederen din
+            </Heading>
         </div>
     );
 };
 
 const DialogOversikt = () => {
     const kanSendeMelding = useKansendeMelding();
-    const dialoger = useDialoger();
+    const antallDialoger = useAntallDialoger();
     const dialog = useSelectedDialog();
     const location = useLocation();
     const isNyRoute = location.pathname.startsWith('/ny');
     const userInfoContext = useUserInfoContext();
     const erVeileder = !!userInfoContext?.erVeileder;
-    const ingenDialoger = dialoger.length === 0;
+    const ingenDialoger = antallDialoger === 0;
     const erSidebar = !!dialog || isNyRoute;
     return (
         <div
@@ -54,7 +47,7 @@ const DialogOversikt = () => {
                     'xl:w-[16.7vw] xl:min-w-[320px] xl:max-w-none'
             )}
         >
-            <DialogOversiktHeader erVeileder={erVeileder} />
+            {!erVeileder ? <DialogOversiktHeader /> : null}
             <div className="relative flex h-full flex-1 flex-col overflow-y-scroll border-r border-border-divider bg-gray-100 p-2">
                 <>
                     {kanSendeMelding ? (

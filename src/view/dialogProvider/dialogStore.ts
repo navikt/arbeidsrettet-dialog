@@ -1,18 +1,40 @@
 import { create } from 'zustand';
 import { Status } from '../../api/typer';
-import { DialogData, SistOppdatert } from '../../utils/Typer';
-import { DialogState, isDialogReloading } from '../DialogProvider';
+import { DialogData } from '../../utils/Typer';
 import { fetchData, fnrQuery } from '../../utils/Fetch';
 import { DialogApi } from '../../api/UseApiBasePath';
-import { isAfter } from 'date-fns';
 import { devtools } from 'zustand/middleware';
-import { closeWebsocket, listenForNyDialogEvents } from '../../api/nyDialogWs';
-import { useShallow } from 'zustand/react/shallow';
+import {
+    HentDialogRequestState,
+    RequestStateWithoutPayload,
+    asyncThunk,
+    requestHelpers,
+    sliceReducer
+} from './storeUtils';
+import { PollSlice, pollSlice } from './pollStore';
+import { ferdigBehandletUrl, lesUrl, venterPaSvarUrl } from '../DialogProvider';
 
-export const initDialogState: DialogState = {
-    status: Status.INITIAL,
-    sistOppdatert: new Date(),
-    dialoger: []
+export const initDialogState: DialogRequestStore = {
+    hentDialog: {
+        status: Status.INITIAL,
+        data: { dialoger: [], sistOppdatert: new Date() },
+        error: undefined
+    },
+    lesDialogState: {
+        status: Status.INITIAL,
+        data: undefined,
+        error: undefined
+    },
+    setFerdigBehandletState: {
+        status: Status.INITIAL,
+        data: undefined,
+        error: undefined
+    },
+    setVenterPaSvarState: {
+        status: Status.INITIAL,
+        data: undefined,
+        error: undefined
+    }
 };
 
 // - Les
@@ -21,20 +43,32 @@ export const initDialogState: DialogState = {
 // - Send melding
 // - Ny dialog
 
-type DialogStore = DialogState & {
-    silentlyHentDialoger: (fnr: string | undefined) => Promise<void>;
-    hentDialoger: (fnr: string | undefined) => Promise<void>;
-    pollForChanges: (fnr: string | undefined) => Promise<void>;
-    configurePoll(config: { fnr: string | undefined; useWebsockets: boolean; erBruker: boolean }): void;
-    updateDialogInDialoger: (dialogData: DialogData) => DialogData;
-    stopPolling: () => void;
-    pollInterval: NodeJS.Timeout | undefined;
-    currentPollFnr: string | undefined;
-};
+// State as in not actions
+export interface DialogRequestStore {
+    hentDialog: HentDialogRequestState;
+    lesDialogState: RequestStateWithoutPayload;
+    setFerdigBehandletState: RequestStateWithoutPayload;
+    setVenterPaSvarState: RequestStateWithoutPayload;
+}
+
+export type DialogStore = DialogRequestStore &
+    PollSlice & {
+        silentlyHentDialoger: (
+            fnr: string | undefined
+        ) => Promise<{ dialoger: DialogData[]; sistOppdatert: Date | undefined }>;
+        hentDialoger: (fnr: string | undefined) => Promise<void>;
+        lesDialog: (id: string, fnr: string | undefined) => Promise<DialogData>;
+        updateDialogInDialoger: (dialogData: DialogData) => DialogData;
+        setFerdigBehandlet: (args: FerdigBehandletPayload) => Promise<DialogData>;
+        setVenterPaSvar: (args: VenterPaSvarPayload) => Promise<DialogData>;
+        pollInterval: NodeJS.Timeout | undefined;
+        currentPollFnr: string | undefined;
+    };
 
 export const useDialogStore = create(
     devtools<DialogStore>(
         (set, get) => ({
+            ...pollSlice(set, get),
             // Data
             // Try to keeep flat datastructure, Zustand "automerges" state on first level only
             ...initDialogState,
@@ -42,111 +76,68 @@ export const useDialogStore = create(
             currentPollFnr: undefined,
             // Actions / functions / mutations
             silentlyHentDialoger: async (fnr) => {
-                const dialogUrl = DialogApi.hentDialog(fnrQuery(fnr));
-                fetchData<DialogData[]>(dialogUrl)
-                    .then((dialoger) => {
-                        // TODO: Find a way to get previous value
-                        // loggChangeInDialog(state.dialoger, dialoger);
-                        set(
-                            { status: Status.OK, dialoger: dialoger, sistOppdatert: new Date(), error: undefined },
-                            false,
-                            'hentDialoger/fulfilled'
-                        );
-                        return dialoger;
-                    })
-                    .catch((e) => {
-                        set(
-                            (prevState) => ({ ...prevState, status: Status.ERROR, error: e }),
-                            false,
-                            'hentDialoger/error'
-                        );
-                        return [];
-                    });
+                return hentDialogerKall(fnr).then((data) => {
+                    set((prev: DialogStore) => ({
+                        ...prev,
+                        hentDialog: {
+                            error: undefined,
+                            data,
+                            status: Status.OK
+                        }
+                    }));
+                    return data;
+                });
             },
             hentDialoger: async (fnr) => {
-                set(
-                    (state) => ({
-                        status: isDialogReloading(state.status) ? Status.RELOADING : Status.PENDING,
-                        error: undefined
-                    }),
-                    false,
-                    'hentDialoger/pending'
-                );
-                const { silentlyHentDialoger } = get();
-                silentlyHentDialoger(fnr);
+                const reducer = sliceReducer(set, 'hentDialog');
+                asyncThunk(reducer, () => hentDialogerKall(fnr), 'hentDialoger');
             },
-            configurePoll({ fnr, useWebsockets, erBruker }) {
-                console.log('Configuring poll');
-                const { pollForChanges, currentPollFnr } = get();
-                // If already polling, don't do anything
-                if (!erBruker && currentPollFnr == fnr) {
-                    console.log('Already polling');
-                    return;
-                }
-                const pollOnGivenFnr = () => {
-                    const interval = onIntervalWithCleanup(() => pollForChanges(fnr));
-                    set(
-                        () => ({
-                            pollInterval: interval
+            lesDialog: async (id: string, fnr: string | undefined) => {
+                // const reducer = sliceReducer(set, 'lesDialogState');
+                const { pendingState, fulfilledState } = requestHelpers({
+                    prefix: 'lesDialog',
+                    sliceName: 'lesDialogState'
+                });
+                set(pendingState(), false, 'lesDialog/pending');
+                const res = fetchData<DialogData>(lesUrl({ id, fnr }), { method: 'put' });
+                set(fulfilledState(res), false, 'lesDialog/fulfilled');
+                return res;
+
+                // return asyncThunk<DialogData, unknown>(
+                //     reducer,
+                //     () => fetchData<DialogData>(lesUrl({ id, fnr }), { method: 'put' }),
+                //     'lesDialog'
+                // ).then((dialog) => {
+                //     set(updateDialogReducer(dialog));
+                //     return dialog;
+                // });
+            },
+            setFerdigBehandlet: async ({ id, ferdigBehandlet, fnr }: FerdigBehandletPayload) => {
+                const reducer = sliceReducer(set, 'setFerdigBehandletState');
+                const { updateDialogInDialoger } = get();
+                return asyncThunk(
+                    reducer,
+                    () =>
+                        fetchData<DialogData>(ferdigBehandletUrl({ id, ferdigBehandlet, fnr }), {
+                            method: 'put'
                         }),
-                        false,
-                        'setPollInterval'
-                    );
-                };
-                if (erBruker) {
-                    return pollOnGivenFnr();
-                } else {
-                    if (useWebsockets) {
-                        try {
-                            const { silentlyHentDialoger } = get();
-                            return listenForNyDialogEvents(() => silentlyHentDialoger(fnr), fnr);
-                        } catch (e) {
-                            // Fallback to http-polling if anything fails
-                            return pollOnGivenFnr();
-                        }
-                    } else {
-                        return pollOnGivenFnr();
-                    }
-                }
+                    'setFerdigBehandlet'
+                ).then((dialogData) => updateDialogInDialoger(dialogData));
             },
-            stopPolling: () => {
-                const { pollInterval } = get();
-                console.log('Stopping polling with http');
-                if (pollInterval) {
-                    clearInterval(pollInterval);
-                    set(
-                        () => ({
-                            pollInterval: undefined
+            setVenterPaSvar: async ({ id, venterPaSvar, fnr }: VenterPaSvarPayload) => {
+                const reducer = sliceReducer(set, 'setVenterPaSvarState');
+                const { updateDialogInDialoger } = get();
+                return asyncThunk(
+                    reducer,
+                    () =>
+                        fetchData<DialogData>(venterPaSvarUrl({ id, venterPaSvar, fnr }), {
+                            method: 'put'
                         }),
-                        false,
-                        'clearPollInterval'
-                    );
-                }
-                closeWebsocket();
-            },
-            pollForChanges: async (fnr) => {
-                let { sistOppdatert: remoteSistOppdatert } = await fetchData<SistOppdatert>(
-                    DialogApi.sistOppdatert(fnrQuery(fnr))
-                );
-                const { silentlyHentDialoger, sistOppdatert: localSistOppdatert } = get();
-                if (!!remoteSistOppdatert && isAfter(remoteSistOppdatert, localSistOppdatert)) {
-                    await silentlyHentDialoger(fnr);
-                }
+                    'setVenterPaSvar'
+                ).then((dialogData) => updateDialogInDialoger(dialogData));
             },
             updateDialogInDialoger: (dialog: DialogData): DialogData => {
-                set(
-                    ({ dialoger }) => {
-                        const index = dialoger.findIndex((d) => d.id === dialog.id);
-                        const nyeDialoger = [
-                            ...dialoger.slice(0, index),
-                            dialog,
-                            ...dialoger.slice(index + 1, dialoger.length)
-                        ];
-                        return { status: Status.OK, dialoger: nyeDialoger, error: undefined };
-                    },
-                    false,
-                    'updateDialogInDialoger'
-                );
+                set(updateDialogReducer(dialog), false, 'updateDialogInDialoger');
                 return dialog;
             }
         }),
@@ -154,16 +145,37 @@ export const useDialogStore = create(
     )
 );
 
-export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentDialoger));
-
-const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
-    let interval: NodeJS.Timeout;
-    console.log('Setting up polling with http');
-    interval = setInterval(() => {
-        pollForChanges().catch((e) => {
-            console.error(e);
-            clearInterval(interval);
-        });
-    }, 10000);
-    return interval;
+const updateDialogReducer = (dialog: DialogData) => (prevState: DialogStore) => {
+    const dialoger = prevState.hentDialog.data.dialoger;
+    const index = dialoger.findIndex((d) => d.id === dialog.id);
+    const nyeDialoger = [...dialoger.slice(0, index), dialog, ...dialoger.slice(index + 1, dialoger.length)];
+    return {
+        ...prevState,
+        hentDialog: {
+            ...prevState.hentDialog,
+            status: Status.OK,
+            data: { dialoger: nyeDialoger, sistOppdatert: new Date() },
+            error: undefined
+        }
+    };
 };
+
+const hentDialogerKall = (fnr: string | undefined) => {
+    const dialogUrl = DialogApi.hentDialog(fnrQuery(fnr));
+    return fetchData<DialogData[]>(dialogUrl).then((dialoger) => {
+        // TODO: Find a way to get previous value
+        // loggChangeInDialog(state.dialoger, dialoger);
+        return { dialoger, sistOppdatert: new Date() };
+    });
+};
+
+export interface VenterPaSvarPayload {
+    id: string;
+    venterPaSvar: boolean;
+    fnr: string | undefined;
+}
+export interface FerdigBehandletPayload {
+    id: string;
+    ferdigBehandlet: boolean;
+    fnr: string | undefined;
+}

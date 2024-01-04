@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import TextareaAutosize from '@navikt/ds-react/esm/util/TextareaAutoSize';
 import { Alert, Button, ErrorMessage } from '@navikt/ds-react';
-import React, { MutableRefObject, useContext, useRef } from 'react';
+import React, { MutableRefObject, useContext, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
@@ -74,10 +74,14 @@ const MeldingBottomInputInner = () => {
     );
 };
 
+let mutDialog;
 export const MeldingBottomInput = () => {
     const oppfolgingContext = useOppfolgingContext();
     const oppfolging = dataOrUndefined(oppfolgingContext);
     const dialog = useSelectedDialog();
+
+    console.log('Render MeldingBottom', Object.is(mutDialog, dialog));
+    mutDialog = dialog;
     if (!dialog) return null;
     return (
         <section aria-label="Ny melding" className="flex justify-center border-t border-border-divider p-4">

@@ -3,12 +3,13 @@ import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 
 import { Status } from '../api/typer';
-import { Bruker, DialogData, OppfolgingData, PeriodeData } from '../utils/Typer';
+import { Bruker, OppfolgingData, PeriodeData } from '../utils/Typer';
 import * as BrukerProvider from '../view/BrukerProvider';
 import { DialogTrad } from '../view/dialog/DialogTrad';
 import DialogListe from '../view/dialogliste/DialogListe';
 import DialogOversikt from '../view/dialogliste/DialogOversikt';
 import * as DialogProvider from '../view/DialogProvider';
+import * as dialogStoreHooks from '../view/dialogProvider/storeHooks';
 import { DialogDataProviderType } from '../view/DialogProvider';
 import * as OppfolgingProvider from '../view/OppfolgingProvider';
 import { OppfolgingDataProviderType } from '../view/OppfolgingProvider';
@@ -86,10 +87,7 @@ const dialoger = [
 const useDialogContext: DialogDataProviderType = {
     status: 3,
     nyDialog: (args) => Promise.resolve({} as any),
-    nyMelding: ({ dialog }) => Promise.resolve(dialog),
-    lesDialog: (dialogId: string) => Promise.resolve(dialoger.find((dialog) => dialog.id === dialogId)!!),
-    setFerdigBehandlet: (dialog: DialogData, ferdigBehandlet: boolean) => Promise.resolve(dialog),
-    setVenterPaSvar: (dialog: DialogData, venterPaSvar: boolean) => Promise.resolve(dialog)
+    nyMelding: ({ dialog }) => Promise.resolve(dialog)
 };
 
 describe('<DialogContainer/>', () => {
@@ -118,7 +116,7 @@ describe('<DialogContainer/>', () => {
             }
         ];
         vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
-        vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialoger);
+        vi.spyOn(dialogStoreHooks, 'useDialoger').mockImplementation(() => dialoger);
         const { queryByText, getByRole } = render(
             <MemoryRouter>
                 <DialogListe />
@@ -145,7 +143,7 @@ describe('<DialogContainer/>', () => {
             hasError: false,
             isPending: false
         }));
-        vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialoger);
+        vi.spyOn(dialogStoreHooks, 'useDialoger').mockImplementation(() => dialoger);
         const { getByText } = render(
             <MemoryRouter>
                 <DialogOversikt />
@@ -171,7 +169,7 @@ describe('<Dialog/>', () => {
         ];
         vi.spyOn(DialogProvider, 'useDialogContext').mockImplementation(() => useDialogContext);
         vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
-        vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialoger);
+        vi.spyOn(dialogStoreHooks, 'useDialoger').mockImplementation(() => dialoger);
         Element.prototype.scrollIntoView = () => {};
         const { queryByLabelText, queryByText, queryByRole } = render(
             <MemoryRouter initialEntries={['/1']}>
@@ -200,7 +198,7 @@ describe('<Dialog/>', () => {
         vi.spyOn(DialogProvider, 'useDialogContext').mockImplementation(() => useDialogContext);
         vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
         vi.spyOn(BrukerProvider, 'useUserInfoContext').mockImplementation(() => userInfo);
-        vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialoger);
+        vi.spyOn(dialogStoreHooks, 'useDialoger').mockImplementation(() => dialoger);
         vi.spyOn(AppContext, 'useHarNivaa4Context').mockImplementation(() => ({
             harNivaa4: true,
             hasError: false,

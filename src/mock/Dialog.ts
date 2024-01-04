@@ -1,4 +1,4 @@
-import { ResponseComposition, RestContext, RestRequest } from 'msw';
+import { HttpResponse } from 'msw';
 
 import { DialogData, KladdData, MeldingsData, NyDialogMeldingData } from '../utils/Typer';
 import bruker from './Bruker';
@@ -574,15 +574,15 @@ const dialoger: DialogData[] = [
     }
 ];
 
-export const lesDialog = (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
-    const dialogId = req.params.dialogId;
-    const dialog: any = dialoger.find((dlg) => dlg.id === dialogId);
+export const lesDialog = (req: Request) => {
+    const dialogId = new URL(req.url).searchParams.get('dialogId');
+    const dialog = dialoger.find((dlg) => dlg.id === dialogId);
     if (dialog) {
         dialog.lest = true;
         return dialog;
     }
 
-    return res(ctx.status(404));
+    return new HttpResponse(undefined, { status: 404, statusText: 'Not found' });
 };
 
 export const opprettEllerOppdaterDialog = async (req: RestRequest): Promise<DialogData> => {
@@ -654,7 +654,7 @@ export function setFerdigBehandlet(req: RestRequest) {
 
 export const opprettDialogEtterRender = () => {
     setTimeout(() => {
-        const dialogId = Math.floor(Math.random() * 100);
+        const dialogId = 909;
         const nyDialog: DialogData = {
             id: `${dialogId}`,
             overskrift: 'Sender denne mens du ser på :)',

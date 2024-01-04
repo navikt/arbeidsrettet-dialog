@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { DialogData } from '../../utils/Typer';
-import { useDialoger } from '../DialogProvider';
 import { DialogPreviewListe } from './DialogPreview';
 import HistoriskeDialogerOversikt from './HistoriskDialogListe';
+import { useDialoger } from '../dialogProvider/storeHooks';
 
 interface Res {
     naaverende: DialogData[];

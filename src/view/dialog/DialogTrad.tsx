@@ -4,9 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useRoutes } from '../../routes';
 import { dispatchUpdate, UpdateTypes } from '../../utils/UpdateEvent';
-import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { useVisAktivitet } from '../AktivitetToggleContext';
-import { useDialogContext } from '../DialogProvider';
 import { Meldinger } from '../melding/Meldinger';
 import { useFnrContext } from '../Provider';
 import { useSelectedAktivitet, useSelectedDialog } from '../utils/useAktivitetId';
@@ -14,11 +12,12 @@ import { useEventListener } from '../utils/useEventListner';
 import { HandlingsType, useSetViewContext, useViewContext } from '../ViewState';
 import MeldingInputBox from './meldingInput/MeldingInputBox';
 import HistoriskInfo from './HistoriskInfo';
+import { useLesDialog } from '../dialogProvider/storeHooks';
 
 export const DialogTrad = () => {
     const scrollContainerRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
     const aktivitet = useSelectedAktivitet();
-    const { lesDialog } = useDialogContext();
+    const lesDialog = useLesDialog();
 
     const valgtDialog = useSelectedDialog();
     const dialogId = valgtDialog?.id;

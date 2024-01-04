@@ -1,4 +1,4 @@
-import { ResponseComposition, RestContext, RestRequest, rest } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 
 import aktiviteter from './Aktivitet';
 import { arenaAktiviteter } from './Arena';
@@ -24,28 +24,36 @@ import { veilederMe } from './Veileder';
 import { addMinutes } from 'date-fns';
 import { FeatureToggle } from '../featureToggle/const';
 
-const jsonResponse = (response: object | null | boolean | ((req: RestRequest) => object)) => {
-    return async (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
+interface RequestInfo {
+    request: Request;
+    params: object;
+    cookies: object;
+}
+
+const jsonResponse = (response: object | null | boolean | ((requestInfo: Request) => object)) => {
+    return async ({ request }: RequestInfo) => {
         if (typeof response === 'function') {
-            return res(ctx.json(await response(req)));
+            await delay(2000);
+            return HttpResponse.json(await response(request));
         }
-        return res(ctx.json(response));
+        await delay(2000);
+        return HttpResponse.json(response);
     };
 };
 
-const failOrGetResponse = (shouldFail: () => boolean, successFn: (req: RestRequest) => object | undefined) => {
-    return async (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
+const failOrGetResponse = (shouldFail: () => boolean, successFn: (req: Request) => object | undefined) => {
+    return async ({ request }: RequestInfo) => {
+        await delay(2000);
         if (shouldFail()) {
-            return res(...internalServerError(ctx));
+            return internalServerError();
         }
-        return res(ctx.json(await successFn(req)));
+        return HttpResponse.json(await successFn(request));
     };
 };
 
-const internalServerError = (ctx: RestContext) => {
-    return [
-        ctx.status(500, 'Internal server error'),
-        ctx.json({
+const internalServerError = () => {
+    return HttpResponse.json(
+        {
             id: '9170c6534ed5eca272d527cd30c6a458',
             type: 'UKJENT',
             detaljer: {
@@ -53,8 +61,9 @@ const internalServerError = (ctx: RestContext) => {
                 feilMelding: 'HTTP 500 Internal Server Error',
                 stackTrace: 'javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error\r\n\t'
             }
-        })
-    ];
+        },
+        { status: 500, statusText: 'Internal server error' }
+    );
 };
 
 const now = new Date();
@@ -78,46 +87,49 @@ const sessionPayload = {
 };
 
 export const handlers = [
-    rest.get('/auth/info', jsonResponse({ remainingSeconds: 60 * 60 })),
-    rest.get('https://login.ekstern.dev.nav.no/oauth2/session', jsonResponse(sessionPayload)),
-    rest.post('https://amplitude.nav.no/collect-auto', (_, res, ctx) => res(ctx.status(200))),
-    // veilarbdialog
-    rest.get('/veilarbdialog/api/kladd', jsonResponse(kladder)),
-    rest.get('/veilarbdialog/api/dialog', failOrGetResponse(harDialogFeilerSkruddPa, dialoger)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/les', jsonResponse(lesDialog)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/venter_pa_svar/:bool', jsonResponse(setVenterPaSvar)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/ferdigbehandlet/:bool', jsonResponse(setFerdigBehandlet)),
-    rest.get('/veilarbdialog/api/dialog/sistOppdatert', jsonResponse(getSistOppdatert())),
-    rest.post('/veilarbdialog/api/kladd', (_, res, ctx) => {
-        return res(ctx.delay(500), ctx.status(204));
+    http.get('/auth/info', jsonResponse({ remainingSeconds: 60 * 60 })),
+    http.get('https://login.ekstern.dev.nav.no/oauth2/session', jsonResponse(sessionPayload)),
+    http.post('https://amplitude.nav.no/collect-auto', async (_) => {
+        return new HttpResponse(undefined, { status: 200 });
     }),
-    rest.post(
+    // veilarbdialog
+    http.get('/veilarbdialog/api/kladd', jsonResponse(kladder)),
+    http.get('/veilarbdialog/api/dialog', failOrGetResponse(harDialogFeilerSkruddPa, dialoger)),
+    http.put('/veilarbdialog/api/dialog/:dialogId/les', jsonResponse(lesDialog)),
+    http.put('/veilarbdialog/api/dialog/:dialogId/venter_pa_svar/:bool', jsonResponse(setVenterPaSvar)),
+    http.put('/veilarbdialog/api/dialog/:dialogId/ferdigbehandlet/:bool', jsonResponse(setFerdigBehandlet)),
+    http.get('/veilarbdialog/api/dialog/sistOppdatert', jsonResponse(getSistOppdatert())),
+    http.post('/veilarbdialog/api/kladd', async (_) => {
+        await delay(500);
+        return new HttpResponse(undefined, { status: 204 });
+    }),
+    http.post(
         '/veilarbdialog/api/dialog',
         failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog)
     ),
-    rest.post('/veilarbdialog/api/logger/event', (_, res, ctx) => res(ctx.status(200))),
+    http.post('/veilarbdialog/api/logger/event', async (_ctx) => {
+        return new HttpResponse(undefined, { status: 200 });
+    }),
 
     // veilarboppfolging
-    rest.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker)),
-    rest.get('/veilarboppfolging/api/oppfolging', jsonResponse(oppfolging)),
-    rest.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
+    http.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker)),
+    http.get('/veilarboppfolging/api/oppfolging', jsonResponse(oppfolging)),
+    http.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
     // veilarbaktivitet
-    rest.get(
+    http.get(
         '/veilarbaktivitet/api/aktivitet',
         failOrGetResponse(harAktivitetFeilerSkruddPa, () => aktiviteter)
     ),
-    rest.get(
+    http.get(
         '/veilarbaktivitet/api/arena/tiltak',
         failOrGetResponse(harArenaaktivitetFeilerSkruddPa, () => arenaAktiviteter)
     ),
-    rest.get('/veilarbaktivitet/api/feature', (_, res, ctx) =>
-        res(ctx.json({ [FeatureToggle.USE_WEBSOCKETS]: false }))
-    ),
+    http.get('/veilarbaktivitet/api/feature', (_) => HttpResponse.json({ [FeatureToggle.USE_WEBSOCKETS]: false })),
 
     // veilarbveileder
-    rest.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe)),
+    http.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe)),
 
     // veilarbperson
-    rest.get(`/veilarbperson/api/person/:fnr/harNivaa4`, failOrGetResponse(harNivaa4Fieler, harNivaa4Data))
+    http.get(`/veilarbperson/api/person/:fnr/harNivaa4`, failOrGetResponse(harNivaa4Fieler, harNivaa4Data))
 ];

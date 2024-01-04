@@ -1,13 +1,12 @@
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Status } from '../../api/typer';
 import { notEmpty } from '../../utils/TypeHelper';
-import { useDialogContext } from '../DialogProvider';
 import { useOppfolgingContext } from '../OppfolgingProvider';
 import { dataOrUndefined, useFnrContext } from '../Provider';
 import { useSelectedDialog } from '../utils/useAktivitetId';
 import { useUserInfoContext } from '../BrukerProvider';
-import { useHentDialoger } from '../dialogProvider/dialogStore';
+import { useHentDialoger, useSetFerdigBehandlet, useSetVenterPaSvar } from '../dialogProvider/storeHooks';
 
 interface Props {
     toggleFerdigBehandlet(ferdigBehandler: boolean): void;
@@ -61,7 +60,9 @@ const ManagedDialogCheckboxes = () => {
     const dialog = useSelectedDialog();
     const fnr = useFnrContext();
     const hentDialoger = useHentDialoger();
-    const dialogContext = useDialogContext();
+    const { setFerdigBehandlet, status: ferdigBehandletStatus } = useSetFerdigBehandlet();
+    const { setVenterPaSvar, status: venterPaSvarStatus } = useSetVenterPaSvar();
+
     const oppfolgingContext = useOppfolgingContext();
     const oppfolgingData = dataOrUndefined(oppfolgingContext);
 
@@ -70,10 +71,10 @@ const ManagedDialogCheckboxes = () => {
     }
 
     const toggleFerdigBehandlet = (ferdigBehandlet: boolean) => {
-        dialogContext.setFerdigBehandlet(dialog, ferdigBehandlet, fnr).then(() => hentDialoger(fnr));
+        setFerdigBehandlet({ id: dialog.id, ferdigBehandlet, fnr }).then(() => hentDialoger(fnr));
     };
     const toggleVenterPaSvar = (venterPaSvar: boolean) => {
-        dialogContext.setVenterPaSvar(dialog, venterPaSvar, fnr).then(() => hentDialoger(fnr));
+        setVenterPaSvar({ id: dialog.id, venterPaSvar, fnr }).then(() => hentDialoger(fnr));
     };
     const disabled = dialog.historisk || !oppfolgingData?.underOppfolging;
 
@@ -82,7 +83,9 @@ const ManagedDialogCheckboxes = () => {
         dialog.venterPaSvar ? ('venterPaSvar' as const) : undefined
     ].filter(notEmpty);
 
-    const laster = dialogContext.status === Status.PENDING || dialogContext.status === Status.RELOADING;
+    const laster = [ferdigBehandletStatus, venterPaSvarStatus].some(
+        (status) => status === Status.PENDING || status === Status.RELOADING
+    );
 
     return (
         <DialogCheckboxes

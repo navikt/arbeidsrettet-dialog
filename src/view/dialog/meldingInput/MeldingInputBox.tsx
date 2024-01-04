@@ -16,9 +16,9 @@ import { debounced, maxMeldingsLengde, MeldingInputContext } from './inputUtils'
 import { useVisAktivitet } from '../../AktivitetToggleContext';
 import { Status } from '../../../api/typer';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
-import { useHentDialoger } from '../../dialogProvider/dialogStore';
 import { useFnrContext } from '../../Provider';
 import useKansendeMelding from '../../../utils/UseKanSendeMelding';
+import { useHentDialoger } from '../../dialogProvider/storeHooks';
 
 const schema = z.object({
     melding: z

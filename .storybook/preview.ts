@@ -62,7 +62,7 @@ const preview: Preview = {
         },
         msw: {
             handlers: {
-                default: handlers.filter((it) => !configurableMocks.includes(it.info.path)),
+                default: handlers.filter((it) => !configurableMocks.includes(it.info.path.toString())),
                 brukerMock: [rest.get('/veilarboppfolging/api/oppfolging/me', (_, res, ctx) => res(ctx.json(bruker)))],
                 featureToggle: [
                     rest.get('/veilarbaktivitet/api/feature', (_, res, ctx) =>
