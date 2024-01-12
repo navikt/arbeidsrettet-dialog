@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build:dev-ekstern": "tsc --noEmit && vite build --mode=dev-ekstern --base=/arbeid/dialog/",
+    "build:dev-ekstern": "tsc --noEmit && vite build --mode=dev-ekstern --base=https://cdn.nav.no/dab/arbeidsrettet-dialog-dev-ekstern/build/",
     "build:dev-intern": "tsc --noEmit && vite build --mode=dev-intern --base=https://cdn.nav.no/dab/arbeidsrettet-dialog-dev-intern/build/",
     "build:prod-ekstern": "tsc --noEmit && vite build --mode=prod-ekstern --base=/arbeid/dialog/",
     "build:prod-intern": "tsc --noEmit && vite build --mode=prod-intern --base=https://cdn.nav.no/dab/arbeidsrettet-dialog-prod-intern/build/",

@@ -36,13 +36,10 @@ jobs:
               run: npm run test
             - name: Build application
               run: ${{ inputs.kommando }}
-            - name: Gcloud auth
-              uses: google-github-actions/auth@v2
+            - name: Upload to CDN
+              uses: navikt/frontend/actions/cdn-upload/v1@main
               with:
-                  credentials_json: ${{ secrets.GCS_SA_KEY }}
-            - name: Setup gcloud
-              uses: google-github-actions/setup-gcloud@v2
-            - name: Upload files to GCS
-              run: gsutil -m rsync -r build "$BUCKET"
-              env:
-                  BUCKET: gs://${{ inputs.bucket }}
+                cdn-team-name: dab
+                source: ./build/
+                destination: /${{ inputs.bucket }}/
+                no-cache-paths: ${{ inputs.bucket }}/build/index.html
