@@ -99,7 +99,7 @@ export const handlers = [
 
     // veilarboppfolging
     rest.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker)),
-    rest.get('/veilarboppfolging/api/oppfolging', jsonResponse(oppfolging)),
+    rest.post('/veilarboppfolging/api/v3/oppfolging/hent-status', jsonResponse(oppfolging)),
     rest.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
     // veilarbaktivitet

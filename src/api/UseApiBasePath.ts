@@ -30,5 +30,5 @@ const oppfolgingBasePath = `${apiBasePath}/veilarboppfolging/api`;
 export const OppfolgingsApi = {
     me: `${oppfolgingBasePath}/oppfolging/me`,
     settDigigtal: `${oppfolgingBasePath}/oppfolging/settDigital`,
-    oppfolgingUrl: (query: string | undefined) => `${oppfolgingBasePath}/oppfolging${query}`
+    oppfolgingUrl: `${oppfolgingBasePath}/v3/oppfolging/hent-status`
 };

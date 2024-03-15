@@ -8,7 +8,7 @@ const TekniskFeilBrukerstotte = () => (
         <br />
         Vennligst ring teknisk brukerstøtte
         <br />
-        tlf: 55 55 33 39, tastevalg 3.
+        tlf: 55 55 33 33.
     </StatusAdvarselWrapper>
 );
 
