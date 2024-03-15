@@ -6,7 +6,7 @@ metadata:
   labels:
     team: pto
 spec:
-  image: ghcr.io/navikt/poao-frontend/poao-frontend:2023.04.14_11.14-66f2c0b9e68b
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.01.11-15.42-89509d3
   port: 8080
   liveness:
     path: /internal/alive
@@ -56,7 +56,7 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "contextPath": "/arbeid/dialog",
-          "gcs": { "bucketName": "arbeidsrettet-dialog-dev" },
+          "gcs": { "bucketName": "frontend-plattform-prod-dab", "bucketContextPath": "dab/arbeidsrettet-dialog-dev-ekstern/build/" },
           "auth": { "loginProvider": "ID_PORTEN" },
           "header": {
             "csp": {
