@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/deploy-ekstern.yml
     with:
       kommando: npm run build:dev-ekstern
-      bucket: arbeidsrettet-dialog-dev
+      bucket: arbeidsrettet-dialog-dev-ekstern
     secrets:
       GCS_SA_KEY: ${{ secrets.GCS_SA_KEY_DEV }}
 
