@@ -4,7 +4,7 @@ import { VenterSvarFraBruker, VenterSvarFraNAV, ViktigMelding } from '../../fell
 import { DialogData, OppfolgingData } from '../../utils/Typer';
 import { UserInfoContext } from '../BrukerProvider';
 import { useOppfolgingContext } from '../OppfolgingProvider';
-import { dataOrUndefined } from '../Provider';
+import { dataOrUndefined, useErVeileder, useFnrContext } from '../Provider';
 
 interface Props {
     dialog: DialogData;
@@ -24,13 +24,12 @@ function erViktig(dialog: DialogData, oppfolging?: OppfolgingData): boolean {
 
 export function EtikettListe(props: Props) {
     const userInfo = useContext(UserInfoContext);
+    const erVeileder = useErVeileder();
     const oppfolging = useOppfolgingContext();
 
     if (props.dialog.historisk) {
         return null;
     }
-
-    const erVeileder = !!userInfo && userInfo.erVeileder;
 
     const dialogErViktig = erViktig(props.dialog, dataOrUndefined(oppfolging));
 

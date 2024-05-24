@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAktivitetContext } from '../view/AktivitetProvider';
+import { useAktivitetContext, useHentAktiviteter } from '../view/AktivitetProvider';
 import { useOppfolgingContext } from '../view/OppfolgingProvider';
 import { useEventListener } from '../view/utils/useEventListner';
 import { useFnrContext } from '../view/Provider';
@@ -34,7 +34,7 @@ function isUpdateEvent(toBeDetermined: CustomEvent): toBeDetermined is CustomEve
 
 export function UppdateEventHandler() {
     const fnr = useFnrContext();
-    const aktivitetContext = useAktivitetContext();
+    const hentAktiviteter = useHentAktiviteter();
     const hentDialoger = useHentDialoger();
     const oppfolgingContext = useOppfolgingContext();
     useEventListener(eventName, (event) => {
@@ -51,7 +51,7 @@ export function UppdateEventHandler() {
 
         switch (updateType) {
             case UpdateTypes.Aktivitet:
-                return aktivitetContext.hentAktiviteter(fnr);
+                return hentAktiviteter(fnr);
             case UpdateTypes.Dialog:
                 return hentDialoger(fnr);
             case UpdateTypes.Oppfolging:

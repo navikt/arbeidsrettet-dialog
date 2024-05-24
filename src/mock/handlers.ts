@@ -1,4 +1,4 @@
-import { ResponseComposition, RestContext, RestRequest, rest } from 'msw';
+import { DefaultBodyType, delay, http, HttpResponse, HttpResponseResolver, PathParams, StrictRequest } from 'msw';
 
 import aktiviteter from './Aktivitet';
 import { arenaAktiviteter } from './Arena';
@@ -7,15 +7,10 @@ import {
     harAktivitetFeilerSkruddPa,
     harArenaaktivitetFeilerSkruddPa,
     harDialogFeilerSkruddPa,
-    harNyDialogEllerSendMeldingFeilerSkruddPa
+    harNyDialogEllerSendMeldingFeilerSkruddPa,
+    ingenOppfPerioder
 } from './demo/localstorage';
-import dialoger, {
-    kladder,
-    lesDialog,
-    opprettEllerOppdaterDialog,
-    setFerdigBehandlet,
-    setVenterPaSvar
-} from './Dialog';
+import dialoger, { lesDialog, opprettEllerOppdaterDialog, setFerdigBehandlet, setVenterPaSvar } from './Dialog';
 import oppfolging from './Oppfolging';
 import { getSistOppdatert } from './SistOppdatert';
 import { veilederMe } from './Veileder';
@@ -24,38 +19,44 @@ import { FeatureToggle } from '../featureToggle/const';
 import { Aktivitet } from '../utils/aktivitetTypes';
 import { AktivitetsplanResponse } from '../api/aktivitetsplanGraphql';
 
-const jsonResponse = (response: object | null | boolean | ((req: RestRequest) => object)) => {
-    return async (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
+const jsonResponse = (
+    response: object | null | boolean | ((req: StrictRequest<DefaultBodyType>, params: PathParams) => object)
+): HttpResponseResolver => {
+    return async ({ request, params }) => {
         if (typeof response === 'function') {
-            return res(ctx.json(await response(req)));
+            return HttpResponse.json(await response(request, params));
         }
-        return res(ctx.json(response));
+        await delay(1000);
+        return HttpResponse.json(response);
     };
 };
 
-const failOrGetResponse = (shouldFail: () => boolean, successFn: (req: RestRequest) => object | undefined) => {
-    return async (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
+const failOrGetResponse = (
+    shouldFail: () => boolean,
+    successFn: (req: StrictRequest<DefaultBodyType>) => Promise<Record<any, any>>,
+    delayMs = 1000
+): HttpResponseResolver => {
+    return async ({ request }) => {
         if (shouldFail()) {
-            return res(...internalServerError(ctx));
+            return internalServerError;
         }
-        return res(ctx.json(await successFn(req)));
+        await delay(delayMs);
+        return HttpResponse.json(await successFn(request));
     };
 };
 
-const internalServerError = (ctx: RestContext) => {
-    return [
-        ctx.status(500, 'Internal server error'),
-        ctx.json({
-            id: '9170c6534ed5eca272d527cd30c6a458',
-            type: 'UKJENT',
-            detaljer: {
-                detaljertType: 'javax.ws.rs.InternalServerErrorException',
-                feilMelding: 'HTTP 500 Internal Server Error',
-                stackTrace: 'javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error\r\n\t'
-            }
-        })
-    ];
-};
+const internalServerError = HttpResponse.json(
+    {
+        id: '9170c6534ed5eca272d527cd30c6a458',
+        type: 'UKJENT',
+        detaljer: {
+            detaljertType: 'javax.ws.rs.InternalServerErrorException',
+            feilMelding: 'HTTP 500 Internal Server Error',
+            stackTrace: 'javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error\r\n\t'
+        }
+    },
+    { status: 500 }
+);
 
 const now = new Date();
 const sessionPayload = {
@@ -78,50 +79,55 @@ const sessionPayload = {
 };
 
 export const handlers = [
-    rest.get('/auth/info', jsonResponse({ remainingSeconds: 60 * 60 })),
-    rest.get('https://login.ekstern.dev.nav.no/oauth2/session', jsonResponse(sessionPayload)),
-    rest.post('https://amplitude.nav.no/collect-auto', (_, res, ctx) => res(ctx.status(200))),
+    http.get('/auth/info', () => HttpResponse.json({ remainingSeconds: 60 * 60 })),
+    http.get('https://login.ekstern.dev.nav.no/oauth2/session', () => HttpResponse.json(sessionPayload)),
+    http.post('https://amplitude.nav.no/collect-auto', () => new Response()),
     // veilarbdialog
-    rest.get('/veilarbdialog/api/kladd', jsonResponse(kladder)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/les', jsonResponse(lesDialog)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/venter_pa_svar/:bool', jsonResponse(setVenterPaSvar)),
-    rest.put('/veilarbdialog/api/dialog/:dialogId/ferdigbehandlet/:bool', jsonResponse(setFerdigBehandlet)),
-    rest.get('/veilarbdialog/api/dialog/sistOppdatert', jsonResponse(getSistOppdatert())),
-    rest.post('/veilarbdialog/api/kladd', (_, res, ctx) => {
-        return res(ctx.delay(500), ctx.status(204));
+    http.put('/veilarbdialog/api/dialog/:dialogId/les', lesDialog),
+    http.put('/veilarbdialog/api/dialog/:dialogId/venter_pa_svar/:bool', jsonResponse(setVenterPaSvar)),
+    http.put('/veilarbdialog/api/dialog/:dialogId/ferdigbehandlet/:bool', jsonResponse(setFerdigBehandlet)),
+    http.post('/veilarbdialog/api/dialog/sistOppdatert', jsonResponse(getSistOppdatert())),
+    http.post('/veilarbdialog/api/kladd', async () => {
+        await delay(500);
+        return new HttpResponse(null, { status: 204 });
     }),
-    rest.post(
+    http.post(
         '/veilarbdialog/api/dialog',
         failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog)
     ),
-    rest.post('/veilarbdialog/api/logger/event', (_, res, ctx) => res(ctx.status(200))),
-    rest.post(
+    http.post('/veilarbdialog/api/logger/event', () => new Response()),
+    http.post(
         '/veilarbdialog/graphql',
-        failOrGetResponse(harDialogFeilerSkruddPa, () => {
-            return { data: { dialoger: dialoger(), kladder: [] }, errors: [] };
-        })
+        failOrGetResponse(
+            harDialogFeilerSkruddPa,
+            async (request) => {
+                const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
+                return { data: { dialoger: dialogerPayload, kladder: [] }, errors: [] };
+            },
+            500
+        )
     ),
 
     // veilarboppfolging
-    rest.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker)),
-    rest.post('/veilarboppfolging/api/v3/oppfolging/hent-status', jsonResponse(oppfolging)),
-    rest.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
+    http.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker)),
+    http.post('/veilarboppfolging/api/v3/oppfolging/hent-status', jsonResponse(oppfolging)),
+    http.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
     // veilarbaktivitet
-    rest.post(
+    http.post(
         '/veilarbaktivitet/graphql',
-        failOrGetResponse(harAktivitetFeilerSkruddPa, () => matchMedPerioder(aktiviteter))
+        failOrGetResponse(harAktivitetFeilerSkruddPa, async () => matchMedPerioder(aktiviteter), 750)
     ),
-    rest.post(
+    http.post(
         '/veilarbaktivitet/api/arena/tiltak',
-        failOrGetResponse(harArenaaktivitetFeilerSkruddPa, () => arenaAktiviteter)
+        failOrGetResponse(harArenaaktivitetFeilerSkruddPa, async () => arenaAktiviteter)
     ),
-    rest.get('/veilarbaktivitet/api/feature', (_, res, ctx) =>
-        res(ctx.json({ [FeatureToggle.USE_WEBSOCKETS]: false }))
-    ),
+    http.get('/veilarbaktivitet/api/feature', () => {
+        return HttpResponse.json({ [FeatureToggle.USE_WEBSOCKETS]: false });
+    }),
 
     // veilarbveileder
-    rest.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe))
+    http.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe))
 ];
 
 const matchMedPerioder = (aktiviteter: Aktivitet[]): AktivitetsplanResponse => {

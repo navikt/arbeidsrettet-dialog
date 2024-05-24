@@ -13,7 +13,11 @@ export default function AldriUnderOppfolging(props: Props) {
 }
 
 function Veileder() {
-    return <StatusAdvarselWrapper>Denne brukeren har ikke tidligere dialoger i Modia.</StatusAdvarselWrapper>;
+    return (
+        <StatusAdvarselWrapper>
+            Denne brukeren har ikke vært og er ikke under arbeidrettet oppfølging.
+        </StatusAdvarselWrapper>
+    );
 }
 
 function Bruker() {

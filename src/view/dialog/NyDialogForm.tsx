@@ -5,17 +5,17 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { z } from 'zod';
 import loggEvent from '../../felleskomponenter/logging';
-import { useRoutes } from '../../routes';
+import { useRoutes } from '../../routing/routes';
 import { UpdateTypes, dispatchUpdate } from '../../utils/UpdateEvent';
-import { useUserInfoContext } from '../BrukerProvider';
 import { useDialogContext } from '../DialogProvider';
 import { findKladd } from '../KladdProvider';
 import { cutStringAtLength } from '../utils/stringUtils';
 import useMeldingStartTekst from './UseMeldingStartTekst';
 import { HandlingsType } from '../ViewState';
-import { useFnrContext } from '../Provider';
+import { useErVeileder, useFnrContext } from '../Provider';
 import { useDialogStore } from '../dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
+import useKansendeMelding from '../../utils/UseKanSendeMelding';
 
 const maxMeldingsLengde = 5000;
 
@@ -35,10 +35,10 @@ interface Props {
 }
 
 const NyDialogForm = (props: Props) => {
+    const kansendeMelding = useKansendeMelding();
     const { defaultTema, aktivitetId } = props;
     const hentDialoger = useDialogStore((store) => store.hentDialoger);
     const { nyDialog } = useDialogContext();
-    const bruker = useUserInfoContext();
     const navigate = useNavigate();
     const { dialogRoute, baseRoute } = useRoutes();
     const [noeFeilet, setNoeFeilet] = useState(false);
@@ -84,7 +84,7 @@ const NyDialogForm = (props: Props) => {
         };
     }, []);
 
-    const erVeileder = !!bruker && bruker.erVeileder;
+    const erVeileder = useErVeileder();
 
     const setOppdaterKladdCallbackValues = ({
         tema,
@@ -161,7 +161,7 @@ const NyDialogForm = (props: Props) => {
                 <TextField
                     label="Tema (obligatorisk)"
                     description="Skriv kort hva dialogen skal handle om"
-                    disabled={!!aktivitetId}
+                    disabled={!!aktivitetId || !kansendeMelding}
                     autoFocus={autoFocusTema}
                     {...register('tema')}
                     error={errors.tema && errors.tema.message}

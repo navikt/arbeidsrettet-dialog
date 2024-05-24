@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Status, isReloading } from '../api/typer';
+import { Status } from '../api/typer';
 import { AktivitetApi } from '../api/UseApiBasePath';
 import { fetchData } from '../utils/Fetch';
 import { FeatureToggle } from './const';
+import { createGenericStore } from '../utils/genericStore';
+import { useShallow } from 'zustand/react/shallow';
 
 const ALL_TOGGLES = [FeatureToggle.USE_WEBSOCKETS] as const;
 export type Feature = (typeof ALL_TOGGLES)[number];
@@ -15,43 +17,23 @@ export interface FeatureData {
     error?: string;
 }
 
-const initBrukerState: FeatureData = {
-    data: { [FeatureToggle.USE_WEBSOCKETS]: false },
-    status: Status.INITIAL
-};
+export const useFeatureToggleStore = createGenericStore({ [FeatureToggle.USE_WEBSOCKETS]: false }, () =>
+    fetchData<Features>(apiUrl)
+);
 
-export const FeatureToggleContext = React.createContext<Features>({
-    [FeatureToggle.USE_WEBSOCKETS]: false
-});
-
+const apiUrl = AktivitetApi.hentFeatureToggles;
 export const useFeatureToggleProvider = (): FeatureData => {
-    const [state, setState] = useState<FeatureData>(initBrukerState);
-    const apiUrl = AktivitetApi.hentFeatureToggles;
-
-    useEffect(() => {
-        setState((prevState) => ({
-            ...prevState,
-            status: isReloading(prevState.status) ? Status.RELOADING : Status.PENDING
-        }));
-        fetchData<Features>(apiUrl)
-            .then((featureToggles) => {
-                setState({
-                    data: featureToggles,
-                    status: Status.OK
-                });
-            })
-            .catch((e) => {
-                setState((prevState) => ({
-                    ...prevState,
-                    error: e,
-                    status: Status.ERROR
-                }));
-            });
-    }, [apiUrl]);
+    const { data, status, error } = useFeatureToggleStore(
+        useShallow((state) => ({
+            status: state.status,
+            data: state.data,
+            error: state.error
+        }))
+    );
 
     return {
-        data: state.data || initBrukerState.data,
-        status: state.status,
-        error: state.error
+        data,
+        status,
+        error
     };
 };

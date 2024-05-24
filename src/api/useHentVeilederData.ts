@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-
 import { fetchData } from '../utils/Fetch';
+import { createGenericStore } from '../utils/genericStore';
 
 interface VeilederInfo {
     ident: string;
@@ -9,18 +8,9 @@ interface VeilederInfo {
     etternavn: string;
 }
 
-const useFetchVeilederNavn = (erVeileder: boolean) => {
-    const [veilederNavn, setVeilederNavn] = useState<string | undefined>();
-
-    useEffect(() => {
-        if (erVeileder) {
-            fetchData<VeilederInfo>('/veilarbveileder/api/veileder/me')
-                .then((veilerder) => setVeilederNavn(`${veilerder.fornavn} ${veilerder.etternavn}`))
-                .catch();
-        }
-    }, [erVeileder]);
-
-    return veilederNavn;
-};
-
-export default useFetchVeilederNavn;
+const fetchVeilederNavn = () => fetchData<VeilederInfo>('/veilarbveileder/api/veileder/me');
+export const useVeilederNavnStore = createGenericStore(undefined as VeilederInfo | undefined, fetchVeilederNavn);
+export const useVeilederNavn = () =>
+    useVeilederNavnStore((state) => {
+        return `${state.data?.fornavn} ${state.data?.etternavn}`;
+    });

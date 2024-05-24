@@ -1,16 +1,17 @@
 import { Heading, Link } from '@navikt/ds-react';
 import classNames from 'classnames';
-import React from 'react';
-import { useLocation } from 'react-router';
+import React, { Suspense } from 'react';
+import { Await } from 'react-router';
 import { AKTIVITETSPLAN_URL, MINSIDE_URL } from '../../constants';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
-import { useUserInfoContext } from '../BrukerProvider';
 import { useDialoger } from '../DialogProvider';
 import InfoVedIngenDialoger from '../info/InfoVedIngenDialoger';
 import OmDialogLenke from '../info/OmDialogLenke';
-import { useSelectedDialog } from '../utils/useAktivitetId';
 import DialogListe from './DialogListe';
 import NyDialogLink from './NyDialogLink';
+import { useErVeileder } from '../Provider';
+import { useRootLoaderData } from '../../routing/loaders';
+import { useIsDialogOrNyRoute } from '../../routing/routes';
 
 const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
     if (erVeileder) return null;
@@ -36,34 +37,33 @@ const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
 const DialogOversikt = () => {
     const kanSendeMelding = useKansendeMelding();
     const dialoger = useDialoger();
-    const dialog = useSelectedDialog();
-    const location = useLocation();
-    const isNyRoute = location.pathname.startsWith('/ny');
-    const userInfoContext = useUserInfoContext();
-    const erVeileder = !!userInfoContext?.erVeileder;
+    const isDialogOrNyRoute = useIsDialogOrNyRoute();
+    const erVeileder = useErVeileder();
     const ingenDialoger = dialoger.length === 0;
-    const erSidebar = !!dialog || isNyRoute;
+    const erSidebar = isDialogOrNyRoute;
+    const loaderData = useRootLoaderData();
+
     return (
         <div
             className={classNames(
                 /* Hvis liten skjerm, bare vis dialog-liste på "Homepage", ikke som sideBar  */
                 { 'hidden md:flex': erSidebar },
                 { flex: !erSidebar },
-                'w-full flex-col border-r border-border-divider ' +
-                    'md:max-w-xs ' +
-                    'xl:w-[16.7vw] xl:min-w-[320px] xl:max-w-none'
+                'w-full grow flex-col md:border-r border-border-divider md:max-w-xs xl:min-w-[320px] xl:max-w-[320px]'
             )}
         >
             <DialogOversiktHeader erVeileder={erVeileder} />
-            <div className="relative flex h-full flex-1 flex-col overflow-y-scroll border-r border-border-divider bg-gray-100 p-2">
+            <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-border-divider bg-gray-100 p-2">
                 <>
-                    {kanSendeMelding ? (
-                        <div className="flex gap-2 p-1 pb-2">
-                            <NyDialogLink />
-                            <OmDialogLenke />
-                        </div>
-                    ) : null}
-                    {ingenDialoger ? <InfoVedIngenDialoger className="mt-4 md:hidden" /> : null}
+                    <div className="flex gap-2 p-1 pb-2">
+                        <NyDialogLink disabled={!kanSendeMelding} />
+                        <OmDialogLenke />
+                    </div>
+                    <Suspense>
+                        <Await resolve={loaderData.dialoger}>
+                            {ingenDialoger ? <InfoVedIngenDialoger className="mt-4 h-full md:hidden" /> : null}
+                        </Await>
+                    </Suspense>
                 </>
                 <DialogListe />
             </div>

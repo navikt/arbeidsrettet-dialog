@@ -1,4 +1,4 @@
-import { ResponseComposition, RestContext, RestRequest } from 'msw';
+import { DefaultBodyType, HttpResponse, HttpResponseResolver, PathParams, StrictRequest } from 'msw';
 
 import { DialogData, KladdData, MeldingsData, NyDialogMeldingData } from '../utils/Typer';
 import bruker from './Bruker';
@@ -574,18 +574,18 @@ const dialoger: DialogData[] = [
     }
 ];
 
-export const lesDialog = (req: RestRequest, res: ResponseComposition, ctx: RestContext) => {
-    const dialogId = req.params.dialogId;
+export const lesDialog: HttpResponseResolver = ({ request, params }) => {
+    const dialogId = params.dialogId;
     const dialog: any = dialoger.find((dlg) => dlg.id === dialogId);
     if (dialog) {
         dialog.lest = true;
-        return dialog;
+        return HttpResponse.json(dialog);
     }
 
-    return res(ctx.status(404));
+    return new HttpResponse(null, { status: 404 });
 };
 
-export const opprettEllerOppdaterDialog = async (req: RestRequest): Promise<DialogData> => {
+export const opprettEllerOppdaterDialog = async (req: StrictRequest<DefaultBodyType>): Promise<DialogData> => {
     const body = (await req.json()) as NyDialogMeldingData;
     const dialogId = !body.dialogId || body.dialogId === '' ? rndId() : `${body.dialogId}`;
     const nyMelding: MeldingsData = {
@@ -636,18 +636,18 @@ export const opprettEllerOppdaterDialog = async (req: RestRequest): Promise<Dial
     }
 };
 
-export function setVenterPaSvar(req: RestRequest) {
-    const dialog = dialoger.find((dlg) => dlg.id === req.params.dialogId);
+export function setVenterPaSvar(req: StrictRequest<DefaultBodyType>, params: PathParams) {
+    const dialog = dialoger.find((dlg) => dlg.id === params.dialogId);
     if (dialog) {
-        dialog.venterPaSvar = req.params.bool === 'true';
+        dialog.venterPaSvar = params.bool === 'true';
     }
     return dialog as DialogData;
 }
 
-export function setFerdigBehandlet(req: RestRequest) {
-    const dialog = dialoger.find((dlg) => dlg.id === req.params.dialogId);
+export function setFerdigBehandlet(req: StrictRequest<DefaultBodyType>, params: PathParams) {
+    const dialog = dialoger.find((dlg) => dlg.id === params.dialogId);
     if (dialog) {
-        dialog.ferdigBehandlet = req.params.bool === 'true';
+        dialog.ferdigBehandlet = params.bool === 'true';
     }
     return dialog as DialogData;
 }

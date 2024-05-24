@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import loggEvent from '../felleskomponenter/logging';
-import { useRoutes } from '../routes';
+import { useRoutes } from '../routing/routes';
 import { useEventListener } from './utils/useEventListner';
 import { HandlingsType } from './ViewState';
 

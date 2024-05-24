@@ -7,9 +7,10 @@ import {
     StillingFraNavSoknadsstatus
 } from '../utils/aktivitetTypes';
 import oppfolging from './Oppfolging';
-import { PeriodeData } from '../utils/Typer';
 
-const gjeldendeOppfolgingsPeriode = oppfolging.oppfolgingsPerioder.find((periode) => !periode.sluttDato) as PeriodeData;
+const gjeldendeOppfolgingsPeriode = oppfolging.oppfolgingsPerioder.find((periode) => !periode.sluttDato) || {
+    uuid: '1'
+};
 
 const moteAktivitet: Aktivitet = {
     adresse: 'Nordre strandvei 56',

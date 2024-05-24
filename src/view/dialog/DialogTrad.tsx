@@ -1,8 +1,9 @@
 import { Loader } from '@navikt/ds-react';
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { useRoutes } from '../../routes';
+import React, { ReactNode, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Await, useLocation } from 'react-router';
+import { Navigate } from 'react-router-dom';
+import { useRoutes } from '../../routing/routes';
 import { dispatchUpdate, UpdateTypes } from '../../utils/UpdateEvent';
 import { useVisAktivitet } from '../AktivitetToggleContext';
 import { useDialogContext } from '../DialogProvider';
@@ -13,19 +14,17 @@ import { useEventListener } from '../utils/useEventListner';
 import { HandlingsType, useSetViewContext, useViewContext } from '../ViewState';
 import MeldingInputBox from './meldingInput/MeldingInputBox';
 import HistoriskInfo from './HistoriskInfo';
-import { useHentDialogStatus } from '../dialogProvider/dialogStore';
-import { Status } from '../../api/typer';
+import { useRootLoaderData } from '../../routing/loaders';
+import { DialogData } from '../../utils/Typer';
+import { MaybeAktivitet } from '../AktivitetProvider';
 
 export const DialogTrad = () => {
     const scrollContainerRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
-    const aktivitet = useSelectedAktivitet();
     const { lesDialog } = useDialogContext();
 
     const valgtDialog = useSelectedDialog();
-    const lasterDialoger = [Status.PENDING, Status.RELOADING].includes(useHentDialogStatus());
     const dialogId = valgtDialog?.id;
     const fnr = useFnrContext();
-    const visAktivitet = useVisAktivitet();
 
     const viewState = useViewContext();
     const setViewState = useSetViewContext();
@@ -71,8 +70,16 @@ export const DialogTrad = () => {
         }
     }, [dialogId, lest, activeTab, activePersonflateTab, fnr]);
 
-    const routes = useRoutes();
-    const navigate = useNavigate();
+    const loaderData = useRootLoaderData();
+    const requiredData = useMemo(() => {
+        return Promise.all([
+            loaderData.dialoger,
+            loaderData.oppfolging,
+            loaderData.veilederNavn,
+            loaderData.aktiviteter,
+            loaderData.arenaAktiviteter
+        ]);
+    }, []);
 
     useEffect(() => {
         scrollContainerRef?.current?.scrollTo({
@@ -80,35 +87,53 @@ export const DialogTrad = () => {
         });
     }, [scrollContainerRef, valgtDialog]);
 
-    if (!valgtDialog && lasterDialoger) {
-        return <DialogLoader />;
-    }
-    if (!valgtDialog) {
-        navigate(routes.baseRoute(), { replace: true });
-        return <DialogLoader />;
-    }
-
-    const aktivDialog = !valgtDialog.historisk;
-
     return (
-        <section
-            className={classNames('flex w-full grow xl:max-w-none', {
-                'flex-col lg:flex-row 2xl:flex-row': aktivitet && !visAktivitet,
-                'flex-col 2xl:flex-row': aktivitet && visAktivitet,
-                'flex-col lg:flex-row': !aktivitet
-            })}
-        >
-            <div ref={scrollContainerRef} className="relative flex flex-1 grow flex-col overflow-y-scroll">
-                <Meldinger dialogData={valgtDialog} />
-                <HistoriskInfo hidden={aktivDialog} />
-            </div>
-            <MeldingInputBox dialog={valgtDialog} />
-        </section>
+        <Suspense fallback={<DialogLoader />}>
+            <Await resolve={requiredData}>
+                <ValgtDialog>
+                    {({ dialog, aktivitet, visAktivitet }) => (
+                        <section
+                            className={classNames('flex w-full grow xl:max-w-none', {
+                                'flex-col lg:flex-row 2xl:flex-row': aktivitet && !visAktivitet,
+                                'flex-col 2xl:flex-row': aktivitet && visAktivitet,
+                                'flex-col lg:flex-row': !aktivitet
+                            })}
+                        >
+                            <div
+                                ref={scrollContainerRef}
+                                className="relative flex flex-1 grow flex-col overflow-y-scroll"
+                            >
+                                <Meldinger dialogData={dialog} />
+                                <HistoriskInfo />
+                            </div>
+                            <MeldingInputBox dialog={dialog} />
+                        </section>
+                    )}
+                </ValgtDialog>
+            </Await>
+        </Suspense>
     );
 };
 
-const DialogLoader = () => (
-    <div className="flex w-full bg-gray-100 items-center justify-center">
-        <Loader size="2xlarge" />
-    </div>
-);
+const ValgtDialog = ({
+    children
+}: {
+    children: ({ dialog }: { dialog: DialogData; aktivitet: MaybeAktivitet; visAktivitet: boolean }) => ReactNode;
+}): ReactNode => {
+    const valgtDialog = useSelectedDialog();
+    const aktivitet = useSelectedAktivitet();
+    const visAktivitet = useVisAktivitet();
+    const routes = useRoutes();
+    if (!valgtDialog) {
+        return <Navigate to={routes.baseRoute()} />;
+    }
+    return children({ dialog: valgtDialog, aktivitet: aktivitet, visAktivitet });
+};
+
+const DialogLoader = () => {
+    return (
+        <div className="flex w-full bg-gray-100 items-center justify-center">
+            <Loader size="2xlarge" />
+        </div>
+    );
+};

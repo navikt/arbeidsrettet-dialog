@@ -8,7 +8,7 @@ import {
     erEksternBruker,
     erKRRBruker,
     erManuellBruker,
-    erPrivatBruker,
+    erIkkeUnderOppfolging,
     getFailureRate,
     harAktivitetFeilerSkruddPa,
     harArenaaktivitetFeilerSkruddPa,
@@ -37,8 +37,8 @@ const brukertypeRadios = [
 const brukerTilstandRadios = [
     {
         label: 'Ikke under oppfølging',
-        value: LocalStorageElement.PRIVAT_BRUKER,
-        checked: erPrivatBruker()
+        value: LocalStorageElement.IKKE_UNDER_OPPFOLGING,
+        checked: erIkkeUnderOppfolging()
     },
     {
         label: 'Manuell',

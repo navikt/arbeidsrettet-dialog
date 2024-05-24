@@ -1,8 +1,7 @@
 import { getTime } from 'date-fns';
-import { RestRequest } from 'msw';
-import { SistOppdatert } from '../utils/Typer';
+import { DefaultBodyType, StrictRequest } from 'msw';
 
-export const getSistOppdatert = (): ((req: RestRequest) => { sistOppdatert: number | Date }) => {
+export const getSistOppdatert = (): ((req: StrictRequest<DefaultBodyType>) => { sistOppdatert: number | Date }) => {
     const now = new Date();
     let timestamp = getTime(now);
     let oppdaterTimestamp = true;

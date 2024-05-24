@@ -1,9 +1,9 @@
-import React, { useContext, useMemo, useState } from 'react';
-
-import { Status, isReloading } from '../api/typer';
+import { Status } from '../api/typer';
 import { OppfolgingsApi } from '../api/UseApiBasePath';
 import { fetchData } from '../utils/Fetch';
 import { OppfolgingData } from '../utils/Typer';
+import { createGenericStore } from '../utils/genericStore';
+import { useShallow } from 'zustand/react/shallow';
 
 export interface OppfolgingDataProviderType {
     data?: OppfolgingData;
@@ -11,60 +11,24 @@ export interface OppfolgingDataProviderType {
     hentOppfolging: (fnr: string | undefined) => Promise<OppfolgingData | undefined>;
 }
 
-interface OppfolgingState {
-    data?: OppfolgingData;
-    status: Status;
-}
-
-const initOppfolgingState: OppfolgingState = {
-    data: undefined,
-    status: Status.INITIAL
-};
-
-export const OppfolgingContext = React.createContext<OppfolgingDataProviderType>({
-    data: undefined,
-    status: Status.INITIAL,
-    hentOppfolging: () => Promise.resolve(undefined)
-});
-export const useOppfolgingContext = () => useContext(OppfolgingContext);
-
 const oppfolgingUrl = OppfolgingsApi.oppfolgingUrl;
 
-export const useOppfolgingDataProvider = () => {
-    const [state, setState] = useState<OppfolgingState>(initOppfolgingState);
+const fetchOppfolging = (fnr: string | undefined) =>
+    fetchData<OppfolgingData>(oppfolgingUrl, {
+        method: 'POST',
+        body: fnr ? JSON.stringify({ fnr }) : undefined
+    });
 
-    const hentOppfolging: (fnr: string | undefined) => Promise<OppfolgingData | undefined> = (
-        fnr: string | undefined
-    ) => {
-        setState((prevState) => ({
-            ...prevState,
-            status: isReloading(prevState.status) ? Status.RELOADING : Status.PENDING
-        }));
-        return fetchData<OppfolgingData>(oppfolgingUrl, {
-            method: 'POST',
-            body: fnr ? JSON.stringify({ fnr }) : undefined
-        })
-            .then((response) => {
-                setState(() => ({
-                    data: response,
-                    status: Status.OK
-                }));
-                return response;
-            })
-            .catch(() => {
-                setState((prevState) => ({
-                    ...prevState,
-                    status: Status.ERROR
-                }));
-                return undefined;
-            });
-    };
-
-    return useMemo(() => {
-        return {
-            data: state.data,
-            status: state.status,
-            hentOppfolging: hentOppfolging
-        };
-    }, [state]);
-};
+export const useOppfolgingStore = createGenericStore<OppfolgingData | undefined, string | undefined, OppfolgingData>(
+    undefined as OppfolgingData | undefined,
+    fetchOppfolging
+);
+export const useOppfolgingContext = (): OppfolgingDataProviderType =>
+    useOppfolgingStore(
+        useShallow((store) => ({
+            data: store.data,
+            status: store.status,
+            error: store.error,
+            hentOppfolging: store.fetch
+        }))
+    );

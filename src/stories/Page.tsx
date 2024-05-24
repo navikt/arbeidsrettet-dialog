@@ -6,7 +6,7 @@ import { Provider } from '../view/Provider';
 import StatusAdvarsel from '../view/statusAdvarsel/StatusAdvarsel';
 import { UppdateEventHandler } from '../utils/UpdateEvent';
 import cx from 'classnames';
-import { Routes } from '../routes';
+import { Routes } from '../routing/routes';
 
 interface PageProps {
     visAktivitet?: boolean;

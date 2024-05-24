@@ -26,8 +26,8 @@ export const initDialogState: DialogState = {
 type DialogStore = DialogState &
     KladdStore & {
         kladder: KladdData[];
-        silentlyHentDialoger: (fnr: string | undefined) => Promise<void>;
-        hentDialoger: (fnr: string | undefined) => Promise<void>;
+        silentlyHentDialoger: (fnr: string | undefined) => Promise<DialogData[]>;
+        hentDialoger: (fnr: string | undefined) => Promise<DialogData[]>;
         pollForChanges: (fnr: string | undefined) => Promise<void>;
         configurePoll(config: { fnr: string | undefined; useWebsockets: boolean; erBruker: boolean }): void;
         updateDialogInDialoger: (dialogData: DialogData) => DialogData;
@@ -48,7 +48,7 @@ export const useDialogStore = create(
             kladdStatus: Status.INITIAL,
             // Actions / functions / mutations
             silentlyHentDialoger: async (fnr) => {
-                hentDialogerGraphql(fnr)
+                return hentDialogerGraphql(fnr)
                     .then(({ dialoger, kladder }) => {
                         // TODO: Find a way to get previous value
                         // loggChangeInDialog(state.dialoger, dialoger);
@@ -60,12 +60,13 @@ export const useDialogStore = create(
                         return dialoger;
                     })
                     .catch((e) => {
+                        console.error(e);
                         set(
                             (prevState) => ({ ...prevState, status: Status.ERROR, error: e }),
                             false,
                             'hentDialoger/error'
                         );
-                        return [];
+                        return [] as unknown as DialogData[];
                     });
             },
             hentDialoger: async (fnr) => {
@@ -78,10 +79,9 @@ export const useDialogStore = create(
                     'hentDialoger/pending'
                 );
                 const { silentlyHentDialoger } = get();
-                silentlyHentDialoger(fnr);
+                return silentlyHentDialoger(fnr);
             },
             configurePoll({ fnr, useWebsockets, erBruker }) {
-                console.log('Configuring poll');
                 const { pollForChanges, currentPollFnr } = get();
                 // If already polling, don't do anything
                 if (!erBruker && currentPollFnr == fnr) {
@@ -186,7 +186,6 @@ export const useHentDialogStatus = () => useDialogStore(useShallow((store) => st
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
     let interval: NodeJS.Timeout;
-    console.log('Setting up polling with http');
     interval = setInterval(() => {
         pollForChanges().catch((e) => {
             console.error(e);

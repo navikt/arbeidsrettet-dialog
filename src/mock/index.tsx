@@ -1,4 +1,4 @@
-import { setupWorker } from 'msw';
+import { setupWorker } from 'msw/browser';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -20,8 +20,8 @@ export default () =>
                 const ignoredFileExtensions = ['.ts', '.js', '.tsx', '.jsx', 'css', 'svg', 'png', '.less'];
 
                 const ignore =
-                    hostBlacklist.some((route) => req.url.host.includes(route)) ||
-                    ignoredFileExtensions.some((fileExtension) => req.url.pathname.endsWith(fileExtension));
+                    hostBlacklist.some((route) => req.url.includes(route)) ||
+                    ignoredFileExtensions.some((fileExtension) => req.url.split('?')[0].endsWith(fileExtension));
 
                 if (ignore) {
                     return;

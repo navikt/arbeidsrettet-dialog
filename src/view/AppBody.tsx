@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
-import { Outlet } from 'react-router';
+import React, { ReactElement, Suspense, useEffect, useMemo } from 'react';
+import { Await, Outlet, useMatches } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 import loggEvent from '../felleskomponenter/logging';
 import { Bruker, OppfolgingData } from '../utils/Typer';
 import { useUserInfoContext } from './BrukerProvider';
-import { DialogHeader } from './dialog/DialogHeader';
 import DialogOversikt from './dialogliste/DialogOversikt';
 import { EventHandler } from './EventHandler';
 import { useOppfolgingContext } from './OppfolgingProvider';
-import { dataOrUndefined } from './Provider';
+import { dataOrUndefined, useErVeileder } from './Provider';
+import { useRootLoaderData } from '../routing/loaders';
+import { RouteIds } from '../routing/routes';
+import classNames from 'classnames';
+import StatusAdvarsel from './statusAdvarsel/StatusAdvarsel';
+import DialogHeaderFeil from './dialog/DialogHeaderFeil';
 
 function hash(val: string) {
     const utf8 = new TextEncoder().encode(val);
@@ -28,7 +32,7 @@ const useLogBruker = (brukerdata: Bruker | null, oppfolgingData?: OppfolgingData
     useEffect(() => {
         const unik = underOppfolging && aktorId ? hash(aktorId) : 'ikke-' + uuidv4();
         loggEvent('arbeidsrettet-dialog.besok', { erBruker, underOppfolging, unik });
-    }, [underOppfolging, erBruker, aktorId]);
+    }, []);
 };
 
 const AppBody = () => {
@@ -37,34 +41,56 @@ const AppBody = () => {
     const oppfolgingData = dataOrUndefined(oppfolgingContext);
 
     useLogBruker(brukerdata, oppfolgingData);
-
-    if (!oppfolgingData || !brukerdata) {
-        return null;
-    }
-
-    const { underOppfolging, manuell, reservasjonKRR, oppfolgingsPerioder } = oppfolgingData;
-    const erBruker = brukerdata.erBruker;
-
-    const aldriOppfolging = !underOppfolging && oppfolgingsPerioder.length === 0;
-    const manuellBruker = erBruker && manuell;
-    const krrBruker = erBruker && reservasjonKRR;
-
-    if (aldriOppfolging || manuellBruker || krrBruker) {
-        return null;
-    }
+    const erDialogRoute = useMatches().some((match) => match.id === RouteIds.Dialog);
 
     return (
         <>
             <DialogOversikt />
-            <div className="flex flex-1 flex-col">
-                <DialogHeader />
-                <div className="flex min-h-0 flex-1">
-                    <Outlet />
-                </div>
+            <WaitForAllData />
+            <div
+                className={classNames('flex md:flex-1 flex-col', {
+                    'flex-1': erDialogRoute // Når dialoger vises skal boks med meldinger fylle mest mulig
+                })}
+            >
+                <StatusAdvarsel />
+                <DialogHeaderFeil />
+                <Outlet />
             </div>
             <EventHandler />
         </>
     );
+};
+
+const WaitForAllData = (): ReactElement => {
+    const loaderData = useRootLoaderData();
+    const requiredData = useMemo(
+        () =>
+            Promise.all([
+                loaderData.dialoger,
+                loaderData.veilederNavn,
+                loaderData.oppfolging,
+                loaderData.features,
+                loaderData.me,
+                loaderData.aktiviteter,
+                loaderData.arenaAktiviteter
+            ]),
+        []
+    );
+    return (
+        <Suspense>
+            <Await resolve={requiredData}>
+                <LogVisit />
+            </Await>
+        </Suspense>
+    );
+};
+
+const LogVisit = () => {
+    const oppfolgingState = useOppfolgingContext();
+    const brukerdata = useUserInfoContext();
+    const oppfolgingData = dataOrUndefined(oppfolgingState);
+    useLogBruker(brukerdata, oppfolgingData);
+    return null;
 };
 
 export default AppBody;

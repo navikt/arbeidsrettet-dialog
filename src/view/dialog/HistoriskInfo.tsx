@@ -3,14 +3,12 @@ import React from 'react';
 
 import NyDialogLink from '../dialogliste/NyDialogLink';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
+import { useSelectedDialog } from '../utils/useAktivitetId';
 
-interface Props {
-    hidden?: boolean;
-}
-
-function HistoriskInfo({ hidden }: Props) {
+function HistoriskInfo() {
+    const valgtDialog = useSelectedDialog();
     const kanSendeMelding = useKansendeMelding();
-    if (hidden) {
+    if (!valgtDialog?.historisk || true) {
         return null;
     }
 

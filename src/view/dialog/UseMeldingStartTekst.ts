@@ -1,13 +1,11 @@
-import { useVeilederDataContext } from '../Provider';
+import { useVeilederNavn } from '../../api/useHentVeilederData';
+import { useErVeileder } from '../Provider';
 
 const useMeldingStartTekst = () => {
-    const veilederData = useVeilederDataContext();
-    const { veilederNavn } = veilederData;
-
-    if (!veilederNavn) {
-        return '';
-    }
-
+    const veilederNavn = useVeilederNavn();
+    const erVeileder = useErVeileder();
+    if (!erVeileder) return '';
+    if (!veilederNavn) return '';
     return '\n\nHilsen ' + veilederNavn;
 };
 

@@ -9,7 +9,11 @@ interface Props {
 }
 
 export default function IkkeUnderOppfolging(props: Props) {
-    return props.erVeileder ? null : <HarPerioderBruker />;
+    return props.erVeileder ? (
+        <StatusAdvarselWrapper>Bruker er ikke under oppfølging</StatusAdvarselWrapper>
+    ) : (
+        <HarPerioderBruker />
+    );
 }
 
 function HarPerioderBruker() {

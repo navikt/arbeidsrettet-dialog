@@ -1,10 +1,10 @@
 import { beforeAll, describe } from 'vitest';
 import { act, render } from '@testing-library/react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
+import { createMemoryRouter } from 'react-router';
 import React from 'react';
 import { setupServer } from 'msw/node';
 import { handlers } from '../../mock/handlers';
-import { dialogRoutes } from '../../routes';
+import { dialogRoutes } from '../../routing/routes';
 import App from '../../App';
 
 const dialogId = '303';

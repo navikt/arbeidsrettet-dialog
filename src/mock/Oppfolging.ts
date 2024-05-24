@@ -3,7 +3,7 @@ import {
     brukerKanIkkeVarsles,
     erKRRBruker,
     erManuellBruker,
-    erPrivatBruker,
+    erIkkeUnderOppfolging,
     ingenOppfPerioder
 } from './demo/localstorage';
 
@@ -32,7 +32,7 @@ const oppfolgingData = {
     veilederId: '101010',
     reservasjonKRR: erKRRBruker(),
     manuell: erManuellBruker(),
-    underOppfolging: !erPrivatBruker(),
+    underOppfolging: ingenOppfPerioder() ? false : !erIkkeUnderOppfolging(),
     underKvp: false,
     oppfolgingUtgang: null,
     gjeldendeEskaleringsvarsel: null,

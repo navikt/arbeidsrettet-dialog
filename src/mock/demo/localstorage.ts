@@ -1,6 +1,6 @@
 export const LocalStorageElement = {
     BRUKER_TYPE: 'brukertype',
-    PRIVAT_BRUKER: 'privatbruker',
+    IKKE_UNDER_OPPFOLGING: 'ikke_under_oppfolging',
     MANUELL_BRUKER: 'manuellbruker',
     KRR_BRUKER: 'krrbruker',
     INGEN_OPPF_PERIODER: 'ingen_oppf_perioder',
@@ -30,7 +30,7 @@ const erSatt = (localStorageElement: string) => {
     return hentFraLocalStorage(localStorageElement) === 'true';
 };
 
-export const erPrivatBruker = () => erSatt(LocalStorageElement.PRIVAT_BRUKER);
+export const erIkkeUnderOppfolging = () => erSatt(LocalStorageElement.IKKE_UNDER_OPPFOLGING);
 
 export const erManuellBruker = () => erSatt(LocalStorageElement.MANUELL_BRUKER);
 

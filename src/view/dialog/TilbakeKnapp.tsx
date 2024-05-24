@@ -2,7 +2,7 @@ import { ChevronLeftIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { useRoutes } from '../../routes';
+import { useRoutes } from '../../routing/routes';
 
 interface Props {
     className?: string;
