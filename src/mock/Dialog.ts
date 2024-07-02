@@ -571,6 +571,39 @@ const dialoger: DialogData[] = [
             }
         ],
         egenskaper: []
+    },
+    {
+        id: '304',
+        overskrift: 'Arbeidsforberende trening',
+        sisteTekst: 'Er du fornøyd med oppfølgingen?',
+        sisteDato: '2023-09-01T11:52:20.615+01:00',
+        opprettetDato: '2023-09-01T11:52:20.535+01:00',
+        historisk: false,
+        lest: false,
+        venterPaSvar: true,
+        ferdigBehandlet: true,
+        lestAvBrukerTidspunkt: null,
+        erLestAvBruker: false,
+        aktivitetId: 'EKSTERNAKTIVITET_5',
+        henvendelser: [
+            {
+                id: '3001',
+                dialogId: '304',
+                avsender: 'VEILEDER',
+                avsenderId: 'Z123456',
+                sendt: '2023-02-01T11:52:20.615+01:00',
+                lest: true,
+                viktig: false,
+                tekst: `Målet med Arbeidsforberende trening er å avklare hvor mye du kan jobbe gjennom arbeidstrening i ulike arbeidssituasjoner. 
+                * Du får arbeidstrening i et tilrettelagt arbeidsmiljø, enten hos en tiltaksbedrift eller hos en ordinær arbeidsgiver. 
+                * Du får kartlagt kompetansen din og får karriereveiledning. 
+                * Du kan også lese om nav på https://www.nav.no
+                * Du kan få tilrettelagt opplæring hvis du ønsker å gå videre med et yrkesfaglig utdanningsløp. Opplæringen skal øke mulighetene dine til å komme i jobb.
+                [Du kan lese mer om tilbudet her](https://www.nav.no/arbeidsforberedende-trening) eller [se en informasjonsfilm fra leverandøren her](https://www.nav.no) 
+                Hvis du tenker at dette virker interessant så send meg en melding så snakkes vi.`
+            }
+        ],
+        egenskaper: []
     }
 ];
 

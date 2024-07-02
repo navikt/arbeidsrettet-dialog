@@ -6,7 +6,8 @@ import { ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
 import { formaterDateAndTime } from '../../utils/Date';
 import { MeldingsData } from '../../utils/Typer';
 import { useUserInfoContext } from '../BrukerProvider';
-import { linkify } from './linkify';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 function accessibleText(erBruker: boolean, erMeldingFraBruker: boolean) {
     if (erMeldingFraBruker) {
@@ -47,7 +48,11 @@ export function Melding(props: Props) {
                 <Chat.Bubble>
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
-                        <span className="mt-2 whitespace-pre-wrap">{linkify(tekst)}</span>
+                        <span className="mt-2 whitespace-pre-wrap">
+                            <Markdown disallowedElements={['script']} remarkPlugins={[remarkGfm]}>
+                                {tekst}
+                            </Markdown>
+                        </span>
                     </div>
                 </Chat.Bubble>
             </Chat>
