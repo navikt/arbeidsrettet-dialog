@@ -1,3 +1,5 @@
+import { ClientError, ForbiddenError, InternalServerError, NetworkError, UnautorizedError } from './fetchErrors';
+
 function getCookie(name: string) {
     const re = new RegExp(`${name}=([^;]+)`);
     const match = re.exec(document.cookie);
@@ -24,17 +26,6 @@ export function fetchData<T>(url: string, config: RequestInit = {}): Promise<T> 
         .then(toJson);
 }
 
-export function fnrQuery(fnr?: string): string {
-    return fnr ? `?fnr=${fnr}` : '';
-}
-
-export class UnautorizedError extends Error {
-    response: Response;
-    constructor(response: Response) {
-        super('Unauthorized request, session expired?');
-        this.response = response;
-    }
-}
 export function sjekkStatuskode(response: Response) {
     if (response.status >= 200 && response.status < 300 && response.ok) {
         return response;
@@ -42,7 +33,16 @@ export function sjekkStatuskode(response: Response) {
     if (response.status === 401) {
         throw new UnautorizedError(response);
     }
-    throw new Error(response.statusText || response.type);
+    if (response.status === 403) {
+        throw new ForbiddenError(response);
+    }
+    if (response.status >= 400 && response.status <= 500) {
+        throw new ClientError(response);
+    }
+    if (response.status >= 500) {
+        throw new InternalServerError(response);
+    }
+    throw new NetworkError(response);
 }
 
 export function toJson(response: Response) {

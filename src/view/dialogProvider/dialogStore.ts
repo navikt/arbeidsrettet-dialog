@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { Status } from '../../api/typer';
 import { DialogData, KladdData, NyDialogMeldingData, SistOppdatert } from '../../utils/Typer';
 import { DialogState, isDialogReloading, NyMeldingArgs, NyTradArgs, SendMeldingArgs } from '../DialogProvider';
-import { fetchData, UnautorizedError } from '../../utils/Fetch';
+import { fetchData } from '../../utils/Fetch';
 import { DialogApi } from '../../api/UseApiBasePath';
 import { isAfter } from 'date-fns';
 import { devtools } from 'zustand/middleware';
@@ -10,6 +10,7 @@ import { EventType, closeWebsocket, listenForNyDialogEvents } from '../../api/ny
 import { useShallow } from 'zustand/react/shallow';
 import { hentDialogerGraphql } from './dialogGraphql';
 import { eqKladd, KladdStore } from '../KladdProvider';
+import { UnautorizedError } from '../../utils/fetchErrors';
 
 export const initDialogState: DialogState = {
     status: Status.INITIAL,
@@ -146,7 +147,7 @@ export const useDialogStore = create(
                 } catch (e) {
                     if (e instanceof UnautorizedError) {
                     } else {
-                        console.warn('Kunne ikke hent sist oppdatert', e);
+                        console.warn('Kunne ikke hent sist oppdatert');
                     }
                 }
             },
@@ -194,7 +195,7 @@ export const useDialogStore = create(
                         return dialog;
                     })
                     .catch((err) => {
-                        console.error(err);
+                        console.error('Kunne ikke sende melding', err);
                         set({ status: Status.ERROR }, false, 'sendMelding/rejected');
                         return undefined;
                     });
