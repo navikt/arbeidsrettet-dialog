@@ -34,8 +34,7 @@ const toNodes = (sections: TextSection[]) => {
 };
 
 export const isMarkdownLink = (match: RegExpExecArray, text: string) => {
-    const prefix = match.index !== 0 ? text[match.index - 1] : null;
-    return prefix === '(' || prefix === '[';
+    return /(]\( ?)|( ?\[ ?)$/.test(text.substring(0, match.index));
 };
 
 const collectMatches = (text: string) => {

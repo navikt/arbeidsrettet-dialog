@@ -61,6 +61,16 @@ describe('linkify.tsx', () => {
             expect(linkifyToMarkdown(input.trim())).toStrictEqual(output.trim());
         });
 
+        it('should not change markdown with whitespaces in and around brackets', () => {
+            const input = `
+            trykk her [ ikke trykk her ](https://www.nav.no ) [www.vg.no ]( https://www.vg.no)
+        `;
+            const output = `
+            trykk her [ ikke trykk her ](https://www.nav.no ) [www.vg.no ]( https://www.vg.no)
+        `;
+            expect(linkifyToMarkdown(input.trim())).toStrictEqual(output.trim());
+        });
+
         it('should not change valid markdown links', () => {
             const input = `
             trykk her [ikke trykk her](https://www.nav.no) [www.vg.no](https://www.vg.no)
@@ -81,20 +91,52 @@ describe('linkify.tsx', () => {
             expect(isMarkdownLink(match, 'nav.no')).toBeFalsy();
         });
 
-        it('starting with ( is markdown link', () => {
+        it('starting only with "(" is not a markdown link', () => {
             const match = {
                 index: 1,
                 '0': 'nav.no'
             } as RegExpExecArray;
-            expect(isMarkdownLink(match, '(nav.no')).toBeTruthy();
+            expect(isMarkdownLink(match, '(nav.no)')).toBeFalsy();
         });
 
-        it('starting with [ is markdown link', () => {
+        it('space between "](" is not a markdown link', () => {
+            const match = {
+                index: 3,
+                '0': 'nav.no'
+            } as RegExpExecArray;
+            expect(isMarkdownLink(match, '] (nav.no)')).toBeFalsy();
+        });
+
+        it('starting with "](" is a markdown link', () => {
+            const match = {
+                index: 2,
+                '0': 'nav.no'
+            } as RegExpExecArray;
+            expect(isMarkdownLink(match, '](nav.no)')).toBeTruthy();
+        });
+
+        it('starting with whitespaces around "](" is markdown link', () => {
+            const match = {
+                index: 4,
+                '0': 'nav.no'
+            } as RegExpExecArray;
+            expect(isMarkdownLink(match, ' ]( nav.no')).toBeTruthy();
+        });
+
+        it('starting with "[" is markdown link', () => {
             const match = {
                 index: 1,
                 '0': 'nav.no'
             } as RegExpExecArray;
             expect(isMarkdownLink(match, '[nav.no')).toBeTruthy();
+        });
+
+        it('starting with whitespaces around "[" is markdown link', () => {
+            const match = {
+                index: 3,
+                '0': 'nav.no'
+            } as RegExpExecArray;
+            expect(isMarkdownLink(match, ' [ nav.no')).toBeTruthy();
         });
     });
 });
