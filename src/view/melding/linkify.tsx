@@ -33,9 +33,8 @@ const toNodes = (sections: TextSection[]) => {
     );
 };
 
-export const isNotMarkdownLink = (match: RegExpExecArray, text: string) => {
-    const prefix = match.index !== 0 ? text[match.index - 1] : null;
-    return !(prefix === '(' || prefix === '[');
+export const isMarkdownLink = (match: RegExpExecArray, text: string) => {
+    return /(]\( ?)|( ?\[ ?)$/.test(text.substring(0, match.index));
 };
 
 const collectMatches = (text: string) => {
@@ -84,7 +83,7 @@ const mergeTextParts = (allMatches: RegExpExecArray[], text: string): TextSectio
 };
 
 export const splitOnLinks = (text: string): TextSection[] => {
-    const allMatches = collectMatches(text).filter((match) => isNotMarkdownLink(match, text));
+    const allMatches = collectMatches(text).filter((match) => !isMarkdownLink(match, text));
     if (!allMatches?.length) return [{ value: text, type: 'text' }];
     return mergeTextParts(allMatches, text);
 };
