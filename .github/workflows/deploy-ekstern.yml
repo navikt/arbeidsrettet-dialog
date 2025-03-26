@@ -9,12 +9,7 @@ on:
             bucket:
                 required: true
                 type: string
-            NAIS_MANAGEMENT_PROJECT_ID:
-              required: true
-              type: string
         secrets:
-            NAIS_WORKLOAD_IDENTITY_PROVIDER:
-              required: true
             SLACK_WEBHOOK:
                 required: false
 
@@ -48,8 +43,6 @@ jobs:
                 source: ./build/
                 destination: /${{ inputs.bucket }}/
                 no_cache_paths: ${{ inputs.bucket }}/build/index.html
-                project_id: ${{ inputs.NAIS_MANAGEMENT_PROJECT_ID }}
-                identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
             - name: Slack Notification (deploy failure)
               if: failure() && inputs.bucket == 'arbeidsrettet-dialog-prod'
               uses: rtCamp/action-slack-notify@v2
