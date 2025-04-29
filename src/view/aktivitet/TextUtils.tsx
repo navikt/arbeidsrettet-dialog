@@ -78,6 +78,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Jobbklubb';
         case EksternAktivitetTypes.VASV:
             return 'Tilrettelagt arbeid';
+        case EksternAktivitetTypes.REKRUTTERINGSTREFF:
+            return 'Rekuttteringstreff';
     }
 }
 

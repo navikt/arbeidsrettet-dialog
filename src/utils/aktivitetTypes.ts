@@ -151,7 +151,8 @@ export enum EksternAktivitetTypes {
     DIGIOPPARB = 'DIGIOPPARB',
     JOBBK = 'JOBBK',
     GRUPPEAMO = 'GRUPPEAMO',
-    GRUFAGYRKE = 'GRUFAGYRKE'
+    GRUFAGYRKE = 'GRUFAGYRKE',
+    REKRUTTERINGSTREFF = 'REKRUTTERINGSTREFF',
 }
 
 export enum ArenaAktivitetTypes {
