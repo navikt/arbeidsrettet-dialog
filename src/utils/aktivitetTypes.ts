@@ -152,7 +152,7 @@ export enum EksternAktivitetTypes {
     JOBBK = 'JOBBK',
     GRUPPEAMO = 'GRUPPEAMO',
     GRUFAGYRKE = 'GRUFAGYRKE',
-    REKRUTTERINGSTREFF = 'REKRUTTERINGSTREFF',
+    REKRUTTERINGSTREFF = 'REKRUTTERINGSTREFF'
 }
 
 export enum ArenaAktivitetTypes {
