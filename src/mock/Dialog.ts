@@ -1,4 +1,4 @@
-import { DefaultBodyType, HttpResponse, HttpResponseResolver, PathParams, StrictRequest, StrictResponse } from 'msw';
+import { DefaultBodyType, HttpResponse, HttpResponseResolver, PathParams, StrictRequest } from 'msw';
 
 import { DialogData, KladdData, MeldingsData, NyDialogMeldingData } from '../utils/Typer';
 import bruker from './Bruker';
@@ -644,7 +644,7 @@ export const lesDialog: HttpResponseResolver<{ dialogId: string }, never, Dialog
         dialog.lest = true;
         return HttpResponse.json(dialog);
     }
-    return new HttpResponse(null, { status: 404 }) as StrictResponse<never>;
+    return new HttpResponse(null, { status: 404 });
 };
 
 export const opprettEllerOppdaterDialog = async (req: StrictRequest<DefaultBodyType>): Promise<DialogData> => {
