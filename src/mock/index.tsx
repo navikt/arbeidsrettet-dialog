@@ -6,7 +6,7 @@ import DemoBanner from './demo/DemoBanner';
 import { handlers } from './handlers';
 import { opprettDialogEtterRender } from './Dialog';
 
-const worker = setupWorker(...handlers);
+const worker = setupWorker(...(handlers as any));
 opprettDialogEtterRender();
 
 const ignoredFileExtensions = ['.ts', '.js', '.tsx', '.jsx', 'css', 'svg', 'png', '.less', 'woff2'];

@@ -22,6 +22,10 @@ interface Props {
     viktigMarkering: boolean;
 }
 
+export function escapeOrderedList(text: string) {
+    return text.replace(/^(\d+)\. /gm, '$1\\. ');
+}
+
 export function Melding(props: Props) {
     const { viktigMarkering } = props;
     const { avsender, sendt, tekst, avsenderId } = props.henvendelseData;
@@ -63,7 +67,7 @@ export function Melding(props: Props) {
                                 }}
                                 disallowedElements={['script']}
                             >
-                                {linkifyToMarkdown(tekst)}
+                                {escapeOrderedList(linkifyToMarkdown(tekst))}
                             </Markdown>
                         </span>
                     </div>
