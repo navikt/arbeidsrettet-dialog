@@ -57,9 +57,15 @@ export function getTypeText(type: AlleAktivitetTypes): string {
         case EksternAktivitetTypes.ARENA_TILTAK:
             return 'Tiltak gjennom Nav';
         case EksternAktivitetTypes.MIDLERTIDIG_LONNSTILSKUDD:
-            return 'Avtale midlertidig lønnstilskudd';
+            return 'Midlertidig lønnstilskudd';
         case EksternAktivitetTypes.VARIG_LONNSTILSKUDD:
-            return 'Avtale varig lønnstilskudd';
+            return 'Varig lønnstilskudd';
+        case EksternAktivitetTypes.ARBEIDSTRENING:
+            return 'Arbeidstrening';
+        case EksternAktivitetTypes.VARIG_TILRETTELAGT_ARBEID_I_ORDINAER_VIRKSOMHET:
+            return 'Varig tilrettelagt arbeid i ordinær virksomhet';
+        case EksternAktivitetTypes.MENTOR:
+            return 'Mentor';
         case EksternAktivitetTypes.ARBFORB:
             return 'Arbeidsforberedende trening';
         case EksternAktivitetTypes.ARBRRHDAG:
