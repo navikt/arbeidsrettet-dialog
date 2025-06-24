@@ -13,6 +13,8 @@ exports[`<InformasjonElement /> > skal matche snapshot når EksternLenke er chil
       </h2>
       <a
         class="navds-link navds-link--action"
+        data-color="accent"
+        data-variant="action"
         href="http://nav.no"
       >
         nav.no

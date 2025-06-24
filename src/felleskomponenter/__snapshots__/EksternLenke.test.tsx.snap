@@ -5,6 +5,8 @@ exports[`<EksternLenke/> > skal ikke padde href med protokoll, http 1`] = `
   <div>
     <a
       class="navds-link navds-link--action"
+      data-color="accent"
+      data-variant="action"
       href="http://nav.no"
     >
       http://nav.no
@@ -56,6 +58,8 @@ exports[`<EksternLenke/> > skal ikke padde href med protokoll, https 1`] = `
   <div>
     <a
       class="navds-link navds-link--action"
+      data-color="accent"
+      data-variant="action"
       href="https://nav.no"
     >
       https://nav.no
@@ -107,6 +111,8 @@ exports[`<EksternLenke/> > skal padde href med protokoll når det mangler 1`] = 
   <div>
     <a
       class="navds-link navds-link--action"
+      data-color="accent"
+      data-variant="action"
       href="http://nav.no"
     >
       nav.no
@@ -158,6 +164,8 @@ exports[`<EksternLenke/> > skal padde href med protokoll når det mangler, www 1
   <div>
     <a
       class="navds-link navds-link--action"
+      data-color="accent"
+      data-variant="action"
       href="http://www.nav.no"
     >
       www.nav.no
