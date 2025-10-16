@@ -28,7 +28,7 @@ Sentry.init({
     denyUrls: [/https:\/\/cdn\.nav\.no\/personbruker/, /https:\/\/nav\.no\/dekoratoren/],
     dsn: 'https://e1ba5c07ce204508b9fcbe5c64211ed5@sentry.gc.nav.no/173',
     integrations: [
-        Sentry.reactRouterV6BrowserTracingIntegration({
+        Sentry.reactRouterV7BrowserTracingIntegration({
             useEffect: React.useEffect,
             useLocation,
             useNavigationType,
@@ -80,4 +80,4 @@ declare const window: {
 window.captureException = Sentry.captureException;
 window.captureMessage = Sentry.captureMessage;
 
-export const sentryCreateBrowserRouter = Sentry.wrapCreateBrowserRouter(createBrowserRouter);
+export const sentryCreateBrowserRouter = Sentry.wrapCreateBrowserRouterV7(createBrowserRouter);
