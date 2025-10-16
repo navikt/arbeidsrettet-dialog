@@ -138,9 +138,10 @@ export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRou
         return <RouterProvider router={inMemoryRouter} />;
     }
     // Denne er kun for github app eller lokalt (?)
-    let basename = stripTrailingSlash(import.meta.env.BASE_URL);
+    let basename = stripTrailingSlash(import.meta.env.BASE_URL) || '/';
     if (erInternFlate) basename = `/dialog`;
     else if (erEksternFlate) basename = '/arbeid/dialog';
+    console.log('basename', basename);
     const browserRouter = createRouter(dialogRoutes(fnr), {
         basename,
         future: {
@@ -151,5 +152,5 @@ export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRou
             v7_skipActionErrorRevalidation: true
         }
     });
-    return <RouterProvider future={{ v7_startTransition: true }} router={browserRouter} />;
+    return <RouterProvider router={browserRouter} />;
 };
