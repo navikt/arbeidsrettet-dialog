@@ -45,8 +45,7 @@ const MeldingBottomInputInner = () => {
                     hideLabel
                     onFocus={setCursorBeforeHilsen}
                 />
-                <div className="flex flex-col space-y-2 pb-6">
-                    <KladdLagret />
+                <div className="flex flex-col relative space-y-2 pb-6">
                     <Button
                         size="small"
                         className="self-center mx-2"
@@ -56,6 +55,9 @@ const MeldingBottomInputInner = () => {
                     >
                         {breakpoint !== Breakpoint.initial ? 'Send' : ''}
                     </Button>
+                    <div className="-ml-8 bottom-0 right-0 absolute w-24 h-5 overflow-x-visible">
+                        <KladdLagret />
+                    </div>
                 </div>
             </div>
             {errors.melding ? (
