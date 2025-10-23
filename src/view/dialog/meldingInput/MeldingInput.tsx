@@ -11,7 +11,7 @@ import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
 
-const MeldingBottomInputInner = () => {
+const MeldingInputInner = () => {
     const { onSubmit, noeFeilet } = useContext(MeldingInputContext);
     const {
         register,
@@ -74,7 +74,7 @@ const MeldingBottomInputInner = () => {
     );
 };
 
-export const MeldingBottomInput = () => {
+export const MeldingInput = () => {
     const oppfolgingContext = useOppfolgingContext();
     const oppfolging = dataOrUndefined(oppfolgingContext);
     const dialog = useSelectedDialog();
@@ -89,7 +89,7 @@ export const MeldingBottomInput = () => {
         >
             <div className="grow justify-self-center ">
                 <ManagedDialogCheckboxes dialog={dialog} />
-                {!oppfolging?.underOppfolging || dialog.historisk ? null : <MeldingBottomInputInner />}
+                {!oppfolging?.underOppfolging || dialog.historisk ? null : <MeldingInputInner />}
             </div>
         </section>
     );

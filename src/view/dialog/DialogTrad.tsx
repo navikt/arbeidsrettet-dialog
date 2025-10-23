@@ -1,5 +1,4 @@
 import { Loader } from '@navikt/ds-react';
-import classNames from 'classnames';
 import React, { ReactNode, Suspense, useEffect, useMemo, useState } from 'react';
 import { Await, useLocation } from 'react-router';
 import { Navigate, useSearchParams } from 'react-router-dom';
@@ -91,14 +90,8 @@ export const DialogTrad = () => {
         <Suspense fallback={<DialogLoader />}>
             <Await resolve={requiredData}>
                 <ValgtDialog>
-                    {({ dialog, aktivitet, visAktivitet }) => (
-                        <section
-                            className={classNames('flex w-full grow xl:max-w-none', {
-                                'flex-col lg:flex-row 2xl:flex-row': aktivitet && !visAktivitet,
-                                'flex-col 2xl:flex-row': aktivitet && visAktivitet,
-                                'flex-col lg:flex-row': !aktivitet
-                            })}
-                        >
+                    {({ dialog }) => (
+                        <section className="flex flex-col w-full grow xl:max-w-none">
                             <div className="flex min-h-16 flex-1 grow flex-col">
                                 <Meldinger dialogData={dialog} />
                                 <HistoriskInfo />
