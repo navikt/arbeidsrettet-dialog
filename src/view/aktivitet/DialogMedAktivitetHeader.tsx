@@ -35,10 +35,7 @@ export function DialogMedAktivitetHeader() {
                 </div>
             </div>
             <div className="flex gap-4">
-                <Link
-                    href={aktivitetLenke(aktivitet.id)}
-                    onClick={erVeileder ? visAktivitetsplan(aktivitet.id) : noOp}
-                >
+                <Link href={aktivitetLenke(aktivitet.id)} onClick={erVeileder ? visAktivitetsplan(aktivitet.id) : noOp}>
                     Gå til aktiviteten
                 </Link>
                 <Switch
