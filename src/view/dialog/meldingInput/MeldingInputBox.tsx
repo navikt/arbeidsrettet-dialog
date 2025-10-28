@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import loggEvent from '../../../felleskomponenter/logging';
@@ -8,11 +8,8 @@ import { dispatchUpdate, UpdateTypes } from '../../../utils/UpdateEvent';
 import { useDialogContext } from '../../DialogProvider';
 import { sendtNyMelding, useSetViewContext, useViewContext } from '../../ViewState';
 import useMeldingStartTekst from '../UseMeldingStartTekst';
-import { Breakpoint, useBreakpoint } from '../../utils/useBreakpoint';
-import { MeldingBottomInput } from './MeldingBottomInput';
-import { MeldingSideInput } from './MeldingSideInput';
+import { MeldingInput } from './MeldingInput';
 import { debounced, maxMeldingsLengde, MeldingInputContext } from './inputUtils';
-import { useVisAktivitet } from '../../AktivitetToggleContext';
 import { Status } from '../../../api/typer';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
 import { useDialogStore, useSilentlyHentDialoger } from '../../dialogProvider/dialogStore';
@@ -48,7 +45,6 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
     const silentlyHentDialoger = useSilentlyHentDialoger();
     const [noeFeilet, setNoeFeilet] = useState(false);
     const startTekst = useMeldingStartTekst();
-    const visAktivitet = useVisAktivitet();
     const { kladder, oppdaterKladd, slettKladd, oppdaterStatus } = useDialogStore(
         useShallow((store) => ({
             kladder: store.kladder,
@@ -122,24 +118,12 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
 
     const kladdErLagret = melding !== startTekst && !kladdSkalOppdateres() && Status.OK === oppdaterStatus;
 
-    const breakpoint = useBreakpoint();
     const memoedHandleSubmit = useMemo(() => {
         return handleSubmit((data) => onSubmit(data));
     }, [onSubmit]);
     const args = useMemo(() => {
         return { noeFeilet, onSubmit: memoedHandleSubmit, kladdErLagret };
     }, [noeFeilet, memoedHandleSubmit, kladdErLagret]);
-
-    // Important! Avoid re-render of textarea-input because it loses focus
-    const Input = useCallback(() => {
-        if (visAktivitet && [Breakpoint.md, Breakpoint.lg, Breakpoint.xl].includes(breakpoint)) {
-            return <MeldingBottomInput />;
-        } else if ([Breakpoint.initial, Breakpoint.sm, Breakpoint.md].includes(breakpoint)) {
-            return <MeldingBottomInput />;
-        } else {
-            return <MeldingSideInput />;
-        }
-    }, [breakpoint, visAktivitet]);
 
     if (!kanSendeHenveldelse && erVeileder) return <ManagedDialogCheckboxes dialog={valgtDialog} />; //hvis bruker går inn uner krr eller manuel må veileder kunne fjerne venter på
 
@@ -149,7 +133,7 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
     return (
         <FormProvider {...formHandlers}>
             <MeldingInputContext.Provider value={args}>
-                <Input />
+                <MeldingInput />
             </MeldingInputContext.Provider>
         </FormProvider>
     );

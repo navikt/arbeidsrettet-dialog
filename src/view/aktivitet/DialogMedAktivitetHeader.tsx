@@ -34,36 +34,22 @@ export function DialogMedAktivitetHeader() {
                     {infotekst && <BodyShort className="text-text-subtle">{infotekst}</BodyShort>}
                 </div>
             </div>
-            <div
-                className={classNames('2xl:mr-4 2xl:flex-none', {
-                    'lg:flex-1': !visAktivitet,
-                    'pl-4 md:max-w-[320px] lg:grow xl:max-w-screen-w-1/3': visAktivitet
-                })}
-            >
-                <div
-                    className={classNames('flex  justify-between md:mt-0  flex-row items-center pr-2 2xl:items-end', {
-                        'pl-1': !visAktivitet
-                    })}
+            <div className="flex gap-4">
+                <Link href={aktivitetLenke(aktivitet.id)} onClick={erVeileder ? visAktivitetsplan(aktivitet.id) : noOp}>
+                    Gå til aktiviteten
+                </Link>
+                <Switch
+                    className="hidden lg:flex 2xl:hidden"
+                    checked={visAktivitet}
+                    value={visAktivitet.toString()}
+                    onChange={(_) => {
+                        setVisAktivitet(!visAktivitet);
+                        loggKlikkVisAktivitet(!visAktivitet);
+                    }}
+                    size="small"
                 >
-                    <Link
-                        href={aktivitetLenke(aktivitet.id)}
-                        onClick={erVeileder ? visAktivitetsplan(aktivitet.id) : noOp}
-                    >
-                        Gå til aktiviteten
-                    </Link>
-                    <Switch
-                        className="hidden lg:flex 2xl:hidden"
-                        checked={visAktivitet}
-                        value={visAktivitet.toString()}
-                        onChange={(_) => {
-                            setVisAktivitet(!visAktivitet);
-                            loggKlikkVisAktivitet(!visAktivitet);
-                        }}
-                        size="small"
-                    >
-                        Vis aktiviteten
-                    </Switch>
-                </div>
+                    Vis aktiviteten
+                </Switch>
             </div>
         </div>
     );
