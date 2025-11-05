@@ -15,21 +15,21 @@ export default defineConfig(({ mode }) => {
         build: {
             sourcemap: true,
             manifest: 'asset-manifest.json',
-            outDir: 'build'
+            outDir: 'build',
         },
         plugins: [
             react({
                 babel: {
-                    babelrc: true
-                }
+                    babelrc: true,
+                },
             }),
-            svgr()
+            svgr(),
             // visualizer({
             //     filename: 'bundle-stats.html'
             // })
         ],
         server: {
-            port: 3000
+            port: 3000,
         },
         test: {
             environment: 'jsdom',
@@ -45,9 +45,9 @@ export default defineConfig(({ mode }) => {
                     'src/**.test.ts',
                     'src/**/**.test.tsx',
                     'src/global.d.ts',
-                    'src/polyfill.ts'
-                ]
-            }
-        }
+                    'src/polyfill.ts',
+                ],
+            },
+        },
     };
 });
