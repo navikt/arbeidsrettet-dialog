@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import DemoBanner from './demo/DemoBanner';
 import { handlers } from './handlers';
 import { opprettDialogEtterRender } from './Dialog';
+import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler';
 
 const worker = setupWorker(...(handlers as any));
 opprettDialogEtterRender();
@@ -34,3 +35,9 @@ export default () =>
             document.body.appendChild(elem);
             createRoot(elem).render(<DemoBanner />);
         });
+
+injectDecoratorClientSide({
+    env: 'dev',
+    simple: false,
+    chatbot: false
+});

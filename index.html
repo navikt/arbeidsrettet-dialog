@@ -9,20 +9,13 @@
         <link rel="icon" type="image/png" sizes="16x16" href="/arbeid/dialog/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <title>Arbeidsrettet Dialog</title>
-        <link href="<%=VITE_DEKORATOR_URL%>/css/client.css" rel="stylesheet" />
     </head>
-
     <body>
-        <div id="decorator-header"></div>
         <div id="pagewrapper" class="pagewrapper" style="height: calc(100vh - 80px)">
             <main id="maincontent" class="maincontent" role="main" tabindex="-1" style="outline: none; padding: 0">
                 <div id="root"></div>
             </main>
         </div>
-        <div id="decorator-footer"></div>
         <script type="module" src="/src/index.tsx"></script>
-        <div id="decorator-env" data-src="<%=VITE_DEKORATOR_URL%>/env?feedback=false&chatbot=false&footer=true"></div>
     </body>
-
-    <script src="<%=VITE_DEKORATOR_URL%>/client.js"></script>
 </html>
