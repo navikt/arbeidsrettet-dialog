@@ -42,6 +42,8 @@ spec:
           namespace: dab
         - application: veilarbdialog
           namespace: dab
+        - application: nav-dekoratoren
+          namespace: personbruker
   idporten:
     enabled: true
     sidecar:
