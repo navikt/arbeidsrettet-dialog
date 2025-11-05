@@ -17,6 +17,8 @@ concurrency:
 jobs:
     deploy-dev:
         runs-on: ubuntu-latest
+        permissions:
+          id-token: write
         steps:
             - uses: actions/checkout@v4
             - name: deploy gcp dev ekstern
