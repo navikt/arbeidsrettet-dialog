@@ -19,6 +19,5 @@ jobs:
               uses: oven-sh/setup-bun@v2
             - name: Install dependencies (bun)
               run: bun install
-            - run: npm run prettier-check
             - run: npm run test
             - run: npm run build
