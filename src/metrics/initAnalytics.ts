@@ -7,7 +7,11 @@ let trackingFunction: TrackingFunction = () => {};
 
 declare global {
     interface Window {
-        dekoratorenAnalytics: () => Promise<TrackingFunction>;
+        dekoratorenAnalytics: (arg: {
+            origin: string;
+            eventName: string;
+            eventData: Record<string, EventDataValue>;
+        }) => Promise<void>;
     }
 }
 
@@ -16,9 +20,10 @@ const env = getEnv();
 export const initAnalytics = () => {
     if (env == Env.Local) return;
     if (erEksternFlate) {
-        window.dekoratorenAnalytics().then((resolvedTrackingFunciton) => {
-            trackingFunction = resolvedTrackingFunciton;
-        });
+        const dekoratorenTracking = window.dekoratorenAnalytics;
+        trackingFunction = (eventName, eventData) => {
+            return dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
+        };
     } else {
         import('./amplitude-utils').then((module) => {
             module.initAmplitude();
