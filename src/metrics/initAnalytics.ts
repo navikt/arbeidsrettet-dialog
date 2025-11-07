@@ -3,7 +3,43 @@ import { APP_NAME, erEksternFlate, TEAM_NAME } from '../constants';
 
 type EventDataValue = string | boolean | number | null | undefined;
 type TrackingFunction = (eventName: string, eventData: Record<string, EventDataValue>) => void;
+
+type QueuedEvent = {
+    eventName: string;
+    eventData: Record<string, EventDataValue>;
+};
+
 let trackingFunction: TrackingFunction = () => {};
+let eventQueue: QueuedEvent[] = [];
+let isInitialized = false;
+
+// Generator function to process events from the queue
+function* eventQueueProcessor(): Generator<QueuedEvent, void, void> {
+    while (eventQueue.length > 0) {
+        const event = eventQueue.shift();
+        if (event) {
+            yield event;
+        }
+    }
+}
+
+// Process all queued events once tracking is initialized
+const flushEventQueue = () => {
+    const processor = eventQueueProcessor();
+    let { done, value }: IteratorResult<QueuedEvent> = processor.next();
+    while (!done) {
+        trackingFunction(value.eventName, value.eventData);
+    }
+};
+
+// Queue or immediately track events
+const queueOrTrackEvent = (eventName: string, eventData: Record<string, EventDataValue>) => {
+    if (isInitialized) {
+        trackingFunction(eventName, eventData);
+    } else {
+        eventQueue.push({ eventName, eventData });
+    }
+};
 
 declare global {
     interface Window {
@@ -20,17 +56,22 @@ const env = getEnv();
 export const initAnalytics = () => {
     if (env == Env.Local) return;
     if (erEksternFlate) {
+        /* window.dekoratorenAnalytics does not return a function instantly, have to wait for it to be ready */
         setTimeout(() => {
             const dekoratorenTracking = window.dekoratorenAnalytics;
             console.log('dekoratorenTracking', dekoratorenTracking);
             trackingFunction = (eventName, eventData) => {
                 return dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
             };
+            isInitialized = true;
+            flushEventQueue();
         }, 1000);
     } else {
         import('./amplitude-utils').then((module) => {
             module.initAmplitude();
             trackingFunction = module.amplitudeTrack;
+            isInitialized = true;
+            flushEventQueue();
         });
     }
 };
@@ -42,7 +83,7 @@ export const logAnalyticsEvent = (eventName: string, data?: { [key: string]: Eve
         ...(data || {}),
     };
     try {
-        trackingFunction(eventName, dataWithDefaults);
+        queueOrTrackEvent(eventName, dataWithDefaults);
     } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Kunne ikke sende analytics event:', error);
