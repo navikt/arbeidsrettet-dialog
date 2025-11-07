@@ -15,7 +15,7 @@ export default () =>
     worker
         .start({
             serviceWorker: {
-                url: `${import.meta.env.BASE_URL}mockServiceWorker.js`
+                url: `${import.meta.env.BASE_URL}mockServiceWorker.js`,
             },
             onUnhandledRequest: (req, print) => {
                 const hostBlacklist = ['amplitude.nav.no', 'nav.psplugin.com'];
@@ -28,7 +28,7 @@ export default () =>
                 }
 
                 print.warning();
-            }
+            },
         })
         .then(() => {
             const elem = document.createElement('div');
@@ -38,6 +38,8 @@ export default () =>
 
 injectDecoratorClientSide({
     env: 'dev',
-    simple: false,
-    chatbot: false
+    params: {
+        chatbot: false,
+        simple: false,
+    },
 });
