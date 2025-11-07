@@ -7,7 +7,7 @@ let trackingFunction: TrackingFunction = () => {};
 
 declare global {
     interface Window {
-        dekoratorenAnalytics: TrackingFunction;
+        dekoratorenAnalytics: () => Promise<TrackingFunction>;
     }
 }
 
@@ -16,7 +16,9 @@ const env = getEnv();
 export const initAnalytics = () => {
     if (env == Env.Local) return;
     if (erEksternFlate) {
-        trackingFunction = window.dekoratorenAnalytics;
+        window.dekoratorenAnalytics().then((resolvedTrackingFunciton) => {
+            trackingFunction = resolvedTrackingFunciton;
+        });
     } else {
         import('./amplitude-utils').then((module) => {
             module.initAmplitude();
