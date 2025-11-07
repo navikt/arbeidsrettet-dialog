@@ -26,9 +26,10 @@ function* eventQueueProcessor(): Generator<QueuedEvent, void, void> {
 // Process all queued events once tracking is initialized
 const flushEventQueue = () => {
     const processor = eventQueueProcessor();
-    let { done, value }: IteratorResult<QueuedEvent> = processor.next();
-    while (!done) {
-        trackingFunction(value.eventName, value.eventData);
+    let result: IteratorResult<QueuedEvent> = processor.next();
+    while (!result.done) {
+        trackingFunction(result.value.eventName, result.value.eventData);
+        result = processor.next();
     }
 };
 
