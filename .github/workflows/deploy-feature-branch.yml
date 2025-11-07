@@ -16,6 +16,8 @@ jobs:
   dev-ekstern:
     name: Deploy to dev extern
     uses: ./.github/workflows/deploy-ekstern.yml
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
     with:
       kommando: npm run build:dev-ekstern
       bucket: arbeidsrettet-dialog-dev-ekstern

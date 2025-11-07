@@ -10,6 +10,8 @@ on:
                 required: true
                 type: string
         secrets:
+            READER_TOKEN:
+                required: true
             SLACK_WEBHOOK:
                 required: false
 
