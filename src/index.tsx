@@ -1,8 +1,8 @@
 import './polyfill';
 
 import { USE_MOCK } from './constants';
-import { initAmplitude } from './metrics/amplitude-utils';
 import { erEksternBruker } from './mock/demo/localstorage';
+import { initAnalytics } from './metrics/initAnalytics';
 
 const exportToNavSpa = () => {
     // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
@@ -43,6 +43,6 @@ if (USE_MOCK) {
             }
         });
 } else {
-    initAmplitude();
+    initAnalytics();
     renderApp();
 }

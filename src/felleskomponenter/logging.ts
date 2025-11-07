@@ -1,7 +1,7 @@
 import { DialogApi } from '../api/UseApiBasePath';
-import { logAmplitudeEvent } from '../metrics/amplitude-utils';
 import { DialogData } from '../utils/Typer';
 import { captureMessage } from '@sentry/react';
+import { logAnalyticsEvent } from '../metrics/initAnalytics';
 
 interface FrontendEvent {
     name: string;
@@ -14,13 +14,13 @@ export default function loggEvent(eventNavn: string, feltObjekt?: object, tagObj
     const config = {
         headers: {
             'Nav-Consumer-Id': 'arbeidsrettet-dialog',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         credentials: 'same-origin' as const,
         method: 'post',
-        body: JSON.stringify(event)
+        body: JSON.stringify(event),
     };
-    logAmplitudeEvent(eventNavn, { ...feltObjekt, ...tagObjekt });
+    logAnalyticsEvent(eventNavn, { ...feltObjekt, ...tagObjekt });
     fetch(url, config).catch((e: Error) => {
         captureMessage(`Klarte ikke logge event ${e.toString()}`);
     });
