@@ -61,7 +61,7 @@ export const initAnalytics = () => {
         setTimeout(() => {
             const dekoratorenTracking = window.dekoratorenAnalytics;
             trackingFunction = (eventName, eventData) => {
-                return dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
+                dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
             };
             isInitialized = true;
             flushEventQueue();
