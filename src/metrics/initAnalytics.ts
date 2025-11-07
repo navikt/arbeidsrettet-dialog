@@ -60,7 +60,6 @@ export const initAnalytics = () => {
         /* window.dekoratorenAnalytics does not return a function instantly, have to wait for it to be ready */
         setTimeout(() => {
             const dekoratorenTracking = window.dekoratorenAnalytics;
-            console.log('dekoratorenTracking', dekoratorenTracking);
             trackingFunction = (eventName, eventData) => {
                 return dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
             };
