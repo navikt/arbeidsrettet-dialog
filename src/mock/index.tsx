@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import DemoBanner from './demo/DemoBanner';
 import { handlers } from './handlers';
 import { opprettDialogEtterRender } from './Dialog';
+import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler';
 
 const worker = setupWorker(...(handlers as any));
 opprettDialogEtterRender();
@@ -14,7 +15,7 @@ export default () =>
     worker
         .start({
             serviceWorker: {
-                url: `${import.meta.env.BASE_URL}mockServiceWorker.js`
+                url: `${import.meta.env.BASE_URL}mockServiceWorker.js`,
             },
             onUnhandledRequest: (req, print) => {
                 const hostBlacklist = ['amplitude.nav.no', 'nav.psplugin.com'];
@@ -27,10 +28,18 @@ export default () =>
                 }
 
                 print.warning();
-            }
+            },
         })
         .then(() => {
             const elem = document.createElement('div');
             document.body.appendChild(elem);
             createRoot(elem).render(<DemoBanner />);
         });
+
+injectDecoratorClientSide({
+    env: 'dev',
+    params: {
+        chatbot: false,
+        simple: false,
+    },
+});

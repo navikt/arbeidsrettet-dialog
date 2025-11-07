@@ -10,6 +10,8 @@ on:
                 required: true
                 type: string
         secrets:
+            READER_TOKEN:
+                required: true
             SLACK_WEBHOOK:
                 required: false
 
@@ -24,14 +26,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v5
               with:
-                  node-version: 20
+                  registry-url: "https://npm.pkg.github.com"
+                  node-version: 22
                   cache: 'npm'
             - name: Install bun
               uses: oven-sh/setup-bun@v2
             - name: Install dependencies (bun)
               run: bun install
+              env:
+                BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
             - name: Run tests
               run: npm run test
             - name: Build application

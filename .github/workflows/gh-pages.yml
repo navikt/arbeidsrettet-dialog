@@ -18,9 +18,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v5
               with:
-                  node-version: 20
+                  registry-url: "https://npm.pkg.github.com"
+                  node-version: 22
             - uses: actions/cache@v4
               with:
                   path: ~/.npm
@@ -31,6 +32,8 @@ jobs:
               uses: oven-sh/setup-bun@v2
             - name: Install dependencies (bun)
               run: bun install
+              env:
+                BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
             - name: Initalize MSW
               run: npx msw init ./public
             - name: Build

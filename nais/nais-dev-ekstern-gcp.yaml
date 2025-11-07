@@ -6,7 +6,7 @@ metadata:
   labels:
     team: pto
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.04_13.21-c31f6e652a0c
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2025.11.06_13.36-d978285e1187
   port: 8080
   liveness:
     path: /internal/alive
@@ -42,6 +42,8 @@ spec:
           namespace: dab
         - application: veilarbdialog
           namespace: dab
+        - application: nav-dekoratoren
+          namespace: personbruker
   idporten:
     enabled: true
     sidecar:
@@ -66,6 +68,11 @@ spec:
           "contextPath": "/arbeid/dialog",
           "gcs": { "bucketName": "nais-cdn-nav-dab-42cc", "bucketContextPath": "dab/arbeidsrettet-dialog-dev-ekstern/build/" },
           "auth": { "loginProvider": "ID_PORTEN" },
+          "dekorator": {
+            "env": "dev",
+            "simple": false,
+            "chatbot": false
+          },
           "header": {
             "csp": {
               "defaultSrc":["'self'", "*.nav.no"],
