@@ -21,6 +21,7 @@ export const initAnalytics = () => {
     if (env == Env.Local) return;
     if (erEksternFlate) {
         const dekoratorenTracking = window.dekoratorenAnalytics;
+        console.log('dekoratorenTracking', dekoratorenTracking);
         trackingFunction = (eventName, eventData) => {
             return dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
         };
