@@ -35,7 +35,7 @@ export const logAnalyticsEvent = (eventName: string, data?: { [key: string]: Eve
         trackingFunction(eventName, dataWithDefaults);
     } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(error);
+        console.error('Kunne ikke sende analytics event:', error);
     }
 };
 
