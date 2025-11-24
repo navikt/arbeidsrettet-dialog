@@ -61,6 +61,9 @@ export const initAnalytics = () => {
         setTimeout(() => {
             const dekoratorenTracking = window.dekoratorenAnalytics;
             trackingFunction = (eventName, eventData) => {
+                if (env == Env.Dev) {
+                    console.log(`Logger event ${eventName}`, eventData);
+                }
                 dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
             };
             isInitialized = true;
