@@ -27,19 +27,12 @@ export const startWaitingForUmamiToAppearOnWindow = () => {
 declare global {
     interface Window {
         umami: {
-            track: (
-                eventName: string,
-                data: {
-                    origin: string;
-                    eventName: string;
-                    eventData: Record<string, EventDataValue>;
-                },
-            ) => Promise<void>;
+            track: (eventName: string, data: Record<string, EventDataValue>) => Promise<void>;
         } | null;
     }
 }
 
-export const umamiTrack: TrackingFunction = (eventName, eventData) => {
+export const umamiTrack: (eventName: string, data: Record<string, EventDataValue>) => void = (eventName, eventData) => {
     if (globalThis.window === 'undefined') {
         console.warn('[umamiTrack] Window is undefined (SSR context)');
         return;
