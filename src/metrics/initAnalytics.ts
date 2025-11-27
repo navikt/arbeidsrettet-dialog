@@ -3,10 +3,7 @@ import { APP_NAME, erEksternFlate, TEAM_NAME } from '../constants';
 import { startWaitingForUmamiToAppearOnWindow, umamiTrack } from './umamiFromScript';
 
 export type EventDataValue = string | boolean | number | null | undefined;
-export type EventData = {
-    eventName: string;
-    eventData: Record<string, EventDataValue>;
-} & Record<string, EventDataValue>;
+export type EventData = Record<string, EventDataValue>;
 export type TrackingFunction = (eventName: string, eventData: EventData) => void;
 
 type QueuedEvent = {
@@ -79,8 +76,8 @@ export const initAnalytics = () => {
             trackingFunction = (eventName, eventData) => {
                 dekoratorenTracking({
                     origin: 'arbeidsrettet-dialog',
-                    eventName: eventData.eventName,
-                    eventData: eventData.eventData,
+                    eventName: eventName,
+                    eventData,
                 });
             };
             isInitialized = true;
@@ -90,7 +87,7 @@ export const initAnalytics = () => {
         startWaitingForUmamiToAppearOnWindow();
         trackingFunction = (eventName, eventData) => {
             umamiTrack(eventName, {
-                ...eventData.eventData,
+                ...eventData,
                 origin: 'arbeidsrettet-dialog',
             });
         };

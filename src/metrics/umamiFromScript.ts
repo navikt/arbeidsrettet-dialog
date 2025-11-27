@@ -33,37 +33,37 @@ declare global {
 }
 
 export const umamiTrack: (eventName: string, data: Record<string, EventDataValue>) => void = (eventName, eventData) => {
-    if (globalThis.window === 'undefined') {
+    if ((globalThis.window as any) === 'undefined') {
         console.warn('[umamiTrack] Window is undefined (SSR context)');
         return;
     }
     if (umamiLoadedPromise === undefined) {
         console.warn("[umamiTrack] Umami has not been initialized, can't track event");
-    }
-
-    if (!globalThis.window.umami) {
-        console.warn('[umamiTrack] window.umami is not available yet. Waiting for script to load...', {
-            eventName,
-            eventData,
-        });
-
-        // Wait for Umami to load, then retry
-        umamiLoadedPromise
-            .then(() => {
-                console.log('[umamiTrack] Umami now available, tracking event:', eventName, eventData);
-                globalThis.window.umami!.track(eventName, eventData);
-            })
-            .catch((err) => {
-                console.error(
-                    `[umamiTrack] Umami script failed to load within timeout. ${err.toString()} Event not tracked:`,
-                    {
-                        eventName,
-                        eventData,
-                    },
-                );
-            });
         return;
-    }
+    } else {
+        if (!globalThis.window.umami) {
+            console.warn('[umamiTrack] window.umami is not available yet. Waiting for script to load...', {
+                eventName,
+                eventData,
+            });
 
-    globalThis.window.umami.track(eventName, eventData);
+            // Wait for Umami to load, then retry
+            umamiLoadedPromise
+                .then(() => {
+                    console.log('[umamiTrack] Umami now available, tracking event:', eventName, eventData);
+                    globalThis.window.umami!.track(eventName, eventData);
+                })
+                .catch((err) => {
+                    console.error(
+                        `[umamiTrack] Umami script failed to load within timeout. ${err.toString()} Event not tracked:`,
+                        {
+                            eventName,
+                            eventData,
+                        },
+                    );
+                });
+            return;
+        }
+        globalThis.window.umami.track(eventName, eventData);
+    }
 };
