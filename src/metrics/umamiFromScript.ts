@@ -1,4 +1,4 @@
-import { EventDataValue, TrackingFunction } from './initAnalytics';
+import { EventDataValue } from './initAnalytics';
 
 const timeoutMs = 5000;
 
@@ -39,7 +39,6 @@ export const umamiTrack: (eventName: string, data: Record<string, EventDataValue
     }
     if (umamiLoadedPromise === undefined) {
         console.warn("[umamiTrack] Umami has not been initialized, can't track event");
-        return;
     } else {
         if (!globalThis.window.umami) {
             console.warn('[umamiTrack] window.umami is not available yet. Waiting for script to load...', {
