@@ -1,5 +1,6 @@
 import { Env, getEnv } from '../utils/envUtil';
 import { APP_NAME, erEksternFlate, TEAM_NAME } from '../constants';
+import { startWaitingForUmamiToAppearOnWindow, umamiTrack } from './umamiFromScript';
 
 type EventDataValue = string | boolean | number | null | undefined;
 type TrackingFunction = (eventName: string, eventData: Record<string, EventDataValue>) => void;
@@ -67,12 +68,10 @@ export const initAnalytics = () => {
             flushEventQueue();
         }, 1000);
     } else {
-        import('./amplitude-utils').then((module) => {
-            module.initAmplitude();
-            trackingFunction = module.amplitudeTrack;
-            isInitialized = true;
-            flushEventQueue();
-        });
+        startWaitingForUmamiToAppearOnWindow();
+        trackingFunction = umamiTrack;
+        isInitialized = true;
+        flushEventQueue();
     }
 };
 

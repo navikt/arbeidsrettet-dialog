@@ -42,7 +42,6 @@ Sentry.init({
     environment: getEnv(),
     enabled: getEnv() !== Env.Local,
     ignoreErrors: [
-        /Amplitude/,
         // /^Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.$/,
         /**
          * React internal error thrown when something outside react modifies the DOM
