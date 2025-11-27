@@ -1,12 +1,14 @@
 import { Env, getEnv } from '../utils/envUtil';
 import { APP_NAME, erEksternFlate, TEAM_NAME } from '../constants';
+import { startWaitingForUmamiToAppearOnWindow, umamiTrack } from './umamiFromScript';
 
-type EventDataValue = string | boolean | number | null | undefined;
-type TrackingFunction = (eventName: string, eventData: Record<string, EventDataValue>) => void;
+export type EventDataValue = string | boolean | number | null | undefined;
+export type EventData = Record<string, EventDataValue>;
+export type TrackingFunction = (eventName: string, eventData: EventData) => void;
 
 type QueuedEvent = {
     eventName: string;
-    eventData: Record<string, EventDataValue>;
+    eventData: EventData;
 };
 
 let trackingFunction: TrackingFunction = () => {};
@@ -34,7 +36,7 @@ const flushEventQueue = () => {
 };
 
 // Queue or immediately track events
-const queueOrTrackEvent = (eventName: string, eventData: Record<string, EventDataValue>) => {
+const queueOrTrackEvent = (eventName: string, eventData: EventData) => {
     if (isInitialized) {
         trackingFunction(eventName, eventData);
     } else {
@@ -55,28 +57,46 @@ declare global {
 const env = getEnv();
 
 export const initAnalytics = () => {
-    if (env == Env.Local) return;
+    if (env == Env.Local) {
+        trackingFunction = (eventName, eventData) => {
+            console.log('Tracking event:', {
+                origin: 'arbeidsrettet-dialog',
+                eventName: eventData.eventName,
+                eventData: eventData.eventData,
+            });
+        };
+        isInitialized = true;
+        flushEventQueue();
+        return;
+    }
     if (erEksternFlate) {
         /* window.dekoratorenAnalytics does not return a function instantly, have to wait for it to be ready */
         setTimeout(() => {
             const dekoratorenTracking = window.dekoratorenAnalytics;
             trackingFunction = (eventName, eventData) => {
-                dekoratorenTracking({ origin: 'arbeidsrettet-dialog', eventName, eventData });
+                dekoratorenTracking({
+                    origin: 'arbeidsrettet-dialog',
+                    eventName: eventName,
+                    eventData,
+                });
             };
             isInitialized = true;
             flushEventQueue();
         }, 1000);
     } else {
-        import('./amplitude-utils').then((module) => {
-            module.initAmplitude();
-            trackingFunction = module.amplitudeTrack;
-            isInitialized = true;
-            flushEventQueue();
-        });
+        startWaitingForUmamiToAppearOnWindow();
+        trackingFunction = (eventName, eventData) => {
+            umamiTrack(eventName, {
+                ...eventData,
+                origin: 'arbeidsrettet-dialog',
+            });
+        };
+        isInitialized = true;
+        flushEventQueue();
     }
 };
 
-export const logAnalyticsEvent = (eventName: string, data?: { [key: string]: EventDataValue }) => {
+export const logAnalyticsEvent = (eventName: string, data?: EventData) => {
     const dataWithDefaults = {
         app: APP_NAME,
         team: TEAM_NAME,
