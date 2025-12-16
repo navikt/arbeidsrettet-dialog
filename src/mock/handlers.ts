@@ -112,7 +112,7 @@ export const handlers = [
             harDialogFeilerSkruddPa,
             async (request) => {
                 const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
-                return { data: { dialoger: dialogerPayload, kladder: [] }, errors: [{ message: 'Noe gikk galt' }] };
+                return { data: { dialoger: dialogerPayload, kladder: [] }, errors: [] };
             },
             1500,
         ),
