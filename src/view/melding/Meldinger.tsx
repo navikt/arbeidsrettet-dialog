@@ -45,7 +45,7 @@ export function Meldinger(props: Props) {
         <section
             id="henvendelse-scroll-list"
             aria-label="Meldinger"
-            className="grow overflow-y-scroll relative bg-gray-100 px-4 xl:justify-center"
+            className="grow overflow-y-scroll relative bg-ax-bg-neutral-soft px-4 xl:justify-center"
             ref={meldingListRef}
             tabIndex={0}
             role="grid"
