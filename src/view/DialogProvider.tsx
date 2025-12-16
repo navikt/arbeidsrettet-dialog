@@ -13,14 +13,11 @@ export const DialogContext = React.createContext<DialogDataProviderType>({
     nyMelding: ({ dialog }: NyMeldingArgs) => Promise.resolve(dialog),
     lesDialog: (_dialogId: string) => Promise.resolve({} as any),
     setFerdigBehandlet: (dialog: DialogData, _ferdigBehandlet: boolean) => Promise.resolve(dialog),
-    setVenterPaSvar: (dialog: DialogData, _venterPaSvar: boolean) => Promise.resolve(dialog)
+    setVenterPaSvar: (dialog: DialogData, _venterPaSvar: boolean) => Promise.resolve(dialog),
 });
 
 export const useDialogContext = () => useContext(DialogContext);
-export const useDialoger = () => {
-    const dialoger = useDialogStore((state) => state.dialoger);
-    return dialoger;
-};
+export const useDialoger = () => useDialogStore((state) => state.dialoger);
 
 export interface NyTradArgs {
     melding: string;
@@ -73,8 +70,8 @@ export function useDialogDataProvider(): DialogDataProviderType {
             setStatus: state.setStatus,
             sendMelding: state.sendMelding,
             nyDialog: state.nyDialog,
-            nyMelding: state.nyMelding
-        }))
+            nyMelding: state.nyMelding,
+        })),
     );
     const status = useDialogStore(useShallow((store) => store.status));
 
@@ -89,7 +86,7 @@ export function useDialogDataProvider(): DialogDataProviderType {
     const setFerdigBehandlet = (dialog: DialogData, ferdigBehandlet: boolean) => {
         setStatus(Status.RELOADING, 'setFerdigBehandlet/pending');
         return fetchData<DialogData>(ferdigBehandletUrl({ id: dialog.id, ferdigBehandlet }), {
-            method: 'put'
+            method: 'put',
         }).then((dialogData) => {
             setStatus(Status.OK);
             return updateDialogInDialoger(dialogData);
@@ -102,9 +99,11 @@ export function useDialogDataProvider(): DialogDataProviderType {
             (dialogData) => {
                 setStatus(Status.OK);
                 return updateDialogInDialoger(dialogData);
-            }
+            },
         );
     };
+
+    console.log('Dialog status', status);
 
     return {
         status,
@@ -112,7 +111,7 @@ export function useDialogDataProvider(): DialogDataProviderType {
         nyMelding,
         lesDialog,
         setFerdigBehandlet,
-        setVenterPaSvar
+        setVenterPaSvar,
     };
 }
 
