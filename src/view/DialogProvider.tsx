@@ -103,8 +103,6 @@ export function useDialogDataProvider(): DialogDataProviderType {
         );
     };
 
-    console.log('Dialog status', status);
-
     return {
         status,
         nyDialog,
