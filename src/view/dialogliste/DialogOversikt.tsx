@@ -16,7 +16,7 @@ import { useIsDialogOrNyRoute } from '../../routing/routes';
 const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
     if (erVeileder) return null;
     return (
-        <div className="flex flex-col gap-y-2 border-b border-ax-border-neutral-subtle px-4 py-1">
+        <div className="flex flex-col gap-y-2 border-b border-ax-border-neutral-subtle px-4 pb-2 pt-4">
             <div className="flex gap-x-4 ">
                 {!erVeileder ? (
                     <>
