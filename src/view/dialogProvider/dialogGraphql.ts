@@ -44,8 +44,8 @@ const queryBody = (fnr: string) => ({
     query,
     variables: {
         fnr,
-        bareMedAktiviteter: false
-    }
+        bareMedAktiviteter: false,
+    },
 });
 
 interface GraphqlErrorMessage {
@@ -65,18 +65,16 @@ const sjekkGraphqlFeil = <T>(response: GraphqlResponse<T>): Promise<GraphqlRespo
 };
 
 export const hentDialogerGraphql = async (
-    fnr: string | undefined
-): Promise<{ dialoger: DialogData[]; kladder: KladdData[] }> => {
+    fnr: string | undefined,
+): Promise<GraphqlResponse<{ dialoger: DialogData[]; kladder: KladdData[] }>> => {
     return fetch(DialogApi.graphql, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Nav-Consumer-Id': 'arbeidsrettet-dialog'
+            'Nav-Consumer-Id': 'arbeidsrettet-dialog',
         },
-        body: JSON.stringify(queryBody(fnr || ''))
+        body: JSON.stringify(queryBody(fnr || '')),
     })
         .then(sjekkStatuskode)
-        .then(toJson)
-        .then(sjekkGraphqlFeil<{ dialoger: DialogData[]; kladder: KladdData[] }>)
-        .then((response) => response.data);
+        .then(toJson);
 };

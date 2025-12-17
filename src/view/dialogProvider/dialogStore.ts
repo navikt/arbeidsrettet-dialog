@@ -17,7 +17,7 @@ export const initDialogState: DialogState = {
     isSessionExpired: false,
     status: Status.INITIAL,
     sistOppdatert: new Date(),
-    dialoger: []
+    dialoger: [],
 };
 
 type DialogStore = DialogState &
@@ -53,21 +53,32 @@ export const useDialogStore = create(
                 const { isSessionExpired } = get();
                 if (isSessionExpired) return;
                 return hentDialogerGraphql(fnr)
-                    .then(({ dialoger, kladder }) => {
+                    .then(({ data, errors }) => {
                         // TODO: Find a way to get previous value
                         // loggChangeInDialog(state.dialoger, dialoger);
-                        set(
-                            { status: Status.OK, dialoger, sistOppdatert: new Date(), error: undefined, kladder },
-                            false, // flag for overwriting state, default false but needs to be provided when naming actions
-                            'hentDialoger/fulfilled'
-                        );
+                        if (data) {
+                            const { dialoger, kladder } = data;
+                            set(
+                                { status: Status.OK, dialoger, sistOppdatert: new Date(), error: undefined, kladder },
+                                false, // flag for overwriting state, default false but needs to be provided when naming actions
+                                'hentDialoger/fulfilled',
+                            );
+                        }
+
+                        if (errors && errors.length > 0) {
+                            set(
+                                (prevState) => ({ ...prevState, status: Status.ERROR, error: errors[0].message }),
+                                false,
+                                'hentDialoger/error',
+                            );
+                        }
                     })
                     .catch((e) => {
                         captureMaybeError(`Kunne ikke hente dialogdata ${e.toString()}`, e);
                         set(
                             (prevState) => ({ ...prevState, status: Status.ERROR, error: e }),
                             false,
-                            'hentDialoger/error'
+                            'hentDialoger/error',
                         );
                     });
             },
@@ -75,10 +86,10 @@ export const useDialogStore = create(
                 set(
                     (state) => ({
                         status: isDialogReloading(state.status) ? Status.RELOADING : Status.PENDING,
-                        error: undefined
+                        error: undefined,
                     }),
                     false,
-                    'hentDialoger/pending'
+                    'hentDialoger/pending',
                 );
                 const { silentlyHentDialoger } = get();
                 await silentlyHentDialoger(fnr);
@@ -94,10 +105,10 @@ export const useDialogStore = create(
                     const interval = onIntervalWithCleanup(() => pollForChanges(fnr));
                     set(
                         () => ({
-                            pollInterval: interval
+                            pollInterval: interval,
                         }),
                         false,
-                        'setPollInterval'
+                        'setPollInterval',
                     );
                 };
                 if (erBruker) {
@@ -107,7 +118,7 @@ export const useDialogStore = create(
                         try {
                             const { silentlyHentDialoger } = get();
                             return listenForNyDialogEvents(() => silentlyHentDialoger(fnr), fnr, [
-                                EventType.NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV
+                                EventType.NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV,
                             ]);
                         } catch (e) {
                             // Fallback to http-polling if anything fails
@@ -125,10 +136,10 @@ export const useDialogStore = create(
                     clearInterval(pollInterval);
                     set(
                         () => ({
-                            pollInterval: undefined
+                            pollInterval: undefined,
                         }),
                         false,
-                        'clearPollInterval'
+                        'clearPollInterval',
                     );
                 }
                 closeWebsocket();
@@ -141,8 +152,8 @@ export const useDialogStore = create(
                         DialogApi.sistOppdatert,
                         {
                             method: 'POST',
-                            body: !fnr ? undefined : JSON.stringify({ fnr })
-                        }
+                            body: !fnr ? undefined : JSON.stringify({ fnr }),
+                        },
                     );
                     const { silentlyHentDialoger, sistOppdatert: localSistOppdatert } = get();
                     if (!!remoteSistOppdatert && isAfter(remoteSistOppdatert, localSistOppdatert)) {
@@ -170,12 +181,12 @@ export const useDialogStore = create(
                         const nyeDialoger = [
                             ...dialoger.slice(0, index),
                             dialog,
-                            ...dialoger.slice(index + 1, dialoger.length)
+                            ...dialoger.slice(index + 1, dialoger.length),
                         ];
                         return { status: Status.OK, dialoger: nyeDialoger, error: undefined };
                     },
                     false,
-                    'updateDialogInDialoger'
+                    'updateDialogInDialoger',
                 );
                 return dialog;
             },
@@ -187,7 +198,7 @@ export const useDialogStore = create(
                     dialogId: undefined,
                     aktivitetId,
                     fnr,
-                    venterPaaSvarFraBruker
+                    venterPaaSvarFraBruker,
                 });
             },
             nyMelding: ({ melding, dialog, fnr }: NyMeldingArgs) => {
@@ -198,7 +209,7 @@ export const useDialogStore = create(
                 set({ status: Status.RELOADING }, false, 'sendMelding/pending');
                 return fetchData<DialogData>(DialogApi.opprettDialog, {
                     method: 'POST',
-                    body: JSON.stringify(nyDialogData)
+                    body: JSON.stringify(nyDialogData),
                 })
                     .then((dialog) => {
                         const { updateDialogInDialoger, updateDialogWithNewDialog } = get();
@@ -222,11 +233,11 @@ export const useDialogStore = create(
                         return {
                             dialoger: [...dialoger, dialogData],
                             status: Status.OK,
-                            error: undefined
+                            error: undefined,
                         };
                     },
                     false,
-                    'dialogStore/newDialogThread'
+                    'dialogStore/newDialogThread',
                 );
                 return dialogData;
             },
@@ -238,11 +249,11 @@ export const useDialogStore = create(
                         return { kladdStatus: Status.RELOADING, kladder: nyKladder };
                     },
                     false,
-                    'oppdaterKladd/pending'
+                    'oppdaterKladd/pending',
                 );
                 fetchData<void>(DialogApi.kladd, {
                     method: 'post',
-                    body: JSON.stringify({ ...kladd })
+                    body: JSON.stringify({ ...kladd }),
                 })
                     .then(() => set({ kladdStatus: Status.OK }, false, 'oppdaterKladd/fulfilled'))
                     .catch(() => set({ kladdStatus: Status.OK }, false, 'oppdaterKladd/rejected'));
@@ -254,12 +265,12 @@ export const useDialogStore = create(
                         return { kladder: ny };
                     },
                     false,
-                    'oppdaterKladd/delete'
+                    'oppdaterKladd/delete',
                 );
-            }
+            },
         }),
-        { name: 'DialogStore' }
-    )
+        { name: 'DialogStore' },
+    ),
 );
 
 export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentDialoger));

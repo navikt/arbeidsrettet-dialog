@@ -2,14 +2,27 @@ import { Alert } from '@navikt/ds-react';
 import React from 'react';
 import { useAktivitetStore, useTiltaksAktivitetStore } from '../AktivitetProvider';
 import { Status } from '../../api/typer';
+import { useDialogStore } from '../dialogProvider/dialogStore';
+import { useShallow } from 'zustand/react/shallow';
 
 function DialogHeaderFeil() {
     const aktiviteterStatus = useAktivitetStore((state) => state.status);
     const tiltaksAktiviteterAktiviteterStatus = useTiltaksAktivitetStore((state) => state.status);
+    const dialogFeil = useDialogStore((state) => state.status);
     const erFeil = aktiviteterStatus == Status.ERROR || tiltaksAktiviteterAktiviteterStatus == Status.ERROR;
 
-    if (!erFeil) {
+    if (!erFeil && !dialogFeil) {
         return null;
+    }
+
+    if (dialogFeil) {
+        return (
+            <div className="">
+                <Alert fullWidth variant="error">
+                    Noe gikk galt ved henting av dialoger. Prøv igjen senere
+                </Alert>
+            </div>
+        );
     }
 
     return (

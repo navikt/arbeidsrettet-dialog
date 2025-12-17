@@ -40,15 +40,15 @@ const NyDialogForm = (props: Props) => {
             kladder: store.kladder,
             oppdaterKladd: store.oppdaterKladd,
             slettKladd: store.slettKladd,
-            noeFeilet: store.status === Status.ERROR
-        }))
+            noeFeilet: store.status === Status.ERROR,
+        })),
     );
 
     const kladd = findKladd(kladder, null, aktivitetId);
 
     const defaultValues: NyDialogFormValues = {
         tema: kladd?.overskrift ?? cutStringAtLength(defaultTema, 100, '...'),
-        melding: !!kladd?.tekst ? kladd.tekst : startTekst
+        melding: !!kladd?.tekst ? kladd.tekst : startTekst,
     };
 
     const maxMeldingsLengde = 5000;
@@ -60,8 +60,8 @@ const NyDialogForm = (props: Props) => {
             .min(1, 'Du må skrive en melding')
             .max(maxMeldingsLengde, `Meldingen kan ikke være mer enn ${maxMeldingsLengde}`)
             .refine((melding) => melding !== startTekst, {
-                message: 'Du må fylle ut en melding'
-            })
+                message: 'Du må fylle ut en melding',
+            }),
     });
 
     type NyDialogFormValues = z.infer<typeof schema>;
@@ -71,10 +71,10 @@ const NyDialogForm = (props: Props) => {
         register,
         handleSubmit,
         watch,
-        formState: { errors, dirtyFields }
+        formState: { errors, dirtyFields },
     } = useForm<NyDialogFormValues>({
         defaultValues,
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schema),
     });
 
     const fetcher = useFetcher();
@@ -95,7 +95,7 @@ const NyDialogForm = (props: Props) => {
 
     const setOppdaterKladdCallbackValues = ({
         tema,
-        melding
+        melding,
     }: {
         tema: string | undefined;
         melding: string | undefined;
@@ -108,7 +108,7 @@ const NyDialogForm = (props: Props) => {
                 dialogId: null,
                 aktivitetId: props.aktivitetId || null,
                 overskrift: tema || null,
-                tekst: melding || null
+                tekst: melding || null,
             });
         };
         timer.current = window.setTimeout(callback.current, 500);
@@ -141,7 +141,7 @@ const NyDialogForm = (props: Props) => {
         fetcher.submit({ melding, tema, aktivitetId, fnr, venterPaaSvarFraBruker } as SubmitTarget, {
             method: 'POST',
             action: '/ny',
-            encType: 'application/json'
+            encType: 'application/json',
         });
     };
 
