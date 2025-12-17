@@ -149,7 +149,7 @@ const NyDialogForm = (props: Props) => {
     const toggleVenterPaSvar = () => setventerPaaSvarFraBruker(!venterPaaSvarFraBruker);
 
     return (
-        <div className="relative h-full w-full overflow-scroll bg-gray-100 lg:max-w-lgContainer xl:max-w-none">
+        <div className="relative h-full w-full overflow-scroll bg-ax-bg-neutral-soft lg:max-w-lgContainer xl:max-w-none">
             <form
                 className="space-y-8 p-8 xl:w-full xl:max-w-max-paragraph"
                 onSubmit={handleSubmit((data) => onSubmit(data))}

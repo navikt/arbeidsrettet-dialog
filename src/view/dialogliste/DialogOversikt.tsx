@@ -16,7 +16,7 @@ import { useIsDialogOrNyRoute } from '../../routing/routes';
 const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
     if (erVeileder) return null;
     return (
-        <div className="flex flex-col gap-y-2 border-b border-border-divider  px-4 py-1">
+        <div className="flex flex-col gap-y-2 border-b border-ax-border-neutral-subtle px-4 py-1">
             <div className="flex gap-x-4 ">
                 {!erVeileder ? (
                     <>
@@ -49,11 +49,11 @@ const DialogOversikt = () => {
                 /* Hvis liten skjerm, bare vis dialog-liste på "Homepage", ikke som sideBar  */
                 { 'hidden md:flex': erSidebar },
                 { flex: !erSidebar },
-                'w-full grow flex-col md:border-r border-border-divider md:max-w-xs xl:min-w-[320px] xl:max-w-[320px]'
+                'w-full grow flex-col md:border-r border-ax-border-neutral-subtle md:max-w-xs xl:min-w-[320px] xl:max-w-[320px]',
             )}
         >
             <DialogOversiktHeader erVeileder={erVeileder} />
-            <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-border-divider bg-gray-100 p-2">
+            <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-ax-border-neutral-subtle bg-ax-bg-neutral-soft p-2">
                 <>
                     <div className="flex gap-2 p-1 pb-2">
                         <NyDialogLink disabled={!kanSendeMelding} />
