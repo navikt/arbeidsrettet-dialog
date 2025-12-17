@@ -92,9 +92,8 @@ function DialogPreview(props: Props) {
     return (
         <LinkPanel
             className={classNames(
-                'my-1 max-w-full rounded-md border-ax-border-neutral-subtle !gap-0 border p-2',
-                styles.dialogPreview,
-                styles.linkPanel,
+                'my-1 max-w-full flex py-0 p-2 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-strong !gap-0 border',
+                styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
                 {
                     'bg-[#e6f0ff]': detteErValgtDialog,
                     [styles.ulestDialog]: !dialog.lest,
