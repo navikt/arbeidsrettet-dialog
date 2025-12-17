@@ -26,7 +26,7 @@ export function DialogHeader() {
     return (
         <Suspense fallback={<HeaderFallback />}>
             <Await resolve={requiredData}>
-                <div className="flex flex-col gap-x-4 border-b border-border-divider bg-white py-1">
+                <div className="flex flex-col gap-x-4 border-b border-ax-border-neutral-subtle bg-white py-1">
                     <section aria-label="Dialog header">
                         {viseAktivitet ? (
                             <DialogMedAktivitetHeader />
@@ -47,7 +47,7 @@ const HeaderFallback = () => {
     const ikkeValgtDialogRoute = useMatches().some((match) => match.id == RouteIds.IkkeValgtDialog);
     if (ikkeValgtDialogRoute) return null;
     return (
-        <div className="flex flex-col gap-x-4 border-b border-border-divider bg-white py-1">
+        <div className="flex flex-col gap-x-4 border-b border-ax-border-neutral-subtle bg-white py-1">
             <section aria-label="Dialog header">
                 <div className="flex flex-row gap-x-2 pl-4">
                     <TilbakeKnapp className="md:hidden" />

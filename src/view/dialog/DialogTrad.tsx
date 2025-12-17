@@ -129,7 +129,7 @@ const ValgtDialog = ({
 
 const DialogLoader = () => {
     return (
-        <div className="flex w-full bg-gray-100 items-center justify-center">
+        <div className="flex w-full bg-ax-bg-neutral-soft items-center justify-center">
             <Loader size="2xlarge" />
         </div>
     );

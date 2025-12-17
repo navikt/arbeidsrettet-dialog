@@ -28,7 +28,7 @@ export default function NyDialogTrad() {
             loaderData.veilederNavn,
             loaderData.me,
             loaderData.aktiviteter,
-            loaderData.arenaAktiviteter
+            loaderData.arenaAktiviteter,
         ]);
     }, []);
 
@@ -44,7 +44,7 @@ export default function NyDialogTrad() {
 export const DialogFormFallback = () => {
     const bigScreen = window.innerWidth >= 768;
     return (
-        <div className="relative h-full w-full overflow-scroll bg-gray-100 lg:max-w-lgContainer xl:max-w-none">
+        <div className="relative h-full w-full overflow-scroll bg-ax-bg-neutral-soft lg:max-w-lgContainer xl:max-w-none">
             <div className="space-y-8 p-8 xl:w-full xl:max-w-max-paragraph">
                 <GuidePanel poster={!bigScreen}>
                     Her kan du skrive til din veileder om arbeid og oppfølging. Du vil få svar i løpet av noen dager.
