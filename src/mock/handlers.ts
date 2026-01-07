@@ -9,7 +9,7 @@ import {
     harArenaaktivitetFeilerSkruddPa,
     harDialogFeilerSkruddPa,
     harNyDialogEllerSendMeldingFeilerSkruddPa,
-    ingenOppfPerioder
+    ingenOppfPerioder,
 } from './demo/localstorage';
 import dialoger, { lesDialog, opprettEllerOppdaterDialog, setFerdigBehandlet, setVenterPaSvar } from './Dialog';
 import oppfolging from './Oppfolging';
@@ -29,7 +29,7 @@ const delayIfNotTest = async (ms: number) => {
 
 export const jsonResponse = (
     response: object | null | boolean | ((req: StrictRequest<DefaultBodyType>, params: PathParams) => object),
-    delayMs = 200
+    delayMs = 200,
 ): HttpResponseResolver => {
     return async ({ request, params }) => {
         if (typeof response === 'function') {
@@ -44,7 +44,7 @@ export const jsonResponse = (
 const failOrGetResponse = (
     shouldFail: () => boolean,
     successFn: (req: StrictRequest<DefaultBodyType>) => Promise<Record<any, any>>,
-    delayMs = 500
+    delayMs = 500,
 ): HttpResponseResolver => {
     return async ({ request }) => {
         if (shouldFail()) {
@@ -63,10 +63,10 @@ const internalServerError = HttpResponse.json(
         detaljer: {
             detaljertType: 'javax.ws.rs.InternalServerErrorException',
             feilMelding: 'HTTP 500 Internal Server Error',
-            stackTrace: 'javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error\r\n\t'
-        }
+            stackTrace: 'javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error\r\n\t',
+        },
     },
-    { status: 500 }
+    { status: 500 },
 );
 
 const now = new Date();
@@ -77,7 +77,7 @@ const sessionPayload = {
         timeout_at: addMinutes(now, 15).toISOString(),
         ends_in_seconds: 3600,
         active: true,
-        timeout_in_seconds: 3600
+        timeout_in_seconds: 3600,
     },
     tokens: {
         expire_at: addMinutes(now, 15).toISOString(),
@@ -85,14 +85,13 @@ const sessionPayload = {
         expire_in_seconds: 3600,
         next_auto_refresh_in_seconds: 1000,
         refresh_cooldown: true,
-        refresh_cooldown_seconds: 1000
-    }
+        refresh_cooldown_seconds: 1000,
+    },
 };
 
 export const handlers = [
     http.get('/auth/info', () => HttpResponse.json({ remainingSeconds: 60 * 60 })),
     http.get('https://login.ekstern.dev.nav.no/oauth2/session', () => HttpResponse.json(sessionPayload)),
-    http.post('https://amplitude.nav.no/collect-auto', () => new Response()),
     // veilarbdialog
     http.put('/veilarbdialog/api/dialog/:dialogId/les', lesDialog),
     http.put('/veilarbdialog/api/dialog/:dialogId/venter_pa_svar/:bool', jsonResponse(setVenterPaSvar)),
@@ -104,7 +103,7 @@ export const handlers = [
     }),
     http.post(
         '/veilarbdialog/api/dialog',
-        failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog)
+        failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog),
     ),
     http.post('/veilarbdialog/api/logger/event', () => new Response()),
     http.post(
@@ -115,8 +114,8 @@ export const handlers = [
                 const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
                 return { data: { dialoger: dialogerPayload, kladder: [] }, errors: [] };
             },
-            1500
-        )
+            1500,
+        ),
     ),
 
     // veilarboppfolging
@@ -127,11 +126,11 @@ export const handlers = [
     // veilarbaktivitet
     http.post(
         '/veilarbaktivitet/graphql',
-        failOrGetResponse(harAktivitetFeilerSkruddPa, async () => matchMedPerioder(aktiviteter), 750)
+        failOrGetResponse(harAktivitetFeilerSkruddPa, async () => matchMedPerioder(aktiviteter), 750),
     ),
     http.post(
         '/veilarbaktivitet/api/arena/tiltak',
-        failOrGetResponse(harArenaaktivitetFeilerSkruddPa, async () => arenaAktiviteter)
+        failOrGetResponse(harArenaaktivitetFeilerSkruddPa, async () => arenaAktiviteter),
     ),
     http.get('/veilarbaktivitet/api/feature', () => {
         return HttpResponse.json({ [FeatureToggle.USE_WEBSOCKETS]: false });
@@ -140,7 +139,7 @@ export const handlers = [
     http.post('/veilarbaktivitet/api/innsynsrett', jsonResponse({ foresatteHarInnsynsrett: erUnder18() })),
 
     // veilarbveileder
-    http.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe))
+    http.get(`/veilarbveileder/api/veileder/me`, jsonResponse(veilederMe)),
 ];
 
 const matchMedPerioder = (aktiviteter: Aktivitet[]): AktivitetsplanResponse => {
@@ -149,19 +148,19 @@ const matchMedPerioder = (aktiviteter: Aktivitet[]): AktivitetsplanResponse => {
             const periodeAktiviteter = acc[aktivitet.oppfolgingsperiodeId] || [];
             return {
                 ...acc,
-                [aktivitet.oppfolgingsperiodeId]: [...periodeAktiviteter, aktivitet]
+                [aktivitet.oppfolgingsperiodeId]: [...periodeAktiviteter, aktivitet],
             };
         },
-        {} as Record<string, Aktivitet[]>
+        {} as Record<string, Aktivitet[]>,
     );
     const perioderMedAktivtieter = Object.keys(aktivteterOnPerioder).map((periode) => ({
         id: periode,
-        aktiviteter: aktivteterOnPerioder[periode]
+        aktiviteter: aktivteterOnPerioder[periode],
     }));
     return {
         data: {
-            perioder: perioderMedAktivtieter
+            perioder: perioderMedAktivtieter,
         },
-        errors: []
+        errors: [],
     };
 };

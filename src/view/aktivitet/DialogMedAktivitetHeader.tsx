@@ -1,7 +1,6 @@
 import { BodyShort, Link, Switch } from '@navikt/ds-react';
 import classNames from 'classnames';
 import React from 'react';
-import { loggKlikkVisAktivitet } from '../../metrics/amplitude-utils';
 import { Aktivitet, AktivitetTypes, ArenaAktivitet, ArenaAktivitetTypes } from '../../utils/aktivitetTypes';
 import { formaterDate, getKlokkeslett } from '../../utils/Date';
 import { useVisAktivitetContext } from '../AktivitetToggleContext';
@@ -11,6 +10,7 @@ import { aktivitetLenke, visAktivitetsplan } from './AktivitetskortLenke';
 import { TilbakeKnapp } from '../dialog/TilbakeKnapp';
 import { getTypeTextByAktivitet } from './TextUtils';
 import { DialogTittel } from '../dialog/DialogTittel';
+import { loggKlikkVisAktivitet } from '../../metrics/initAnalytics';
 
 const noOp = () => {};
 
@@ -37,12 +37,12 @@ export function DialogMedAktivitetHeader() {
             <div
                 className={classNames('2xl:mr-4 2xl:flex-none', {
                     'lg:flex-1': !visAktivitet,
-                    'pl-4 md:max-w-[320px] lg:grow xl:max-w-screen-w-1/3': visAktivitet
+                    'pl-4 md:max-w-[320px] lg:grow xl:max-w-screen-w-1/3': visAktivitet,
                 })}
             >
                 <div
                     className={classNames('flex  justify-between md:mt-0  flex-row items-center pr-2 2xl:items-end', {
-                        'pl-1': !visAktivitet
+                        'pl-1': !visAktivitet,
                     })}
                 >
                     <Link

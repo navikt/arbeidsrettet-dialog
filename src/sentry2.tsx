@@ -5,23 +5,10 @@ import {
     createRoutesFromChildren,
     matchRoutes,
     useLocation,
-    useNavigationType
+    useNavigationType,
 } from 'react-router-dom';
 import { captureConsoleIntegration } from '@sentry/react';
-
-enum Env {
-    Local = 'local',
-    Dev = 'dev',
-    Prod = 'prod'
-}
-
-const getEnv = (): Env => {
-    // TODO: Dette vil ikke virke som internflate
-    const { hostname } = window.location;
-    if (hostname.includes('dev.nav.no')) return Env.Dev;
-    if (hostname.includes('nav.no')) return Env.Prod;
-    return Env.Local;
-};
+import { Env, getEnv } from './utils/envUtil';
 
 Sentry.init({
     allowUrls: [/https:\/\/cdn\.nav\.no/],
@@ -33,43 +20,42 @@ Sentry.init({
             useLocation,
             useNavigationType,
             createRoutesFromChildren,
-            matchRoutes
+            matchRoutes,
         }),
         Sentry.httpClientIntegration({
             failedRequestTargets: [
                 /https:\/\/pto\.ekstern\.dev\.nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)\/*/,
-                /https:\/\/nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)\/*/
-            ]
+                /https:\/\/nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)\/*/,
+            ],
         }),
         captureConsoleIntegration({
             // array of methods that should be captured
             // defaults to ['log', 'info', 'warn', 'error', 'debug', 'assert']
-            levels: ['warn', 'error']
-        })
+            levels: ['warn', 'error'],
+        }),
     ],
     tracePropagationTargets: [
         'localhost',
         /https:\/\/nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)/,
-        /https:\/\/pto\.ekstern\.dev\.nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)/
+        /https:\/\/pto\.ekstern\.dev\.nav\.no\/arbeid\/dialog\/(veilarbdialog|veilarboppfolging|veilarbaktivitet|veilarblest)/,
     ],
     environment: getEnv(),
     enabled: getEnv() !== Env.Local,
     ignoreErrors: [
-        /Amplitude/,
         // /^Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.$/,
         /**
          * React internal error thrown when something outside react modifies the DOM
          * This is usually because of a browser extension or Chrome's built-in translate
          */
         /Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node\./,
-        /Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node./
+        /Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node./,
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
     tracesSampleRate: 0.2,
     // beforeSend: fjernPersonopplysninger,
-    release: import.meta.env.VITE_SENTRY_RELEASE
+    release: import.meta.env.VITE_SENTRY_RELEASE,
 });
 
 declare const window: {

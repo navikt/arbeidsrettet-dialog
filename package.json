@@ -59,7 +59,6 @@
     }
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.25.0",
     "@grafana/faro-web-sdk": "^1.19.0",
     "@hookform/resolvers": "^3.9.1",
     "@navikt/aksel-icons": "^7.31.0",
