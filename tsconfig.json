@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "types": ["vite/client", "vitest/globals", "@navikt/ds-react/types/theme"],
+        "types": ["vite/client", "vitest/globals", "@navikt/ds-react/esm/types/theme"],
         "lib": ["dom", "dom.iterable", "esnext"],
         "skipLibCheck": true,
         "esModuleInterop": true,
