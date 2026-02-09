@@ -26,7 +26,7 @@ export function DialogHeader() {
     return (
         <Suspense fallback={<HeaderFallback />}>
             <Await resolve={requiredData}>
-                <div className="flex flex-col gap-x-4 border-b border-ax-border-neutral-subtle bg-white py-1">
+                <div className="flex flex-col gap-x-4 border-b border-solid border-ax-border-neutral-subtle bg-white py-1">
                     <section aria-label="Dialog header">
                         {viseAktivitet ? (
                             <DialogMedAktivitetHeader />
