@@ -1,7 +1,7 @@
 // const naviktTailwindPreset = require('@navikt/ds-tailwind');
 
 module.exports = {
-    presets: [require('@navikt/ds-tailwind/darkside-tw3')],
+    presets: [require('@navikt/ds-tailwind')],
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     plugins: [],
     theme: {
