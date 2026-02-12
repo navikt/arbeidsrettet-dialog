@@ -1,0 +1,73 @@
+{
+  "_App-DJ5AcUQt.js": {
+    "file": "assets/App-DJ5AcUQt.js",
+    "name": "App",
+    "imports": [
+      "_aktivitetTypes-vJR8Jbj1.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/App-KHPCuzkJ.css"
+    ]
+  },
+  "_App-KHPCuzkJ.css": {
+    "file": "assets/App-KHPCuzkJ.css",
+    "src": "_App-KHPCuzkJ.css"
+  },
+  "_aktivitetTypes-vJR8Jbj1.js": {
+    "file": "assets/aktivitetTypes-vJR8Jbj1.js",
+    "name": "aktivitetTypes",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-CRL_5tZa.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/webcomponentWrapper.tsx",
+      "src/rootWrapper.tsx",
+      "src/mock/index.tsx"
+    ]
+  },
+  "src/mock/index.tsx": {
+    "file": "assets/index-BWwW_7_O.js",
+    "name": "index",
+    "src": "src/mock/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_aktivitetTypes-vJR8Jbj1.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/index-CFD-Y6pP.css"
+    ]
+  },
+  "src/rootWrapper.tsx": {
+    "file": "assets/rootWrapper-Dkm7tuHd.js",
+    "name": "rootWrapper",
+    "src": "src/rootWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_aktivitetTypes-vJR8Jbj1.js",
+      "_App-DJ5AcUQt.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/rootWrapper-Ce3R5DH2.css"
+    ]
+  },
+  "src/webcomponentWrapper.tsx": {
+    "file": "assets/webcomponentWrapper-D3NJN2DP.js",
+    "name": "webcomponentWrapper",
+    "src": "src/webcomponentWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_aktivitetTypes-vJR8Jbj1.js",
+      "_App-DJ5AcUQt.js",
+      "index.html"
+    ]
+  }
+}
