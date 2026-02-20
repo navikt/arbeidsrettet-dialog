@@ -18,7 +18,7 @@ import {
     ingenOppfPerioder,
     settLocalStorage,
     erUnder18,
-    erIkkeRegistrertIKRR
+    erIkkeRegistrertIKRR,
 } from './localstorage';
 
 interface Props {
@@ -28,78 +28,78 @@ interface Props {
 const brukertypeRadios = [
     {
         label: 'Veileder',
-        value: BRUKER_TYPE.INTERN
+        value: BRUKER_TYPE.INTERN,
     },
     {
         label: 'Eksternbruker',
-        value: BRUKER_TYPE.EKSTERN
-    }
+        value: BRUKER_TYPE.EKSTERN,
+    },
 ];
 
 const brukerTilstandRadios = [
     {
         label: 'Ikke under oppfølging',
         value: LocalStorageElement.IKKE_UNDER_OPPFOLGING,
-        checked: erIkkeUnderOppfolging()
+        checked: erIkkeUnderOppfolging(),
     },
     {
         label: 'Manuell',
         value: LocalStorageElement.MANUELL_BRUKER,
-        checked: erManuellBruker()
+        checked: erManuellBruker(),
     },
     {
         label: 'Er reservert i KRR',
         value: LocalStorageElement.KRR_BRUKER,
-        checked: erKRRBruker()
+        checked: erKRRBruker(),
     },
     {
         label: 'Ingen oppfølgingsperioder',
         value: LocalStorageElement.INGEN_OPPF_PERIODER,
-        checked: ingenOppfPerioder()
+        checked: ingenOppfPerioder(),
     },
     {
         label: 'Bruker kan ikke varsles',
         value: LocalStorageElement.KAN_IKKE_VARSLES,
-        checked: brukerKanIkkeVarsles()
+        checked: brukerKanIkkeVarsles(),
     },
     {
         label: 'Ingen dialoger',
         value: LocalStorageElement.INGEN_DIALOGER,
-        checked: harIngenDialoger()
+        checked: harIngenDialoger(),
     },
     {
         label: 'Under 18',
         value: LocalStorageElement.UNDER_18,
-        checked: erUnder18()
+        checked: erUnder18(),
     },
     {
         label: 'ikke registrert i KRR',
         value: LocalStorageElement.ER_IKKE_REGISTRERT_I_KRR,
-        checked: erIkkeRegistrertIKRR()
-    }
+        checked: erIkkeRegistrertIKRR(),
+    },
 ];
 
 const tekniskTilstandRadios = [
     {
         label: 'Dialog feiler',
         value: LocalStorageElement.DIALOG_FEILER,
-        checked: harDialogFeilerSkruddPa()
+        checked: harDialogFeilerSkruddPa(),
     },
     {
         label: 'Aktivitet feiler',
         value: LocalStorageElement.AKTIVITET_FEILER,
-        checked: harAktivitetFeilerSkruddPa()
+        checked: harAktivitetFeilerSkruddPa(),
     },
     {
         label: 'Arenaaktivitet feiler',
         value: LocalStorageElement.ARENAAKTIVITET_FEILER,
-        checked: harArenaaktivitetFeilerSkruddPa()
+        checked: harArenaaktivitetFeilerSkruddPa(),
     },
     {
         label: 'Ny dialog/send feiler',
         value: LocalStorageElement.NY_DIALOG_SEND_MELDING_FEILER,
-        checked: harNyDialogEllerSendMeldingFeilerSkruddPa()
-    }
+        checked: harNyDialogEllerSendMeldingFeilerSkruddPa(),
+    },
 ];
 
 const getChecked = (values: { label: string; value: string; checked: boolean }[]): string[] => {

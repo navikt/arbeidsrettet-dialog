@@ -1,4 +1,4 @@
-import { Alert, BodyShort, HelpText } from '@navikt/ds-react';
+import { BodyShort, HelpText, InlineMessage } from '@navikt/ds-react';
 import React, { useEffect, useState } from 'react';
 
 import { StringOrNull } from '../../utils/Typer';
@@ -30,9 +30,9 @@ function Melding(props: { tekst?: string; erVeileder: boolean }) {
 
     return !tekst ? null : (
         <div className="flex justify-center" aria-hidden={!hasRendred}>
-            <Alert variant="success" inline>
+            <InlineMessage status="success">
                 <BodyShort>{tekst}</BodyShort>
-            </Alert>
+            </InlineMessage>
             {erVeileder && (
                 <HelpText className="ml-1.5">
                     <div className={styles.hjelpeTekstInnhold}>

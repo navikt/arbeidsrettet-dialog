@@ -1,4 +1,4 @@
-import { Alert, Button, ErrorMessage, Textarea } from '@navikt/ds-react';
+import { Button, ErrorMessage, LocalAlert, Textarea } from '@navikt/ds-react';
 import React, { MutableRefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen, setCursorBeforeHilsen } from './inputUtils';
@@ -66,9 +66,9 @@ const MeldingBottomInputInner = () => {
                 </ErrorMessage>
             ) : null}
             {noeFeilet ? (
-                <Alert className="mt-4" variant="error">
+                <LocalAlert status={'error'} className="mt-4">
                     Noe gikk dessverre galt med systemet. Prøv igjen senere.
-                </Alert>
+                </LocalAlert>
             ) : null}
         </form>
     );
