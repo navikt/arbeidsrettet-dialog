@@ -53,7 +53,7 @@ export enum TabId {
     DIALOG = 'DIALOG',
     VEDTAKSSTOTTE = 'VEDTAKSSTOTTE',
     DETALJER = 'DETALJER',
-    ARBEIDSMARKEDSTILTAK = 'ARBEIDSMARKEDSTILTAK'
+    ARBEIDSMARKEDSTILTAK = 'ARBEIDSMARKEDSTILTAK',
 }
 
 export type TabChangeEvent = { tabId: string };
@@ -91,10 +91,14 @@ function DialogPreview(props: Props) {
 
     return (
         <LinkPanel
-            className={classNames('my-1 max-w-full !gap-0 border p-2', styles.dialogPreview, styles.linkPanel, {
-                'bg-[#e6f0ff]': detteErValgtDialog,
-                [styles.ulestDialog]: !dialog.lest
-            })}
+            className={classNames(
+                'my-1 max-w-full flex py-0 p-2 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
+                styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
+                {
+                    'bg-[#e6f0ff]': detteErValgtDialog,
+                    [styles.ulestDialog]: !dialog.lest,
+                },
+            )}
             href={dialogRoute(id)}
             aria-current={detteErValgtDialog && true}
             onClick={onGoTo}
@@ -145,7 +149,7 @@ export function DialogPreviewListe({ dialoger, valgDialog }: ListeProps) {
                     <li
                         key={dialog.id}
                         className={classNames('', {
-                            [styles.fadeIn]: index === 0 && skalFadeIn
+                            [styles.fadeIn]: index === 0 && skalFadeIn,
                         })}
                     >
                         <DialogPreview dialog={dialog} valgtDialogId={valgDialog} />

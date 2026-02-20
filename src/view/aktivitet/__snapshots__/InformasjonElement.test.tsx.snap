@@ -7,14 +7,12 @@ exports[`<InformasjonElement /> > skal matche snapshot når EksternLenke er chil
       class="min-w-4 my-4 grow flex-wrap"
     >
       <h2
-        class="navds-heading navds-heading--xsmall"
+        class="aksel-heading aksel-heading--xsmall"
       >
         merkelappteksten
       </h2>
       <a
-        class="navds-link navds-link--action"
-        data-color="accent"
-        data-variant="action"
+        class="aksel-link"
         href="http://nav.no"
       >
         nav.no

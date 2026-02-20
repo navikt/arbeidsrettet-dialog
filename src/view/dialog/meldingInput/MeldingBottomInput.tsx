@@ -1,4 +1,4 @@
-import { Alert, Button, ErrorMessage, Textarea } from '@navikt/ds-react';
+import { Button, ErrorMessage, LocalAlert, Textarea } from '@navikt/ds-react';
 import React, { MutableRefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen, setCursorBeforeHilsen } from './inputUtils';
@@ -16,7 +16,7 @@ const MeldingBottomInputInner = () => {
     const {
         register,
         getValues,
-        formState: { errors, isSubmitting }
+        formState: { errors, isSubmitting },
     } = useFormContext<MeldingFormValues>();
     const breakpoint = useBreakpoint();
     const textAreaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
@@ -66,9 +66,9 @@ const MeldingBottomInputInner = () => {
                 </ErrorMessage>
             ) : null}
             {noeFeilet ? (
-                <Alert className="mt-4" variant="error">
+                <LocalAlert status={'error'} className="mt-4">
                     Noe gikk dessverre galt med systemet. Prøv igjen senere.
-                </Alert>
+                </LocalAlert>
             ) : null}
         </form>
     );
@@ -85,7 +85,7 @@ export const MeldingBottomInput = () => {
     return (
         <section
             aria-label="Ny melding"
-            className="flex justify-center border-t border-border-divider p-4 overflow-y-scroll"
+            className="flex justify-center border-t border-ax-border-neutral-subtle p-4 overflow-y-scroll"
         >
             <div className="grow justify-self-center ">
                 <ManagedDialogCheckboxes dialog={dialog} />

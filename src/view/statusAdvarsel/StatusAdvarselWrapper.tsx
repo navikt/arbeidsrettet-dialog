@@ -1,4 +1,4 @@
-import { Alert, Heading, Link } from '@navikt/ds-react';
+import { GlobalAlert, Heading, Link } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
@@ -6,11 +6,7 @@ interface Props {
 }
 
 export default function StatusAdvarselWrapper({ children }: Props) {
-    return (
-        <Alert fullWidth variant="warning">
-            {children}
-        </Alert>
-    );
+    return <GlobalAlert status="warning">{children}</GlobalAlert>;
 }
 
 const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kontaktinformasjon';

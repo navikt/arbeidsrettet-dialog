@@ -17,11 +17,6 @@
 .dialogPreview > div {
     width: calc(100% - 1.5rem) !important;
 }
-.linkPanel {
-    display: flex;
-    flex-direction: row;
-    padding: 0 0.5rem;
-}
 .ulestDialog {
     padding-left: 0;
 }
