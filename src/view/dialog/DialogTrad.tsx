@@ -1,4 +1,4 @@
-import { Loader } from '@navikt/ds-react';
+import { Loader, Theme } from '@navikt/ds-react';
 import classNames from 'classnames';
 import React, { ReactNode, Suspense, useEffect, useMemo, useState } from 'react';
 import { Await, useLocation } from 'react-router';
@@ -83,7 +83,7 @@ export const DialogTrad = () => {
             loaderData.oppfolging,
             loaderData.veilederNavn,
             loaderData.aktiviteter,
-            loaderData.arenaAktiviteter
+            loaderData.arenaAktiviteter,
         ]);
     }, []);
 
@@ -96,7 +96,7 @@ export const DialogTrad = () => {
                             className={classNames('flex w-full grow xl:max-w-none', {
                                 'flex-col lg:flex-row 2xl:flex-row': aktivitet && !visAktivitet,
                                 'flex-col 2xl:flex-row': aktivitet && visAktivitet,
-                                'flex-col lg:flex-row': !aktivitet
+                                'flex-col lg:flex-row': !aktivitet,
                             })}
                         >
                             <div className="flex min-h-16 flex-1 grow flex-col">
@@ -113,7 +113,7 @@ export const DialogTrad = () => {
 };
 
 const ValgtDialog = ({
-    children
+    children,
 }: {
     children: ({ dialog }: { dialog: DialogData; aktivitet: MaybeAktivitet; visAktivitet: boolean }) => ReactNode;
 }): ReactNode => {
