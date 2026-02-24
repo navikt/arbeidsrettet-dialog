@@ -90,6 +90,14 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Arbeidsmarkedsopplæring (AMO)';
         case EksternAktivitetTypes.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
             return 'Norskopplæring, grunnleggende ferdigheter og FOV';
+        case EksternAktivitetTypes.ENKELAMO:
+            return 'Arbeidsmarkedsopplæring (enkeltplass)';
+        case EksternAktivitetTypes.STUDIESPESIALISERING:
+            return 'Studiespesialisering';
+        case EksternAktivitetTypes.FAG_OG_YRKESOPPLAERING:
+            return 'Fag- og yrkesopplæring';
+        case EksternAktivitetTypes.HOYERE_YRKESFAGLIG_UTDANNING:
+            return 'Høyere yrkesfaglig utdanning';
     }
 }
 
