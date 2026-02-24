@@ -98,6 +98,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Fag- og yrkesopplæring';
         case EksternAktivitetTypes.HOYERE_YRKESFAGLIG_UTDANNING:
             return 'Høyere yrkesfaglig utdanning';
+        case EksternAktivitetTypes.HOYEREUTD:
+            return 'Høyere utdanning';
     }
 }
 
