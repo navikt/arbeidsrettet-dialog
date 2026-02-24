@@ -5,7 +5,7 @@ import {
     AlleAktivitetTypes,
     ArenaAktivitet,
     ArenaAktivitetTypes,
-    EksternAktivitetTypes
+    EksternAktivitetTypes,
 } from '../../utils/aktivitetTypes';
 
 export function getStatusText(status: AktivitetStatus): string {
@@ -85,7 +85,11 @@ export function getTypeText(type: AlleAktivitetTypes): string {
         case EksternAktivitetTypes.VASV:
             return 'Tilrettelagt arbeid';
         case EksternAktivitetTypes.REKRUTTERINGSTREFF:
-            return 'Rekuttteringstreff';
+            return 'Rekutteringstreff';
+        case EksternAktivitetTypes.ARBEIDSMARKEDSOPPLAERING:
+            return 'Arbeidsmarkedsopplæring (AMO)';
+        case EksternAktivitetTypes.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+            return 'Norskopplæring, grunnleggende ferdigheter og FOV';
     }
 }
 
