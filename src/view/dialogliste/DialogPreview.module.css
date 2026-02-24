@@ -13,14 +13,18 @@
     animation-timing-function: ease;
     animation-name: fade-in-animation;
 }
-
-.dialogPreview > div {
+.dialogPreview > div > div:not(:first-child) {
     width: calc(100% - 1.5rem) !important;
 }
 .ulestDialog {
     padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
-.ulestDialog > div {
-    display: flex;
-    flex-direction: row;
+.blueIndicator {
+    width: 0.5rem;
+    background-color: var(--ax-bg-accent-strong);
+    flex-shrink: 0;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
 }

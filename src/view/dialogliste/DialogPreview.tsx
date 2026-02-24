@@ -92,7 +92,7 @@ function DialogPreview(props: Props) {
     return (
         <LinkPanel
             className={classNames(
-                'my-1 max-w-full flex py-0 p-2 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
+                'my-1 max-w-full flex p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
                 styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
                 {
                     'bg-[#e6f0ff]': detteErValgtDialog,
@@ -103,19 +103,21 @@ function DialogPreview(props: Props) {
             aria-current={detteErValgtDialog && true}
             onClick={onGoTo}
         >
-            {!dialog.lest ? <div className="w-2 bg-surface-info flex flex-row"></div> : null}
-            <div className="flex flex-1 flex-row py-2 pl-2">
-                <div className="min-w-0 flex-grow">
-                    <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
-                    <Tittel tittel={overskrift} aktivitet={aktivitet} />
-                    <Detail>{datoString}</Detail>
-                    <EtikettListe dialog={dialog} />
-                    <BodyShort className="hidden">{meldingerText(dialog.henvendelser.length)}</BodyShort>
+            <div className="flex flex-row w-full">
+                {!dialog.lest ? <div className={styles.blueIndicator}></div> : null}
+                <div className="flex flex-1 flex-row py-2 pl-2">
+                    <div className="min-w-0 flex-grow">
+                        <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
+                        <Tittel tittel={overskrift} aktivitet={aktivitet} />
+                        <Detail>{datoString}</Detail>
+                        <EtikettListe dialog={dialog} />
+                        <BodyShort className="hidden">{meldingerText(dialog.henvendelser.length)}</BodyShort>
+                    </div>
+                    <BodyShort aria-hidden="true" className="ml-2 flex items-center">
+                        {dialog.henvendelser.length}
+                    </BodyShort>
+                    <div ref={dialogref}></div>
                 </div>
-                <BodyShort aria-hidden="true" className="ml-2 flex items-center">
-                    {dialog.henvendelser.length}
-                </BodyShort>
-                <div ref={dialogref}></div>
             </div>
         </LinkPanel>
     );
