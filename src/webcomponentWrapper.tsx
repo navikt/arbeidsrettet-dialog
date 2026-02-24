@@ -22,7 +22,7 @@ export class DabDialog extends HTMLElement {
 
         // Load styles under this shadowDom-node, not root element
         const styleElem = document.createElement('style');
-        styleElem.innerHTML = globalCss + dialogOversiktStyles;
+        styleElem.textContent = globalCss + dialogOversiktStyles;
         shadowRoot.appendChild(styleElem);
 
         const fnr = this.getAttribute('data-fnr') ?? undefined;
@@ -32,7 +32,7 @@ export class DabDialog extends HTMLElement {
             root.render(
                 <ModalProvider rootElement={shadowDomFirstChild}>
                     <App createRouter={createBrowserRouter} />
-                </ModalProvider>
+                </ModalProvider>,
             );
         } catch (e) {
             console.error(e);

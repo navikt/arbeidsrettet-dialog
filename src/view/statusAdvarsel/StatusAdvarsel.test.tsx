@@ -19,8 +19,8 @@ const oppfPerioder: PeriodeData[] = [
         sluttDato: '2017-12-31T10:46:10.971+01:00',
         begrunnelse: null,
         kvpPerioder: [],
-        uuid: '1'
-    }
+        uuid: '1',
+    },
 ];
 const ingenPerioder: PeriodeData[] = [];
 const oppfolgingData: OppfolgingData = {
@@ -43,13 +43,13 @@ const oppfolgingData: OppfolgingData = {
     erSykmeldtMedArbeidsgiver: false,
     formidlingsgruppe: null,
     servicegruppe: null,
-    registrertKRR: false
+    registrertKRR: false,
 };
 
 const useFetchOppfolging: OppfolgingDataProviderType = {
     data: oppfolgingData,
     status: Status.OK,
-    hentOppfolging: () => Promise.resolve(undefined)
+    hentOppfolging: () => Promise.resolve(undefined),
 };
 
 describe('<AlertStripeContainer/>', () => {
@@ -75,7 +75,7 @@ describe('<AlertStripeContainer/>', () => {
 
         const { getByText, getByRole } = render(<StatusAdvarsel />);
         getByText(
-            'Du er ikke lenger registrert hos Nav. Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.'
+            'Du er ikke lenger registrert hos Nav. Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.',
         );
         expect(getByRole('link').textContent).toBe('Registrer deg hos Nav');
     });
@@ -86,10 +86,7 @@ describe('<AlertStripeContainer/>', () => {
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const wrapper = render(<StatusAdvarsel />);
-        expect(wrapper.baseElement.textContent).toBe(
-            // Alert + testing-librarry = prefix med 'Advarsel'
-            'Advarsel' + 'Bruker er ikke under oppfølging og kan ikke sende meldinger'
-        );
+        expect(wrapper.baseElement.textContent).toBe('Bruker er ikke under oppfølging og kan ikke sende meldinger');
     });
 
     it('Bruker registret KRR viser en advarsel - veileder.', () => {
@@ -109,7 +106,7 @@ describe('<AlertStripeContainer/>', () => {
 
         const { getByText, getByRole } = render(<StatusAdvarsel />);
         getByText(
-            'Du kan ikke sende meldinger i den digitale dialogen fordi du har reservert deg mot digital kommunikasjon i kontakt og reservasjonsregisteret (KRR).'
+            'Du kan ikke sende meldinger i den digitale dialogen fordi du har reservert deg mot digital kommunikasjon i kontakt og reservasjonsregisteret (KRR).',
         );
         expect(getByRole('link').textContent).toBe('Gå til norge.no for å fjerne reservasjonen.');
     });

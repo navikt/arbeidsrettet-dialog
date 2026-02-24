@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, Button, GuidePanel, TextField, Textarea, BodyShort, Checkbox } from '@navikt/ds-react';
+import { Button, GuidePanel, TextField, Textarea, BodyShort, Checkbox, LocalAlert } from '@navikt/ds-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { redirect, useNavigate } from 'react-router';
@@ -182,7 +182,7 @@ const NyDialogForm = (props: Props) => {
                 />
 
                 {noeFeilet ? (
-                    <Alert variant="error">Noe gikk dessverre galt med systemet. Prøv igjen senere.</Alert>
+                    <LocalAlert status="error">Noe gikk dessverre galt med systemet. Prøv igjen senere.</LocalAlert>
                 ) : null}
 
                 {useErVeileder() ? (

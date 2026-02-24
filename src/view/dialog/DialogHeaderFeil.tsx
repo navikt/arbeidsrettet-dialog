@@ -1,4 +1,4 @@
-import { Alert } from '@navikt/ds-react';
+import { GlobalAlert } from '@navikt/ds-react';
 import React from 'react';
 import { useAktivitetStore, useTiltaksAktivitetStore } from '../AktivitetProvider';
 import { Status } from '../../api/typer';
@@ -15,21 +15,13 @@ function DialogHeaderFeil() {
     }
 
     if (dialogFeil) {
-        return (
-            <div className="">
-                <Alert fullWidth variant="error">
-                    Noe gikk galt ved henting av dialoger. Prøv igjen senere
-                </Alert>
-            </div>
-        );
+        return <GlobalAlert status="error">Noe gikk galt ved henting av dialoger. Prøv igjen senere</GlobalAlert>;
     }
 
     return (
-        <div className="">
-            <Alert fullWidth variant="error">
-                Noe gikk galt, og du får dessverre ikke sett informasjon fra aktivitetsplanen. Prøv igjen senere.
-            </Alert>
-        </div>
+        <GlobalAlert status="error">
+            Noe gikk galt, og du får dessverre ikke sett informasjon fra aktivitetsplanen. Prøv igjen senere.
+        </GlobalAlert>
     );
 }
 
