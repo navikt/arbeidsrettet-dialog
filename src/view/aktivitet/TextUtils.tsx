@@ -5,7 +5,7 @@ import {
     AlleAktivitetTypes,
     ArenaAktivitet,
     ArenaAktivitetTypes,
-    EksternAktivitetTypes
+    EksternAktivitetTypes,
 } from '../../utils/aktivitetTypes';
 
 export function getStatusText(status: AktivitetStatus): string {
@@ -85,7 +85,21 @@ export function getTypeText(type: AlleAktivitetTypes): string {
         case EksternAktivitetTypes.VASV:
             return 'Tilrettelagt arbeid';
         case EksternAktivitetTypes.REKRUTTERINGSTREFF:
-            return 'Rekuttteringstreff';
+            return 'Rekutteringstreff';
+        case EksternAktivitetTypes.ARBEIDSMARKEDSOPPLAERING:
+            return 'Arbeidsmarkedsopplæring (AMO)';
+        case EksternAktivitetTypes.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+            return 'Norskopplæring, grunnleggende ferdigheter og FOV';
+        case EksternAktivitetTypes.ENKELAMO:
+            return 'Arbeidsmarkedsopplæring (enkeltplass)';
+        case EksternAktivitetTypes.STUDIESPESIALISERING:
+            return 'Studiespesialisering';
+        case EksternAktivitetTypes.FAG_OG_YRKESOPPLAERING:
+            return 'Fag- og yrkesopplæring';
+        case EksternAktivitetTypes.HOYERE_YRKESFAGLIG_UTDANNING:
+            return 'Høyere yrkesfaglig utdanning';
+        case EksternAktivitetTypes.HOYEREUTD:
+            return 'Høyere utdanning';
     }
 }
 
