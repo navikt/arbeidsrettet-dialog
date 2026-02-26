@@ -13,8 +13,9 @@
     animation-timing-function: ease;
     animation-name: fade-in-animation;
 }
-.dialogPreview > div > div:not(:first-child) {
-    width: calc(100% - 1.5rem) !important;
+.dialogPreview > div:first-child {
+    flex: 1;
+    min-width: 0;
 }
 .ulestDialog {
     padding-left: 0;
