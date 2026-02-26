@@ -30,12 +30,12 @@ const DialogCheckboxes = ({
     loading,
     venterPaSvar,
     venterPaSvarDisabled,
-    ferdigBehandletDisabled
+    ferdigBehandletDisabled,
 }: Props) => {
     return (
         <div className="mb-2 pl-1">
             <CheckboxGroup legend={'Filter'} hideLegend value={values}>
-                <div className="flex">
+                <div className="flex gap-4">
                     <Checkbox
                         value={'ferdigBehandlet'}
                         size="small"
@@ -81,7 +81,7 @@ const ManagedDialogCheckboxes = ({ dialog }: { dialog: DialogData }) => {
 
     const values = [
         !dialog.ferdigBehandlet ? ('ferdigBehandlet' as const) : undefined,
-        dialog.venterPaSvar ? ('venterPaSvar' as const) : undefined
+        dialog.venterPaSvar ? ('venterPaSvar' as const) : undefined,
     ].filter(notEmpty);
 
     const laster = dialogContext.status === Status.PENDING || dialogContext.status === Status.RELOADING;

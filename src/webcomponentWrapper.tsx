@@ -1,3 +1,4 @@
+import dsStyles from '@navikt/ds-css/dist/index.css?inline';
 import { Provider as ModalProvider } from '@navikt/ds-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -22,7 +23,7 @@ export class DabDialog extends HTMLElement {
 
         // Load styles under this shadowDom-node, not root element
         const styleElem = document.createElement('style');
-        styleElem.innerHTML = globalCss + dialogOversiktStyles;
+        styleElem.textContent = globalCss + dsStyles + dialogOversiktStyles;
         shadowRoot.appendChild(styleElem);
 
         const fnr = this.getAttribute('data-fnr') ?? undefined;
@@ -32,7 +33,7 @@ export class DabDialog extends HTMLElement {
             root.render(
                 <ModalProvider rootElement={shadowDomFirstChild}>
                     <App createRouter={createBrowserRouter} />
-                </ModalProvider>
+                </ModalProvider>,
             );
         } catch (e) {
             console.error(e);

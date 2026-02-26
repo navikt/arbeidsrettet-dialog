@@ -15,19 +15,21 @@ export function Aktivitetskort() {
     const harDialog = useSelectedDialog();
 
     if (!aktivitet) {
-        return <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/4 border-l border-border-divider"></div>;
+        return (
+            <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/4 border-l border-ax-border-neutral-subtle"></div>
+        );
     }
 
     const { status, tittel, avtalt } = aktivitet;
     return (
         <div
             className={classNames(
-                ' w-full border-l border-border-divider lg:max-w-[320px] xl:max-w-screen-w-1/3 2xl:flex 2xl:max-w-screen-w-1/4',
+                ' w-full border-l border-ax-border-neutral-subtle lg:max-w-[320px] xl:max-w-screen-w-1/3 2xl:flex 2xl:max-w-screen-w-1/4',
                 {
                     'lg:flex hidden': !harDialog && aktivitet,
                     hidden: !visAktivitet,
-                    ' lg:flex hidden': visAktivitet
-                }
+                    ' lg:flex hidden': visAktivitet,
+                },
             )}
         >
             <section

@@ -1,4 +1,4 @@
-import { Alert, Button, Textarea } from '@navikt/ds-react';
+import { Button, LocalAlert, Textarea } from '@navikt/ds-react';
 import React, { MutableRefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, setCursorBeforeHilsen, MeldingInputContext, useFocusBeforeHilsen } from './inputUtils';
@@ -14,7 +14,7 @@ const MeldingSideInputInner = () => {
     const {
         register,
         getValues,
-        formState: { errors, isSubmitting }
+        formState: { errors, isSubmitting },
     } = useFormContext<MeldingFormValues>();
     const textAreaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
     useFocusBeforeHilsen(textAreaRef);
@@ -53,9 +53,9 @@ const MeldingSideInputInner = () => {
             </div>
 
             {noeFeilet ? (
-                <Alert className="mt-4" variant="error">
+                <LocalAlert className="mt-4" status="error">
                     Noe gikk dessverre galt med systemet. Prøv igjen senere.
-                </Alert>
+                </LocalAlert>
             ) : null}
         </form>
     );

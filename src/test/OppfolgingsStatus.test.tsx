@@ -14,20 +14,20 @@ const singleComponentRouter = (initialEntries: string[] | undefined = undefined)
             {
                 id: RouteIds.Root,
                 path: '*',
-                element: <AppBody />
-            }
+                element: <AppBody />,
+            },
         ],
         {
             initialEntries,
-            future: reactRouterFutureFlags
-        }
+            future: reactRouterFutureFlags,
+        },
     );
 const MemoryRouterMedBareDialogOversikt = () => (
     <RouterProvider future={{ v7_startTransition: true }} router={singleComponentRouter(['/'])} />
 );
 
 const rootLoaderData = {
-    dialoger: Promise.resolve([])
+    dialoger: Promise.resolve([]),
 };
 
 describe('Statusadvarsler', () => {
@@ -58,8 +58,9 @@ describe('Statusadvarsler', () => {
                 gitt.bruker().som.harIngenDialog().som.harBrukerIkkeLengerErUnderOppfolging();
                 vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
                 const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
+                getByText('Du er ikke lenger registrert hos Nav');
                 getByText(
-                    'Du er ikke lenger registrert hos Nav. Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.'
+                    'Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.',
                 );
             });
         });
@@ -76,7 +77,7 @@ describe('Statusadvarsler', () => {
             gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenReservertIKRR();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
             getByText(
-                'Du kan ikke sende meldinger i den digitale dialogen fordi du har reservert deg mot digital kommunikasjon i kontakt og reservasjonsregisteret (KRR).'
+                'Du kan ikke sende meldinger i den digitale dialogen fordi du har reservert deg mot digital kommunikasjon i kontakt og reservasjonsregisteret (KRR).',
             );
         });
     });
@@ -86,7 +87,7 @@ describe('Statusadvarsler', () => {
             gitt.veileder().som.harIngenDialog().som.harBrukerUnderOppfølgingMenManuell();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
             getByText(
-                'Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen til brukeren er utdatert i KRR.'
+                'Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen til brukeren er utdatert i KRR.',
             );
         });
 
@@ -98,7 +99,7 @@ describe('Statusadvarsler', () => {
 
         it('bruker under oppf. men manuell kan endre til digital oppfølging', async () => {
             vi.mock('../utils/Fetch', () => ({
-                fetchData: vi.fn(() => new Promise((resolve) => resolve(undefined)))
+                fetchData: vi.fn(() => Promise.resolve(undefined)),
             }));
             gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenManuell();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
@@ -113,7 +114,7 @@ describe('Statusadvarsler', () => {
             gitt.veileder().som.harIngenDialog().som.harBrukerUnderOppfølgingMenKanIkkeVarsles();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
             getByText(
-                'Du kan ikke sende meldinger i dialogen fordi brukeren ikke har registrert e-post eller telefonnummeret sitt i KRR.'
+                'Du kan ikke sende meldinger i dialogen fordi brukeren ikke har registrert e-post eller telefonnummeret sitt i KRR.',
             );
         });
 
@@ -121,7 +122,7 @@ describe('Statusadvarsler', () => {
             gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenKanIkkeVarsles();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
             getByText(
-                'Du kan ikke sende meldinger i dialogen fordi du ikke har registrert e-post eller telefonnummeret ditt i kontakt og reservasjonsregisteret (KRR).'
+                'Du kan ikke sende meldinger i dialogen fordi du ikke har registrert e-post eller telefonnummeret ditt i kontakt og reservasjonsregisteret (KRR).',
             );
         });
     });

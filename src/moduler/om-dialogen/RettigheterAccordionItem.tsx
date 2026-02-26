@@ -11,7 +11,7 @@ export function RettigheterAccordionItem() {
     return (
         <Accordion.Item>
             <Accordion.Header onClick={handleClick}>
-                <Heading level="2" size="small">
+                <Heading level="2" size="small" className="text-ax-text-neutral">
                     Rettigheter og personvern
                 </Heading>
             </Accordion.Header>

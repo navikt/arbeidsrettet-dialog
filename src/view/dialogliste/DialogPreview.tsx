@@ -53,7 +53,7 @@ export enum TabId {
     DIALOG = 'DIALOG',
     VEDTAKSSTOTTE = 'VEDTAKSSTOTTE',
     DETALJER = 'DETALJER',
-    ARBEIDSMARKEDSTILTAK = 'ARBEIDSMARKEDSTILTAK'
+    ARBEIDSMARKEDSTILTAK = 'ARBEIDSMARKEDSTILTAK',
 }
 
 export type TabChangeEvent = { tabId: string };
@@ -91,27 +91,32 @@ function DialogPreview(props: Props) {
 
     return (
         <LinkPanel
-            className={classNames('my-1 max-w-full !gap-0 border p-2', styles.dialogPreview, styles.linkPanel, {
-                'bg-[#e6f0ff]': detteErValgtDialog,
-                [styles.ulestDialog]: !dialog.lest
-            })}
+            className={classNames(
+                'my-1 max-w-full flex !p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
+                styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
+                {
+                    'bg-[#e6f0ff]': detteErValgtDialog,
+                },
+            )}
             href={dialogRoute(id)}
             aria-current={detteErValgtDialog && true}
             onClick={onGoTo}
         >
-            {!dialog.lest ? <div className="w-2 bg-surface-info flex flex-row"></div> : null}
-            <div className="flex flex-1 flex-row py-2 pl-2">
-                <div className="min-w-0 flex-grow">
-                    <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
-                    <Tittel tittel={overskrift} aktivitet={aktivitet} />
-                    <Detail>{datoString}</Detail>
-                    <EtikettListe dialog={dialog} />
-                    <BodyShort className="hidden">{meldingerText(dialog.henvendelser.length)}</BodyShort>
+            <div className="flex flex-row w-full">
+                <div className={classNames(styles.blueIndicator, { invisible: dialog.lest })}></div>
+                <div className="flex flex-1 flex-row py-2 pl-2">
+                    <div className="min-w-0 flex-grow">
+                        <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
+                        <Tittel tittel={overskrift} aktivitet={aktivitet} />
+                        <Detail>{datoString}</Detail>
+                        <EtikettListe dialog={dialog} />
+                        <BodyShort className="hidden">{meldingerText(dialog.henvendelser.length)}</BodyShort>
+                    </div>
+                    <BodyShort aria-hidden="true" className="ml-2 flex items-center">
+                        {dialog.henvendelser.length}
+                    </BodyShort>
+                    <div ref={dialogref}></div>
                 </div>
-                <BodyShort aria-hidden="true" className="ml-2 flex items-center">
-                    {dialog.henvendelser.length}
-                </BodyShort>
-                <div ref={dialogref}></div>
             </div>
         </LinkPanel>
     );
@@ -145,7 +150,7 @@ export function DialogPreviewListe({ dialoger, valgDialog }: ListeProps) {
                     <li
                         key={dialog.id}
                         className={classNames('', {
-                            [styles.fadeIn]: index === 0 && skalFadeIn
+                            [styles.fadeIn]: index === 0 && skalFadeIn,
                         })}
                     >
                         <DialogPreview dialog={dialog} valgtDialogId={valgDialog} />
