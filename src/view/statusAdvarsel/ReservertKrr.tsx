@@ -1,4 +1,4 @@
-import { Link, Heading } from '@navikt/ds-react';
+import { Link } from '@navikt/ds-react';
 import React from 'react';
 import StatusAdvarselWrapper from './StatusAdvarselWrapper';
 
@@ -13,10 +13,7 @@ const linkReservert = 'https://www.norge.no/nb/digital-borger/reservasjon';
 
 function BrukerReservertIKrrVeileder() {
     return (
-        <StatusAdvarselWrapper>
-            <Heading spacing size="small" level="3">
-                Du har reservert deg mot digital kommunikasjon
-            </Heading>
+        <StatusAdvarselWrapper title="Du har reservert deg mot digital kommunikasjon">
             Du kan ikke sende meldinger i den digitale dialogen fordi du har reservert deg mot digital kommunikasjon i
             kontakt og reservasjonsregisteret (KRR).
             <Link href={linkReservert}>Gå til norge.no for å fjerne reservasjonen.</Link>
@@ -26,10 +23,7 @@ function BrukerReservertIKrrVeileder() {
 
 function BrukerReservertIKrr() {
     return (
-        <StatusAdvarselWrapper>
-            <Heading spacing size="small" level="3">
-                Brukeren er reservert i KRR
-            </Heading>
+        <StatusAdvarselWrapper title="Brukeren er reservert i KRR">
             Du kan ikke sende meldinger fordi brukeren har reservert seg mot digital kommunikasjon KRR.
             <br />
             <Link href={linkReservert}>Brukeren må gå til norge.no for å fjerne reservasjonen.</Link>

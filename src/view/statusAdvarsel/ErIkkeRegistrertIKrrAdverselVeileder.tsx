@@ -1,4 +1,4 @@
-import { Link, Heading } from '@navikt/ds-react';
+import { Link } from '@navikt/ds-react';
 import React from 'react';
 import StatusAdvarselWrapper from './StatusAdvarselWrapper';
 
@@ -10,10 +10,7 @@ const linkIkkeRegistrertIKrr = 'https://www.norge.no/nb/digital-borger/oppdater-
 
 function BrukerIkkeIIKrrVeileder() {
     return (
-        <StatusAdvarselWrapper>
-            <Heading spacing size="small" level="3">
-                Brukeren er ikke registrert i KRR
-            </Heading>
+        <StatusAdvarselWrapper title="Brukeren er ikke registrert i KRR">
             Du kan ikke sende meldinger i dialogen fordi brukeren ikke har registrert e-post eller telefonnummeret sitt
             i KRR.
             <br />

@@ -1,15 +1,12 @@
 import React from 'react';
 
 import StatusAdvarselWrapper from './StatusAdvarselWrapper';
-import { Heading, Link } from '@navikt/ds-react';
+import { Link } from '@navikt/ds-react';
 
 const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kontaktinformasjon';
 
 const BrukerKanIkkeVarsles = () => (
-    <StatusAdvarselWrapper>
-        <Heading level="2" size="small">
-            Kontaktinformasjonen din er utdatert
-        </Heading>
+    <StatusAdvarselWrapper title="Kontaktinformasjonen din er utdatert">
         Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen din er utdatert i kontakt og
         reservasjonsregisteret (KRR).
         <br />
