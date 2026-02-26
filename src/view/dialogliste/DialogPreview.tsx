@@ -92,11 +92,10 @@ function DialogPreview(props: Props) {
     return (
         <LinkPanel
             className={classNames(
-                'my-1 max-w-full flex p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
+                'my-1 max-w-full flex !p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
                 styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
                 {
                     'bg-[#e6f0ff]': detteErValgtDialog,
-                    [styles.ulestDialog]: !dialog.lest,
                 },
             )}
             href={dialogRoute(id)}
@@ -104,7 +103,7 @@ function DialogPreview(props: Props) {
             onClick={onGoTo}
         >
             <div className="flex flex-row w-full">
-                {!dialog.lest ? <div className={styles.blueIndicator}></div> : null}
+                <div className={classNames(styles.blueIndicator, { invisible: dialog.lest })}></div>
                 <div className="flex flex-1 flex-row py-2 pl-2">
                     <div className="min-w-0 flex-grow">
                         <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
