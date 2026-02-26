@@ -15,12 +15,18 @@ function DialogHeaderFeil() {
     }
 
     if (dialogFeil) {
-        return <GlobalAlert status="error">Noe gikk galt ved henting av dialoger. Prøv igjen senere</GlobalAlert>;
+        return (
+            <GlobalAlert status="error">
+                <GlobalAlert.Content>Noe gikk galt ved henting av dialoger. Prøv igjen senere</GlobalAlert.Content>
+            </GlobalAlert>
+        );
     }
 
     return (
         <GlobalAlert status="error">
-            Noe gikk galt, og du får dessverre ikke sett informasjon fra aktivitetsplanen. Prøv igjen senere.
+            <GlobalAlert.Content>
+                Noe gikk galt, og du får dessverre ikke sett informasjon fra aktivitetsplanen. Prøv igjen senere.
+            </GlobalAlert.Content>
         </GlobalAlert>
     );
 }
