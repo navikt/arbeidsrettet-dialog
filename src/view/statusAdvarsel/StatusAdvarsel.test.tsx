@@ -74,9 +74,8 @@ describe('<AlertStripeContainer/>', () => {
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const { getByText, getByRole } = render(<StatusAdvarsel />);
-        getByText(
-            'Du er ikke lenger registrert hos Nav. Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.',
-        );
+        getByText('Du er ikke lenger registrert hos Nav');
+        getByText('Hvis du fortsatt skal få oppfølging fra Nav og ha dialog med veileder må du være registrert.');
         expect(getByRole('link').textContent).toBe('Registrer deg hos Nav');
     });
     it('Bruker med oppf.perioder, ikke under oppf. viser advarsel - veileder', () => {
