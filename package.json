@@ -67,7 +67,7 @@
     "@navikt/ds-react": "^8.6.0",
     "@navikt/ds-tailwind": "^8.6.0",
     "@sentry/react": "^8.47.0",
-    "@tailwindcss/vite": "^4.1.18",
+    "@tailwindcss/vite": "^4.2.1",
     "@vitejs/plugin-react": "^4.7.0",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "core-js": "^3.48.0",
@@ -127,7 +127,7 @@
     "storybook": "^8.6.15",
     "typescript": "^5.9.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.2.1",
     "vitest": "^3.2.4"
   },
   "msw": {

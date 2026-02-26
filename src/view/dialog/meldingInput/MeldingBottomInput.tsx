@@ -25,7 +25,7 @@ const MeldingBottomInputInner = () => {
     const formHooks = register('melding');
     return (
         <form className="'flex flex-1 flex-col overflow-hidden'" onSubmit={onSubmit} noValidate autoComplete="off">
-            <div className="flex items-end">
+            <div className="flex items-end gap-2">
                 <label htmlFor="melding_input" className="sr-only">
                     Skriv om arbeid og oppfølging
                 </label>
