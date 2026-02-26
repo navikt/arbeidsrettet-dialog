@@ -99,7 +99,7 @@ describe('Statusadvarsler', () => {
 
         it('bruker under oppf. men manuell kan endre til digital oppfølging', async () => {
             vi.mock('../utils/Fetch', () => ({
-                fetchData: vi.fn(() => new Promise((resolve) => resolve(undefined))),
+                fetchData: vi.fn(() => Promise.resolve(undefined)),
             }));
             gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenManuell();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));

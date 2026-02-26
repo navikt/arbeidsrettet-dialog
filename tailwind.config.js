@@ -1,5 +1,3 @@
-// const naviktTailwindPreset = require('@navikt/ds-tailwind');
-
 module.exports = {
     presets: [require('@navikt/ds-tailwind')],
     content: ['./src/**/*.{js,ts,jsx,tsx}'],

@@ -1,4 +1,4 @@
-import { Loader, Theme } from '@navikt/ds-react';
+import { Loader } from '@navikt/ds-react';
 import classNames from 'classnames';
 import React, { ReactNode, Suspense, useEffect, useMemo, useState } from 'react';
 import { Await, useLocation } from 'react-router';

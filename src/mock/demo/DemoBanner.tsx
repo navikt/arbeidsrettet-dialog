@@ -1,8 +1,5 @@
 import { Modal } from '@navikt/ds-react';
 import React, { useState } from 'react';
-// import '@navikt/ds-css';
-// import '../../global.css';
-
 import DemoDashboard from './DemoDashboard';
 import { DemoIkon } from './DemoIkon';
 
