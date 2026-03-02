@@ -22,25 +22,29 @@ interface Props {
     viktigMarkering: boolean;
 }
 
+export function escapeOrderedList(text: string) {
+    return text.replace(/^(\d+)\. /gm, '$1\\. ');
+}
+
 /**
- * Sørger for at linjer som starter med *, - eller tall. blir tolket som Markdown-lister
+ * Sørger for at linjer som starter med * eller - blir tolket som Markdown-lister
  * ved å legge til en tom linje foran første listepunkt og trimme innrykk.
  */
 export function ensureMarkdownLists(text: string): string {
-    const listItemPattern = /^([*\-] |\d+\. )/;
+    const bulletPattern = /^[*\-] /;
     const lines = text.split('\n');
     const result: string[] = [];
 
     for (let i = 0; i < lines.length; i++) {
         const trimmed = lines[i].trimStart();
-        const isListItem = listItemPattern.test(trimmed);
+        const isBullet = bulletPattern.test(trimmed);
         const prevLine = result.length > 0 ? result[result.length - 1] : '';
-        const prevIsListItem = listItemPattern.test(prevLine.trimStart());
+        const prevIsBullet = bulletPattern.test(prevLine.trimStart());
 
-        if (isListItem && !prevIsListItem && prevLine.trim() !== '') {
+        if (isBullet && !prevIsBullet && prevLine.trim() !== '') {
             result.push('');
         }
-        result.push(isListItem ? trimmed : lines[i]);
+        result.push(isBullet ? trimmed : lines[i]);
     }
 
     return result.join('\n');
@@ -87,7 +91,7 @@ export function Melding(props: Props) {
                                 }}
                                 disallowedElements={['script']}
                             >
-                                {ensureMarkdownLists(linkifyToMarkdown(tekst))}
+                                {ensureMarkdownLists(escapeOrderedList(linkifyToMarkdown(tekst)))}
                             </Markdown>
                         </span>
                     </div>
