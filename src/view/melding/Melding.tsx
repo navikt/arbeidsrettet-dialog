@@ -74,6 +74,7 @@ export function Melding(props: Props) {
                         <ViktigMelding visible={viktigMarkering} />
                         <span className="prose prose-md prose-compact mt-2 max-w-none">
                             <Markdown
+                                breaks
                                 components={{
                                     a: ({ node, ...props }) => (
                                         <span className="inline-flex items-center">
