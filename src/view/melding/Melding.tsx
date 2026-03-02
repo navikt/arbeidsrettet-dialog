@@ -26,6 +26,29 @@ export function escapeOrderedList(text: string) {
     return text.replace(/^(\d+)\. /gm, '$1\\. ');
 }
 
+/**
+ * Sørger for at linjer som starter med * eller - blir tolket som Markdown-lister
+ * ved å legge til en tom linje foran første listepunkt og trimme innrykk.
+ */
+export function ensureMarkdownLists(text: string): string {
+    const lines = text.split('\n');
+    const result: string[] = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        const trimmed = lines[i].trimStart();
+        const isListItem = /^[*\-] /.test(trimmed);
+        const prevLine = result.length > 0 ? result[result.length - 1] : '';
+        const prevIsListItem = /^[*\-] /.test(prevLine.trimStart());
+
+        if (isListItem && !prevIsListItem && prevLine.trim() !== '') {
+            result.push('');
+        }
+        result.push(isListItem ? trimmed : lines[i]);
+    }
+
+    return result.join('\n');
+}
+
 export function Melding(props: Props) {
     const { viktigMarkering } = props;
     const { avsender, sendt, tekst, avsenderId } = props.henvendelseData;
@@ -52,7 +75,7 @@ export function Melding(props: Props) {
                 <Chat.Bubble>
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
-                        <span className="mt-2 whitespace-pre-wrap">
+                        <span className="prose prose-md prose-compact mt-2 max-w-none">
                             <Markdown
                                 components={{
                                     a: ({ node, ...props }) => (
@@ -63,11 +86,11 @@ export function Melding(props: Props) {
                                                 aria-label="Lenke åpnes i ny fane"
                                             />
                                         </span>
-                                    )
+                                    ),
                                 }}
                                 disallowedElements={['script']}
                             >
-                                {escapeOrderedList(linkifyToMarkdown(tekst))}
+                                {ensureMarkdownLists(escapeOrderedList(linkifyToMarkdown(tekst)))}
                             </Markdown>
                         </span>
                     </div>
