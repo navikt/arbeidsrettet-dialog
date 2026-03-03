@@ -1,3 +1,31 @@
 @import "tailwindcss";
 @import "@navikt/ds-css" layer(components);
+@plugin "@tailwindcss/typography";
 @config '../tailwind.config.js';
+
+.prose-compact {
+    --tw-prose-bullets: currentColor;
+    --tw-prose-counters: currentColor;
+
+    & :is(ul, ol) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-left: 1.25em !important;
+    }
+    & :is(li) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    & :is(p) {
+        margin-top: 0.5em !important;
+        margin-bottom: 0 !important;
+        white-space: pre-wrap;
+    }
+    & :is(p:first-child) {
+        margin-top: 0 !important;
+    }
+}
+
