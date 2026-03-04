@@ -1,5 +1,5 @@
 import { ExternalLinkIcon, PersonIcon } from '@navikt/aksel-icons';
-import { BodyShort, Chat, HStack } from '@navikt/ds-react';
+import { BodyShort, Chat } from '@navikt/ds-react';
 import React from 'react';
 
 import { ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
@@ -26,25 +26,39 @@ export function escapeOrderedList(text: string) {
     return text.replace(/^(\d+)\. /gm, '$1\\. ');
 }
 
-/**
- * Sørger for at linjer som starter med * eller - blir tolket som Markdown-lister
- * ved å legge til en tom linje foran første listepunkt og trimme innrykk.
- */
-export function ensureMarkdownLists(text: string): string {
+export function prepareForMarkdown(text: string): string {
     const bulletPattern = /^[*\-] /;
-    const lines = text.split('\n');
+    const lines = escapeOrderedList(text).split('\n');
     const result: string[] = [];
+
+    let prevIsBullet = false;
+    let prevIsEmpty = true;
 
     for (let i = 0; i < lines.length; i++) {
         const trimmed = lines[i].trimStart();
         const isBullet = bulletPattern.test(trimmed);
-        const prevLine = result.length > 0 ? result[result.length - 1] : '';
-        const prevIsBullet = bulletPattern.test(prevLine.trimStart());
 
-        if (isBullet && !prevIsBullet && prevLine.trim() !== '') {
+        if (isBullet && !prevIsBullet && !prevIsEmpty) {
             result.push('');
         }
-        result.push(isBullet ? trimmed : lines[i]);
+        if (!isBullet && prevIsBullet) {
+            result.push('');
+        }
+
+        if (isBullet) {
+            result.push(trimmed);
+        } else if (lines[i].trim() === '') {
+            result.push('\\');
+        } else {
+            result.push(lines[i].replace(/\s*$/, '') + '  ');
+        }
+
+        prevIsBullet = isBullet;
+        prevIsEmpty = lines[i].trim() === '';
+    }
+
+    while (result.length > 0 && result[result.length - 1] === '\\') {
+        result.pop();
     }
 
     return result.join('\n');
@@ -91,7 +105,7 @@ export function Melding(props: Props) {
                                 }}
                                 disallowedElements={['script']}
                             >
-                                {ensureMarkdownLists(escapeOrderedList(linkifyToMarkdown(tekst)))}
+                                {prepareForMarkdown(linkifyToMarkdown(tekst))}
                             </Markdown>
                         </span>
                     </div>
