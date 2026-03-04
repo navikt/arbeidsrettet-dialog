@@ -57,7 +57,7 @@ export function prepareForMarkdown(text: string): string {
         prevIsEmpty = lines[i].trim() === '';
     }
 
-    while (result.length > 0 && result[result.length - 1] === '\\') {
+    while (result.length > 0 && result.at(-1) === '\\') {
         result.pop();
     }
 
