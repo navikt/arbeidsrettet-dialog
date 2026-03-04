@@ -3,6 +3,16 @@
 @plugin "@tailwindcss/typography";
 @config '../tailwind.config.js';
 
+.chat-avatar-info .aksel-chat__avatar {
+    background: var(--ax-bg-info-soft);
+    border: 1px solid var(--ax-border-info);
+}
+
+.chat-avatar-neutral .aksel-chat__avatar {
+    background: var(--ax-bg-neutral-soft);
+    border: 1px solid var(--ax-border-neutral);
+}
+
 .prose-compact {
     --tw-prose-bullets: currentColor;
     --tw-prose-counters: currentColor;
@@ -28,4 +38,3 @@
         margin-top: 0 !important;
     }
 }
-
