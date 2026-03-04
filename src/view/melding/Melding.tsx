@@ -50,7 +50,7 @@ export function prepareForMarkdown(text: string): string {
         } else if (lines[i].trim() === '') {
             result.push('\\');
         } else {
-            result.push(lines[i].replace(/\s*$/, '') + '  ');
+            result.push(lines[i].trimEnd() + '  ');
         }
 
         prevIsBullet = isBullet;
