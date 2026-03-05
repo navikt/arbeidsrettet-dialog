@@ -4,12 +4,18 @@
 @config '../tailwind.config.js';
 
 .prose-compact {
+    /* Make sure bullet points in lists are correct color */
     --tw-prose-bullets: currentColor;
     --tw-prose-counters: currentColor;
 
+    /* Compact horizontal rule, make sure border color is same color as font */
+    & hr {
+        border-color: currentColor;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
     & :is(ul, ol) {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
         padding-left: 1.25em !important;
     }
     & :is(li) {
@@ -19,13 +25,18 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
     }
-    & :is(p) {
-        margin-top: 0.5em !important;
-        margin-bottom: 0 !important;
-        white-space: pre-wrap;
-    }
-    & :is(p:first-child) {
+
+    /* Not sure why but list-elements sometimes wrap items in p, make sure not to add extra space */
+    & :is(ul, ol) > li > p {
         margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
+
+    /* Dont add extra space inside nested lists */
+    & li > :is(ul, ol) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
 }
 
