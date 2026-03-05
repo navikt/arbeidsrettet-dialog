@@ -4,12 +4,12 @@
 @config '../tailwind.config.js';
 
 .chat-avatar-info .aksel-chat__avatar {
-    background: var(--ax-bg-info-soft);
+    background: var(--ax-bg-info-moderate);
     border: 1px solid var(--ax-border-info);
 }
 
 .chat-avatar-neutral .aksel-chat__avatar {
-    background: var(--ax-bg-neutral-soft);
+    background: var(--ax-bg-neutral-moderateA);
     border: 1px solid var(--ax-border-neutral);
 }
 

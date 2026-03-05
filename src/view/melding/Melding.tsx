@@ -77,11 +77,11 @@ export function Melding(props: Props) {
                         erFraSegSelv
                             ? {
                                   border: '1px solid var(--ax-border-info)',
-                                  background: 'var(--ax-bg-info-soft)',
+                                  background: 'var(--ax-bg-info-moderate)',
                               }
                             : {
                                   border: '1px solid var(--ax-border-neutral)',
-                                  background: 'var(--ax-bg-neutral-soft)',
+                                  background: 'var(--ax-bg-neutral-moderateA)',
                               }
                     }
                 >
