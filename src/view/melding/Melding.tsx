@@ -1,5 +1,6 @@
 import { ExternalLinkIcon, PersonIcon } from '@navikt/aksel-icons';
-import { BodyShort, Chat, HStack } from '@navikt/ds-react';
+import remarkBreaks from 'remark-breaks';
+import { BodyShort, Chat } from '@navikt/ds-react';
 import React from 'react';
 
 import { ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
@@ -67,6 +68,7 @@ export function Melding(props: Props) {
                         <ViktigMelding visible={viktigMarkering} />
                         <span className="prose prose-md prose-compact mt-2 max-w-none">
                             <Markdown
+                                remarkPlugins={[remarkBreaks]}
                                 components={{
                                     a: ({ node, ...props }) => (
                                         <span className="inline-flex items-center ">
