@@ -45,12 +45,25 @@ export function Melding(props: Props) {
             <Chat
                 timestamp={toppTekst}
                 size="small"
-                avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'NAV'}
+                avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'Nav'}
                 position={erMeldingFraBruker ? 'right' : 'left'}
-                className="p-0"
-                variant={erFraSegSelv ? 'info' : 'subtle'}
+                className={`p-0 ${erFraSegSelv ? 'chat-avatar-info' : 'chat-avatar-neutral'}`}
             >
-                <Chat.Bubble>
+                <Chat.Bubble
+                    style={
+                        erFraSegSelv
+                            ? {
+                                  border: '1px solid var(--ax-bg-brand-blue-strong-pressed)',
+                                  background: 'var(--ax-bg-brand-blue-strong)',
+                              }
+                            : {
+                                  borderRadius:
+                                      'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2)',
+                                  border: '1px solid var(--ax-border-neutral)',
+                                  background: 'var(--ax-bg-neutral-soft)',
+                              }
+                    }
+                >
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
                         <span className="prose prose-md prose-compact mt-2 max-w-none">
@@ -58,7 +71,7 @@ export function Melding(props: Props) {
                                 remarkPlugins={[remarkBreaks]}
                                 components={{
                                     a: ({ node, ...props }) => (
-                                        <span className="inline-flex items-center">
+                                        <span className="inline-flex items-center ">
                                             <a {...props} target="_blank" rel="noopener noreferrer" />
                                             <ExternalLinkIcon
                                                 className="ml-1 inline-block"
