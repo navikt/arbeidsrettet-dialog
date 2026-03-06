@@ -52,12 +52,14 @@ export function Melding(props: Props) {
                     style={
                         erFraSegSelv
                             ? {
-                                  border: '1px solid var(--ax-border-info)',
-                                  background: 'var(--ax-bg-info-moderate)',
+                                  border: '1px solid var(--ax-bg-brand-blue-strong-pressed)',
+                                  background: 'var(--ax-bg-brand-blue-strong)',
                               }
                             : {
+                                  borderRadius:
+                                      'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2)',
                                   border: '1px solid var(--ax-border-neutral)',
-                                  background: 'var(--ax-bg-neutral-moderateA)',
+                                  background: 'var(--ax-bg-neutral-soft)',
                               }
                     }
                 >
@@ -67,7 +69,7 @@ export function Melding(props: Props) {
                             <Markdown
                                 components={{
                                     a: ({ node, ...props }) => (
-                                        <span className="inline-flex items-center">
+                                        <span className="inline-flex items-center ">
                                             <a {...props} target="_blank" rel="noopener noreferrer" />
                                             <ExternalLinkIcon
                                                 className="ml-1 inline-block"
