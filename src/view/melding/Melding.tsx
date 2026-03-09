@@ -57,7 +57,9 @@ export function Melding(props: Props) {
                             <Markdown
                                 remarkPlugins={[remarkBreaks]}
                                 components={{
+                                    /* Don't render headings (h1) created by adding equal signs on the next line as headings, render as normal p + hr instead */
                                     h1: renderMarkdownH1Tag,
+                                    /* Don't render headings (h2) created by adding dash on the next line as headings, render as normal p + hr instead */
                                     h2: renderMarkdownH2Tag,
                                     /* Don't render the pre-tag at all, just render the children */
                                     pre: renderMarkdownPreTag,
