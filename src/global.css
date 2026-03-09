@@ -38,5 +38,10 @@
         margin-bottom: 0 !important;
     }
 
+    /* Soften up horizontal-rule */
+    & hr {
+        border-color: #9a9a9a;
+    }
+
 }
 
