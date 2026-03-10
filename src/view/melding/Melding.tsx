@@ -88,10 +88,12 @@ const renderMarkdownATag: FunctionComponent<
     </span>
 );
 
-const isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine = (node: Element) => {
-    console.log(node);
+const isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine = (
+    node: { children: { type: string; position?: { start: { column: number } } }[] } | undefined,
+) => {
     const firstChild = node?.children[0];
     if (firstChild?.type !== 'text') return false;
+    // If position start with 1 it cant be an in-line markdown heading
     return firstChild?.position?.start?.column === 1;
 };
 
