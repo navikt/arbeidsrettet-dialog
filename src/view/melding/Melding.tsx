@@ -121,7 +121,7 @@ const renderMarkdownH2Tag: FunctionComponent<
             </>
         );
     }
-    return <h2>children</h2>;
+    return <h2>{children}</h2>;
 };
 const renderMarkdownPreTag: FunctionComponent<
     ClassAttributes<HTMLPreElement> & HTMLAttributes<HTMLPreElement> & ExtraProps
