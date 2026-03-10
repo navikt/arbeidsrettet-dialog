@@ -88,9 +88,18 @@ const renderMarkdownATag: FunctionComponent<
     </span>
 );
 
+interface Position {
+    start: { column: number };
+}
 const isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine = (
-    node: { children: { type: string; position?: { start: { column: number } } }[] } | undefined,
+    node: { children: { type: string; position?: Position }[]; position?: Position } | undefined,
 ) => {
+    const nodeHasMultipleChildren = (node?.children?.length ?? 0) > 1;
+
+    if (nodeHasMultipleChildren && node?.position?.start?.column === 1) {
+        return true;
+    }
+
     const firstChild = node?.children[0];
     if (firstChild?.type !== 'text') return false;
     // If position start with 1 it cant be an in-line markdown heading
