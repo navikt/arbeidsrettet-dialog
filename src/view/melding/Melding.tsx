@@ -108,7 +108,7 @@ const renderMarkdownH1Tag: FunctionComponent<
             </>
         );
     }
-    return <h1>children</h1>;
+    return <h1>{children}</h1>;
 };
 const renderMarkdownH2Tag: FunctionComponent<
     ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
