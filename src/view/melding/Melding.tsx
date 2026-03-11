@@ -47,10 +47,10 @@ export function Melding(props: Props) {
                 size="small"
                 avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'NAV'}
                 position={erMeldingFraBruker ? 'right' : 'left'}
-                className="p-0"
+                className={`p-0 ${!erFraSegSelv ? 'chat-avatar-neutral' : ''}`}
                 variant={erFraSegSelv ? 'info' : 'subtle'}
             >
-                <Chat.Bubble>
+                <Chat.Bubble style={!erFraSegSelv ? { border: '1px solid var(--ax-border-neutral)' } : undefined}>
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
                         <span className="prose prose-md prose-compact mt-2 max-w-none">

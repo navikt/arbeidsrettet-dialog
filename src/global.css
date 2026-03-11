@@ -3,6 +3,10 @@
 @plugin "@tailwindcss/typography";
 @config '../tailwind.config.js';
 
+.chat-avatar-neutral .aksel-chat__avatar {
+    border: 1px solid var(--ax-border-neutral) !important;
+}
+
 .prose-compact {
     /* Make sure bullet points in lists are correct color */
     --tw-prose-bullets: currentColor;
