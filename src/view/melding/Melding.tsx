@@ -53,14 +53,16 @@ export function Melding(props: Props) {
                     style={
                         erFraSegSelv
                             ? {
-                                  border: '1px solid var(--ax-bg-brand-blue-strong-pressed)',
-                                  background: 'var(--ax-bg-brand-blue-strong)',
+                                  borderRadius:
+                                      'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2) var(--ax-radius-12)',
+                                  border: '1px solid var(--ax-border-info)',
+                                  background: 'var(--ax-bg-info-moderate)',
                               }
                             : {
                                   borderRadius:
                                       'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2)',
                                   border: '1px solid var(--ax-border-neutral)',
-                                  background: 'var(--ax-bg-neutral-soft)',
+                                  background: 'var(--ax-bg-neutral-moderateA)',
                               }
                     }
                 >
