@@ -53,14 +53,14 @@ export function Melding(props: Props) {
                     style={
                         erFraSegSelv
                             ? {
-                                  border: '1px solid var(--ax-bg-brand-blue-strong-pressed)',
-                                  background: 'var(--ax-bg-brand-blue-strong)',
+                                  border: '1px solid #0096b1',
+                                  background: '#D8F9FF',
                               }
                             : {
                                   borderRadius:
                                       'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2)',
                                   border: '1px solid var(--ax-border-neutral)',
-                                  background: 'var(--ax-bg-neutral-soft)',
+                                  background: '#ffffff',
                               }
                     }
                 >
