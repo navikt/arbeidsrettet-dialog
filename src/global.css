@@ -39,5 +39,10 @@
         margin-bottom: 0 !important;
     }
 
+    /* Make sure long links dont overflow the chat box */
+    & a {
+        word-break: break-all;
+    }
+
 }
 
