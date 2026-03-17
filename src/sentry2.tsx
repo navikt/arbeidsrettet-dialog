@@ -56,6 +56,9 @@ Sentry.init({
     tracesSampleRate: 0.2,
     // beforeSend: fjernPersonopplysninger,
     release: import.meta.env.VITE_SENTRY_RELEASE,
+    initialScope: {
+        tags: { microfrontend: 'arbeidsrettet-dialog' },
+    },
 });
 
 declare const window: {
