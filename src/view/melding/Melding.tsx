@@ -53,7 +53,7 @@ export function Melding(props: Props) {
                 <Chat.Bubble>
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
-                        <span className="prose prose-md prose-compact mt-2 max-w-none">
+                        <span className="prose prose-md wrap-anywhere prose-compact mt-2 max-w-none">
                             <Markdown
                                 remarkPlugins={[remarkBreaks]}
                                 components={{
