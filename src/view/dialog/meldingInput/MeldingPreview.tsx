@@ -27,10 +27,10 @@ const MeldingPreview = ({ tekst, visible, onToggle }: Props) => {
     if (isMobile) return null;
 
     return (
-        <div>
+        <div className="mt-2">
             <Button
                 variant="tertiary"
-                className="mt-2 p-2"
+                className=" p-2"
                 size="xsmall"
                 type="button"
                 onClick={onToggle}
