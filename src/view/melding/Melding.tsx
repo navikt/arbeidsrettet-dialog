@@ -1,14 +1,21 @@
-import { ExternalLinkIcon, PersonIcon } from '@navikt/aksel-icons';
+import { PersonIcon } from '@navikt/aksel-icons';
 import remarkBreaks from 'remark-breaks';
 import { BodyShort, Chat } from '@navikt/ds-react';
-import React, { ClassAttributes, FunctionComponent, HTMLAttributes } from 'react';
+import React from 'react';
 
 import { ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
 import { formaterDateAndTime } from '../../utils/Date';
 import { MeldingsData } from '../../utils/Typer';
 import { useUserInfoContext } from '../BrukerProvider';
-import Markdown, { ExtraProps } from 'react-markdown';
+import Markdown from 'react-markdown';
 import { linkifyToMarkdown } from './linkify';
+import {
+    renderMarkdownH1Tag,
+    renderMarkdownH2Tag,
+    renderMarkdownPreTag,
+    renderMarkdownCodeTag,
+    renderMarkdownATag,
+} from './markdownComponents';
 
 function accessibleText(erBruker: boolean, erMeldingFraBruker: boolean) {
     if (erMeldingFraBruker) {
@@ -78,67 +85,3 @@ export function Melding(props: Props) {
         </div>
     );
 }
-
-const renderMarkdownATag: FunctionComponent<
-    ClassAttributes<HTMLAnchorElement> & HTMLAttributes<HTMLAnchorElement> & ExtraProps
-> = ({ node, ...props }) => (
-    <span className="inline-flex items-center">
-        <a {...props} target="_blank" rel="noopener noreferrer" />
-        <ExternalLinkIcon className="ml-1 inline-block" aria-label="Lenke åpnes i ny fane" />
-    </span>
-);
-
-interface Position {
-    start: { column: number };
-}
-const isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine = (
-    node: { children: { type: string; position?: Position }[]; position?: Position } | undefined,
-) => {
-    const nodeHasMultipleChildren = (node?.children?.length ?? 0) > 1;
-
-    if (nodeHasMultipleChildren && node?.position?.start?.column === 1) {
-        return true;
-    }
-
-    const firstChild = node?.children[0];
-    if (firstChild?.type !== 'text') return false;
-    // If position start with 1 it cant be an in-line markdown heading
-    return firstChild?.position?.start?.column === 1;
-};
-
-const renderMarkdownH1Tag: FunctionComponent<
-    ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
-> = ({ node, children }) => {
-    if (isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine(node)) {
-        return (
-            <>
-                <p>{children}</p>
-                <hr />
-            </>
-        );
-    }
-    return <h1>{children}</h1>;
-};
-const renderMarkdownH2Tag: FunctionComponent<
-    ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
-> = ({ node, children }) => {
-    if (isMarkdownHeadingCreatedUsingDashOrEqualSignOnNextLine(node)) {
-        return (
-            <>
-                <p>{children}</p>
-                <hr />
-            </>
-        );
-    }
-    return <h2>{children}</h2>;
-};
-const renderMarkdownPreTag: FunctionComponent<
-    ClassAttributes<HTMLPreElement> & HTMLAttributes<HTMLPreElement> & ExtraProps
-> = ({ node, children, ...props }) => {
-    return children;
-};
-const renderMarkdownCodeTag: FunctionComponent<
-    ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps
-> = ({ node, children, ...props }) => {
-    return <p>{children}</p>;
-};
