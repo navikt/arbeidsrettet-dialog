@@ -29,7 +29,8 @@
 
     /* Compact horizontal rule, make sure border color is same color as font */
     & hr {
-        border-color: currentColor;
+        /* Soften up horizontal-rule */
+        border-color: #9a9a9a;
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
     }
@@ -54,6 +55,11 @@
     & li > :is(ul, ol) {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
+    }
+
+    /* Make sure long links dont overflow the chat box */
+    & a {
+        word-break: break-all;
     }
 
 }

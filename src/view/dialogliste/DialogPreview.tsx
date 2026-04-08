@@ -95,7 +95,7 @@ function DialogPreview(props: Props) {
                 'my-1 max-w-full flex !p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
                 styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
                 {
-                    'bg-[#e6f0ff]': detteErValgtDialog,
+                    '!bg-[#e6f0ff]': detteErValgtDialog,
                 },
             )}
             href={dialogRoute(id)}
