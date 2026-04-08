@@ -1,4 +1,5 @@
-import { BodyShort, Detail, Heading, LinkPanel } from '@navikt/ds-react';
+import { BodyShort, Detail, LinkCard } from '@navikt/ds-react';
+import { ChevronRightIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -20,12 +21,14 @@ interface TittelProps {
 
 const ALIGN_TO_BOTTOM: ScrollIntoViewOptions = { block: 'end', inline: 'nearest' };
 
-function Tittel(props: TittelProps) {
+function Tittel(props: TittelProps & { href: string; onClick: (e: React.MouseEvent<HTMLElement>) => void }) {
     const tittel = props.aktivitet ? getDialogTittel(props.aktivitet) : props.tittel;
     return (
-        <Heading className="overflow-hidden text-ellipsis" level="2" size="small">
-            {tittel}
-        </Heading>
+        <LinkCard.Title>
+            <LinkCard.Anchor href={props.href} onClick={props.onClick}>
+                {tittel}
+            </LinkCard.Anchor>
+        </LinkCard.Title>
     );
 }
 
@@ -57,6 +60,7 @@ export enum TabId {
 }
 
 export type TabChangeEvent = { tabId: string };
+
 function DialogPreview(props: Props) {
     const dialogref = useRef<HTMLDivElement | null>(null);
     const [skalScrolle, setSkalScrolle] = useState<boolean>(false);
@@ -90,35 +94,28 @@ function DialogPreview(props: Props) {
     };
 
     return (
-        <LinkPanel
-            className={classNames(
-                'my-1 max-w-full flex !p-0 flex-row rounded-md border-ax-border-neutral-subtle hover:border-ax-border-neutral-strong !gap-0 border-1 border-solid transition-colors duration-100 ease-in-out',
-                styles.dialogPreview /* Overstyrer bredden på div-en inni link-panel */,
-                {
-                    '!bg-[#e6f0ff]': detteErValgtDialog,
-                },
-            )}
-            href={dialogRoute(id)}
-            aria-current={detteErValgtDialog && true}
-            onClick={onGoTo}
+        <LinkCard
+            arrow={false}
+            size="small"
+            aria-current={detteErValgtDialog || undefined}
+            className={classNames(styles.dialogPreview, {
+                '!bg-[#e6f0ff]': detteErValgtDialog,
+            })}
         >
-            <div className="flex flex-row w-full">
-                <div className={classNames(styles.blueIndicator, { invisible: dialog.lest })}></div>
-                <div className="flex flex-1 flex-row py-2 pl-2">
-                    <div className="min-w-0 flex-grow">
-                        <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
-                        <Tittel tittel={overskrift} aktivitet={aktivitet} />
-                        <Detail>{datoString}</Detail>
-                        <EtikettListe dialog={dialog} />
-                        <BodyShort className="hidden">{meldingerText(dialog.henvendelser.length)}</BodyShort>
-                    </div>
-                    <BodyShort aria-hidden="true" className="ml-2 flex items-center">
-                        {dialog.henvendelser.length}
-                    </BodyShort>
-                    <div ref={dialogref}></div>
-                </div>
+            <div className={classNames(styles.blueIndicator, { invisible: dialog.lest })} />
+            <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
+            <Tittel tittel={overskrift} aktivitet={aktivitet} href={dialogRoute(id)} onClick={onGoTo} />
+            <LinkCard.Description>
+                <Detail>{datoString}</Detail>
+                <EtikettListe dialog={dialog} />
+                <BodyShort className="sr-only">{meldingerText(dialog.henvendelser.length)}</BodyShort>
+            </LinkCard.Description>
+            <div className={styles.arrowArea}>
+                <BodyShort aria-hidden="true">{dialog.henvendelser.length}</BodyShort>
+                <ChevronRightIcon aria-hidden fontSize="1.75rem" />
             </div>
-        </LinkPanel>
+            <div ref={dialogref} />
+        </LinkCard>
     );
 }
 
@@ -128,6 +125,7 @@ interface ListeProps {
 }
 
 let skalFadeIn = false;
+
 export function DialogPreviewListe({ dialoger, valgDialog }: ListeProps) {
     const [antallDialoger, setAntallDialoger] = useState<number | undefined>(undefined);
 
@@ -145,7 +143,7 @@ export function DialogPreviewListe({ dialoger, valgDialog }: ListeProps) {
     if (dialoger.length === 0) return null;
     return (
         <div role="region" aria-live="polite">
-            <ul aria-label="Dialogliste">
+            <ul aria-label="Dialogliste" className="flex flex-col gap-y-1">
                 {dialoger.map((dialog, index) => (
                     <li
                         key={dialog.id}
