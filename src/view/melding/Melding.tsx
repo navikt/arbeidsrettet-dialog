@@ -57,8 +57,6 @@ export function Melding(props: Props) {
                                   background: '#D8F9FF',
                               }
                             : {
-                                  borderRadius:
-                                      'var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-12) var(--ax-radius-2)',
                                   border: '1px solid var(--ax-border-neutral)',
                                   background: '#ffffff',
                               }

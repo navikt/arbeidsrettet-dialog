@@ -8,15 +8,6 @@
     border: 1px solid #0096b1 !important;
 }
 
-.chat-avatar-info .aksel-chat__top-text {
-}
-
-.chat-avatar-info .aksel-chat__bubble {
-}
-
-.chat-avatar-info .aksel-chat__bubble .prose {
-}
-
 .chat-avatar-neutral .aksel-chat__avatar {
     background: #ffffff !important;
     border: 1px solid var(--ax-border-neutral) !important;
