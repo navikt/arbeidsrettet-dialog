@@ -24,7 +24,35 @@
     pointer-events: none;
 }
 
+.dialogPreview {
+    position: relative;
+    border: 1px solid var(--ax-border-neutral);
+    overflow: hidden;
+    padding-left: 1.25rem;
+    padding-top: var(--ax-space-8);
+    padding-bottom: var(--ax-space-8);
+    padding-right: var(--ax-space-8);
+}
+
+.dialogPreview a {
+    text-decoration: none;
+}
+
+.dialogPreview a:hover {
+    text-decoration: none;
+}
+
 .arrowArea {
     grid-area: arrow;
+    display: flex;
+    align-items: center;
+    align-self: start;
+    gap: var(--ax-space-4);
+    margin-left: var(--ax-space-8);
+}
+
+.valgtDialog {
+    background-color: #e6f0ff;
+    border-color: var(--ax-border-accent);
 }
 

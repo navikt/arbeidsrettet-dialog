@@ -98,12 +98,9 @@ function DialogPreview(props: Props) {
             arrow={false}
             size="small"
             aria-current={detteErValgtDialog || undefined}
-            className={classNames(
-                'relative border-ax-border-neutral overflow-hidden pl-5 py-2 pr-2 [&_a]:no-underline [&_a:hover]:no-underline',
-                {
-                    '!bg-[#e6f0ff]': detteErValgtDialog,
-                },
-            )}
+            className={classNames(styles.dialogPreview, {
+                [styles.valgtDialog]: detteErValgtDialog,
+            })}
         >
             <div className={classNames(styles.blueIndicator, { invisible: dialog.lest })} />
             <BodyShort className="sr-only">{typeText(dialog)}</BodyShort>
@@ -113,7 +110,7 @@ function DialogPreview(props: Props) {
                 <EtikettListe dialog={dialog} />
                 <BodyShort className="sr-only">{meldingerText(dialog.henvendelser.length)}</BodyShort>
             </LinkCard.Description>
-            <div className={classNames(styles.arrowArea, 'flex items-center self-start gap-1 ml-2')}>
+            <div className={styles.arrowArea}>
                 <BodyShort aria-hidden="true">{dialog.henvendelser.length}</BodyShort>
                 <ChevronRightIcon aria-hidden fontSize="1.75rem" />
             </div>
