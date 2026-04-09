@@ -1,4 +1,4 @@
-import { GlobalAlert, Link } from '@navikt/ds-react';
+import { GlobalAlert, InfoCard, Link } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
@@ -8,14 +8,10 @@ interface Props {
 
 export default function StatusAdvarselWrapper({ children, title }: Props) {
     return (
-        <GlobalAlert status="warning">
-            {title && (
-                <GlobalAlert.Header>
-                    <GlobalAlert.Title>{title}</GlobalAlert.Title>
-                </GlobalAlert.Header>
-            )}
-            <GlobalAlert.Content>{children}</GlobalAlert.Content>
-        </GlobalAlert>
+        <InfoCard data-color="warning" className="mt-0.5">
+            {title && <InfoCard.Header>{title}</InfoCard.Header>}
+            <InfoCard.Content>{children}</InfoCard.Content>
+        </InfoCard>
     );
 }
 
