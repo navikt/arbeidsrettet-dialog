@@ -1,4 +1,4 @@
-import { GlobalAlert, InfoCard, Link } from '@navikt/ds-react';
+import { InfoCard, Link } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
