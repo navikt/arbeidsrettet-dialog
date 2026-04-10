@@ -19,15 +19,13 @@ const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kont
 
 export function KanIkkeKontakteElektroniskVeileder() {
     return (
-        <GlobalAlert status="warning">
-            <GlobalAlert.Header>
-                <GlobalAlert.Title>Kontaktinfo til bruker er utdatert i KRR</GlobalAlert.Title>
-            </GlobalAlert.Header>
-            <GlobalAlert.Content>
+        <InfoCard data-color="warning" className="mt-0.5">
+            <InfoCard.Header>Kontaktinfo til bruker er utdatert i KRR</InfoCard.Header>
+            <InfoCard.Content>
                 Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen til brukeren er utdatert i KRR.
                 <br />
                 <Link href={linkKanIkkeVarsles}>Brukeren må gå til norge.no for å oppdatere.</Link>
-            </GlobalAlert.Content>
-        </GlobalAlert>
+            </InfoCard.Content>
+        </InfoCard>
     );
 }
