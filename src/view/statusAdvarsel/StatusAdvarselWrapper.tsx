@@ -1,4 +1,4 @@
-import { GlobalAlert, Link } from '@navikt/ds-react';
+import { InfoCard, Link } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
@@ -8,14 +8,10 @@ interface Props {
 
 export default function StatusAdvarselWrapper({ children, title }: Props) {
     return (
-        <GlobalAlert status="warning">
-            {title && (
-                <GlobalAlert.Header>
-                    <GlobalAlert.Title>{title}</GlobalAlert.Title>
-                </GlobalAlert.Header>
-            )}
-            <GlobalAlert.Content>{children}</GlobalAlert.Content>
-        </GlobalAlert>
+        <InfoCard data-color="warning" className="mt-0.5">
+            {title && <InfoCard.Header>{title}</InfoCard.Header>}
+            <InfoCard.Content>{children}</InfoCard.Content>
+        </InfoCard>
     );
 }
 
@@ -23,15 +19,13 @@ const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kont
 
 export function KanIkkeKontakteElektroniskVeileder() {
     return (
-        <GlobalAlert status="warning">
-            <GlobalAlert.Header>
-                <GlobalAlert.Title>Kontaktinfo til bruker er utdatert i KRR</GlobalAlert.Title>
-            </GlobalAlert.Header>
-            <GlobalAlert.Content>
+        <InfoCard data-color="warning" className="mt-0.5">
+            <InfoCard.Header>Kontaktinfo til bruker er utdatert i KRR</InfoCard.Header>
+            <InfoCard.Content>
                 Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen til brukeren er utdatert i KRR.
                 <br />
                 <Link href={linkKanIkkeVarsles}>Brukeren må gå til norge.no for å oppdatere.</Link>
-            </GlobalAlert.Content>
-        </GlobalAlert>
+            </InfoCard.Content>
+        </InfoCard>
     );
 }
