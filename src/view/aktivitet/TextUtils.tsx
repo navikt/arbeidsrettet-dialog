@@ -100,6 +100,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Høyere yrkesfaglig utdanning';
         case EksternAktivitetTypes.HOYEREUTD:
             return 'Høyere utdanning';
+        case EksternAktivitetTypes.SOMMERJOBB:
+            return 'Sommerjobb';
     }
 }
 

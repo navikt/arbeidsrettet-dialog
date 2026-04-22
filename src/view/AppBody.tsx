@@ -50,7 +50,9 @@ const AppBody = () => {
                 <DialogOversikt />
                 <WaitForAllData />
                 <div className="flex flex-1 flex-col">
-                    <div className="hidden md:flex flex-col">{!isMobile ? <StatusAdvarsel /> : null}</div>
+                    <div className="hidden md:flex flex-col p-2 bg-ax-bg-sunken">
+                        {!isMobile ? <StatusAdvarsel /> : null}
+                    </div>
                     <DialogHeaderFeil />
                     <Outlet />
                 </div>
@@ -71,9 +73,9 @@ const WaitForAllData = (): ReactElement => {
                 loaderData.features,
                 loaderData.me,
                 loaderData.aktiviteter,
-                loaderData.arenaAktiviteter
+                loaderData.arenaAktiviteter,
             ]),
-        []
+        [],
     );
     return (
         <Suspense>
