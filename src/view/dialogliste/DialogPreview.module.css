@@ -13,19 +13,46 @@
     animation-timing-function: ease;
     animation-name: fade-in-animation;
 }
-.dialogPreview > div:first-child {
-    flex: 1;
-    min-width: 0;
-}
-.ulestDialog {
-    padding-left: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-}
 .blueIndicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 0.5rem;
     background-color: var(--ax-bg-accent-strong);
-    flex-shrink: 0;
-    border-top-left-radius: var(--ax-radius-2);
-    border-bottom-left-radius: var(--ax-radius-2);
+    z-index: 1;
+    pointer-events: none;
 }
+
+.dialogPreview {
+    position: relative;
+    border: 1px solid var(--ax-border-neutral);
+    overflow: hidden;
+    padding-left: 1.25rem;
+    padding-top: var(--ax-space-8);
+    padding-bottom: var(--ax-space-8);
+    padding-right: var(--ax-space-8);
+}
+
+.dialogPreview a {
+    text-decoration: none;
+}
+
+.dialogPreview a:hover {
+    text-decoration: none;
+}
+
+.arrowArea {
+    grid-area: arrow;
+    display: flex;
+    align-items: center;
+    align-self: start;
+    gap: var(--ax-space-4);
+    margin-left: var(--ax-space-8);
+}
+
+.valgtDialog {
+    background-color: #e6f0ff;
+    border-color: var(--ax-border-accent);
+}
+

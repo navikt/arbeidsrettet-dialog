@@ -53,7 +53,7 @@ const DialogOversikt = () => {
             )}
         >
             <DialogOversiktHeader erVeileder={erVeileder} />
-            <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-ax-border-neutral-subtle bg-ax-bg-neutral-soft p-2">
+            <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-ax-border-neutral-subtle bg-ax-bg-sunken p-2">
                 <>
                     <div className="flex gap-2 p-1 pb-2">
                         <NyDialogLink disabled={!kanSendeMelding} />

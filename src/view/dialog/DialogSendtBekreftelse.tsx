@@ -29,12 +29,12 @@ function Melding(props: { tekst?: string; erVeileder: boolean }) {
     const { tekst, erVeileder } = props;
 
     return !tekst ? null : (
-        <div className="flex justify-center" aria-hidden={!hasRendred}>
+        <div className="flex justify-center gap-x-2" aria-hidden={!hasRendred}>
             <InlineMessage status="success">
                 <BodyShort>{tekst}</BodyShort>
             </InlineMessage>
             {erVeileder && (
-                <HelpText className="ml-1.5">
+                <HelpText>
                     <div className={styles.hjelpeTekstInnhold}>
                         <BodyShort>
                             Hvis ikke brukeren leser dialogmeldingen innen en halvtime, så vil brukeren motta meldingen
