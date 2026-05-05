@@ -15,7 +15,7 @@ describe('Ny melding', () => {
         worker.listen({
             onUnhandledRequest: (request, er) => {
                 console.error(request, er);
-            }
+            },
         });
     });
     afterAll(() => {
@@ -23,6 +23,7 @@ describe('Ny melding', () => {
     });
 
     afterEach(() => {
+        worker.resetHandlers();
         vi.clearAllMocks();
     });
 
@@ -41,14 +42,14 @@ describe('Ny melding', () => {
         const input = getByLabelText('Skriv om arbeid og oppfølging');
         const melding = 'Dette er en ny melding';
         fireEvent.change(input, {
-            target: { value: melding }
+            target: { value: melding },
         });
         const sendKnapp = getByText('Send');
         await act(async () => sendKnapp.click());
         expectOpprettToHaveBeenCalledWith({
             tekst: melding,
             fnr,
-            dialogId: '2'
+            dialogId: '2',
         });
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
     });
@@ -61,15 +62,15 @@ describe('Ny melding', () => {
         const tittel = 'Dette er tittel';
         await act(() =>
             fireEvent.change(input, {
-                target: { value: tittel }
-            })
+                target: { value: tittel },
+            }),
         );
         const meldingInput = getByLabelText('Melding (obligatorisk)');
         const melding = 'Dette er melding';
         await act(() =>
             fireEvent.change(meldingInput, {
-                target: { value: melding }
-            })
+                target: { value: melding },
+            }),
         );
         const sendKnapp = getByText('Send');
         await act(async () => sendKnapp.click());
@@ -77,7 +78,7 @@ describe('Ny melding', () => {
             fnr,
             tekst: melding,
             overskrift: tittel,
-            venterPaaSvarFraBruker: false
+            venterPaaSvarFraBruker: false,
         });
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
     });

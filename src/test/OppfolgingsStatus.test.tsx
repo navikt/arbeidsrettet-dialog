@@ -8,6 +8,14 @@ import { act, render } from '@testing-library/react';
 import { fetchData } from '../utils/Fetch';
 import { OppfolgingsApi } from '../api/UseApiBasePath';
 
+const rootLoaderDataMock = {
+    dialoger: Promise.resolve([]),
+};
+vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderDataMock }));
+vi.mock('../utils/Fetch', () => ({
+    fetchData: vi.fn(() => Promise.resolve(undefined)),
+}));
+
 const singleComponentRouter = (initialEntries: string[] | undefined = undefined) =>
     createMemoryRouter(
         [
@@ -26,10 +34,6 @@ const MemoryRouterMedBareDialogOversikt = () => (
     <RouterProvider future={{ v7_startTransition: true }} router={singleComponentRouter(['/'])} />
 );
 
-const rootLoaderData = {
-    dialoger: Promise.resolve([]),
-};
-
 describe('Statusadvarsler', () => {
     describe('Oppfølgingsadvarsler', () => {
         describe('Aldri vært under oppfølging', () => {
@@ -41,7 +45,6 @@ describe('Statusadvarsler', () => {
 
             it('bruker ser advarsel når bruker ikke er under oppfølging', async () => {
                 gitt.bruker().som.harIngenDialog().som.harBrukerSomAldriHarVærtUnderOppfolging();
-                vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
                 const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
                 getByText('Du må være registrert hos Nav for å ha digital dialog med veileder.');
             });
@@ -56,7 +59,6 @@ describe('Statusadvarsler', () => {
 
             it('bruker ser advarsel når bruker ikke er under oppfølging', async () => {
                 gitt.bruker().som.harIngenDialog().som.harBrukerIkkeLengerErUnderOppfolging();
-                vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
                 const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
                 getByText('Du er ikke lenger registrert hos Nav');
                 getByText(
@@ -98,9 +100,6 @@ describe('Statusadvarsler', () => {
         });
 
         it('bruker under oppf. men manuell kan endre til digital oppfølging', async () => {
-            vi.mock('../utils/Fetch', () => ({
-                fetchData: vi.fn(() => Promise.resolve(undefined)),
-            }));
             gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenManuell();
             const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
             const button = getByText('Endre til digital oppfølging');

@@ -29,7 +29,7 @@ const MemoryRouterMedBareDialogOversikt = () => (
 );
 
 const rootLoaderData = {
-    dialoger: Promise.resolve([])
+    dialoger: Promise.resolve([]),
 };
 
 describe('<DialogContainer/>', () => {
@@ -64,12 +64,15 @@ describe('<Dialog/>', () => {
         worker.listen({
             onUnhandledRequest: (request, er) => {
                 console.error(request, er);
-            }
+            },
         });
     });
     afterAll(() => {
         vi.clearAllMocks();
         worker.close();
+    });
+    afterEach(() => {
+        worker.resetHandlers();
     });
 
     test('Bruker ikke under oppf. skjuler dialogcontroller og viser fortsatt henvendelser', async () => {
