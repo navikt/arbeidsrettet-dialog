@@ -83,8 +83,8 @@ const NyDialogForm = (props: Props) => {
     const melding = watch('melding');
     const tema = watch('tema');
 
-    const timer = useRef<number | undefined>();
-    const callback = useRef<() => any>();
+    const timer = useRef<number | undefined>(null);
+    const callback = useRef<() => any>(null);
 
     useEffect(() => {
         return () => {

@@ -1,5 +1,5 @@
 import { Tag } from '@navikt/ds-react';
-import { TagProps } from '@navikt/ds-react/src/tag/Tag';
+import { TagProps } from '@navikt/ds-react';
 import React from 'react';
 
 import { StillingStatus } from '../../../utils/aktivitetTypes';
@@ -14,7 +14,7 @@ const getEtikett: Record<Exclude<StillingStatus, undefined | null>, Etikett> = {
     INNKALT_TIL_INTERVJU: { text: 'Skal på intervju', variant: 'info' },
     JOBBTILBUD: { text: 'Fått jobbtilbud 🎉', variant: 'warning' },
     AVSLAG: { text: 'Ikke fått jobben', variant: 'neutral' },
-    INGEN_VALGT: { text: 'Fått avslag', variant: 'neutral' }
+    INGEN_VALGT: { text: 'Fått avslag', variant: 'neutral' },
 };
 
 interface Props {

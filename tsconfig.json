@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "types": ["vite/client", "vitest/globals", "@navikt/ds-react/esm/types/theme"],
+        "types": ["vite/client", "vitest/globals"],
         "lib": ["dom", "dom.iterable", "esnext"],
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -9,7 +9,7 @@
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
