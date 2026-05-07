@@ -19,7 +19,7 @@
     "build:prod-intern": "tsc --noEmit && vite build --mode=prod-intern --base=https://cdn.nav.no/dab/arbeidsrettet-dialog-prod-intern/build/",
     "build:gh-pages": "VITE_USE_HASH_ROUTER=true vite build --mode=dev-ekstern --base=/arbeidsrettet-dialog/",
     "build": "tsc --noEmit && vite build",
-    "test": "vitest",
+    "test": "vitest run",
     "preview": "vite preview",
     "coverage": "vitest run --coverage",
     "test:coverage": "npm test -- --coverage --watchAll=false",

@@ -44,6 +44,8 @@ export default defineConfig(({ mode }) => {
                     execArgv: ['--require', './src/test/preload-natives.cjs'],
                 },
             },
+            // Sørg for at hengende handles (websockets/polling/msw) ikke blokkerer exit i CI
+            teardownTimeout: 10000,
             coverage: {
                 provider: 'v8',
                 include: ['src'],
