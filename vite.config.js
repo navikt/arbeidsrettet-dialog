@@ -38,6 +38,12 @@ export default defineConfig(({ mode }) => {
             include: ['**/*.test.ts', '**/*.test.tsx'],
             globals: true,
             setupFiles: ['./src/test/setup.tsx'],
+            pool: 'forks',
+            poolOptions: {
+                forks: {
+                    execArgv: ['--require', './src/test/preload-natives.cjs'],
+                },
+            },
             coverage: {
                 provider: 'v8',
                 include: ['src'],
