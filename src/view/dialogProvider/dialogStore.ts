@@ -31,7 +31,7 @@ type DialogStore = DialogState &
         updateDialogWithNewDialog: (dialogData: DialogData) => DialogData;
         stopPolling: () => void;
         setStatus: (status: Status, actionName?: string) => void;
-        pollInterval: NodeJS.Timeout | undefined;
+        pollInterval: number | undefined;
         currentPollFnr: string | undefined;
         nyDialog: (melding: NyTradArgs) => Promise<DialogData | undefined>;
         nyMelding: (melding: NyMeldingArgs) => Promise<DialogData | undefined>;
@@ -277,7 +277,7 @@ export const useHentDialoger = () => useDialogStore(useShallow((store) => store.
 export const useSilentlyHentDialoger = () => useDialogStore(useShallow((store) => store.silentlyHentDialoger));
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
     interval = setInterval(() => {
         pollForChanges().catch((e) => {
             captureMessage('Klarte ikke polle sistOppdatert');
