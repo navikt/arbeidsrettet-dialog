@@ -32,6 +32,44 @@ describe('linkify.tsx', () => {
         expect(splitOnLinks('www.nav.no')).toStrictEqual([{ value: 'www.nav.no', type: 'link' }]);
     });
 
+    describe('protocol safety', () => {
+        it('should not linkify javascript: URLs', () => {
+            expect(splitOnLinks('javascript://x')).toStrictEqual([{ value: 'javascript://x', type: 'text' }]);
+        });
+
+        it('should not linkify javascript:/x payloads', () => {
+            expect(splitOnLinks('click javascript:/x here')).toStrictEqual([
+                { value: 'click javascript:/x here', type: 'text' }
+            ]);
+        });
+
+        it('should still linkify http URLs', () => {
+            expect(splitOnLinks('click https://nav.no here')).toStrictEqual([
+                { value: 'click ', type: 'text' },
+                { value: 'https://nav.no', type: 'link' },
+                { value: ' here', type: 'text' }
+            ]);
+        });
+
+        it('should still linkify www URLs', () => {
+            expect(splitOnLinks('click www.nav.no here')).toStrictEqual([
+                { value: 'click ', type: 'text' },
+                { value: 'www.nav.no', type: 'link' },
+                { value: ' here', type: 'text' }
+            ]);
+        });
+
+        it('should not linkify ftp: URLs', () => {
+            expect(splitOnLinks('ftp://files.example.com')).toStrictEqual([
+                { value: 'ftp://files.example.com', type: 'text' }
+            ]);
+        });
+
+        it('should not linkify data: URLs', () => {
+            expect(splitOnLinks('data://something')).toStrictEqual([{ value: 'data://something', type: 'text' }]);
+        });
+    });
+
     describe('linkifyToMarkdown', () => {
         it('should handle text starting with url', () => {
             const input = `
