@@ -25,7 +25,7 @@ export const useRoutes = () => {
         baseRoute,
         dialogRoute,
         nyRoute,
-        informasjonRoute
+        informasjonRoute,
     };
 };
 
@@ -46,7 +46,7 @@ export enum RouteIds {
     NyDialog = 'ny-dialog',
     Dialog = 'Dialog',
     IkkeValgtDialog = 'ikke-valgt-dialog',
-    Root = 'root'
+    Root = 'root',
 }
 
 /* On small screens sidebar is hidden, use this hook for checking if sidebar should be hidden on mobile */
@@ -74,7 +74,7 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                             <Aktivitetskort />
                         </div>
                     </>
-                )
+                ),
             },
             {
                 path: ':dialogId',
@@ -87,7 +87,7 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                             <Aktivitetskort />
                         </div>
                     </>
-                )
+                ),
             },
             {
                 path: '',
@@ -96,22 +96,22 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                     <div className="flex min-h-0 flex-1">
                         <IkkeValgtDialogMelding />
                     </div>
-                )
+                ),
             },
             {
                 path: ':fnr/ny',
-                element: <RedirectToNyDialogWithoutFnr />
+                element: <RedirectToNyDialogWithoutFnr />,
             },
             {
                 path: ':fnr/:dialogId',
-                element: <RedirectToDialogWithoutFnr />
+                element: <RedirectToDialogWithoutFnr />,
             },
             {
                 path: '*',
-                element: <Navigate to={'/'} />
-            }
-        ]
-    }
+                element: <Navigate to={'/'} />,
+            },
+        ],
+    },
 ];
 
 /* Will be removed in v7 */
@@ -120,20 +120,20 @@ export const reactRouterFutureFlags = {
     v7_fetcherPersist: true,
     v7_normalizeFormMethod: true,
     v7_partialHydration: true,
-    v7_skipActionErrorRevalidation: true
+    v7_skipActionErrorRevalidation: true,
 };
 
 export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRouter }) => {
     const fnr = useFnrContext();
     if (USE_HASH_ROUTER) {
         const hashRouter = createHashRouter(dialogRoutes(fnr), {
-            future: reactRouterFutureFlags
+            future: reactRouterFutureFlags,
         });
         return <RouterProvider router={hashRouter} />;
     }
-    if (process.env.NODE_ENV === 'test') {
+    if (import.meta.env.NODE_ENV === 'test') {
         const inMemoryRouter = createMemoryRouter(dialogRoutes(fnr), {
-            future: reactRouterFutureFlags
+            future: reactRouterFutureFlags,
         });
         return <RouterProvider router={inMemoryRouter} />;
     }
@@ -148,8 +148,8 @@ export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRou
             v7_fetcherPersist: true,
             v7_normalizeFormMethod: true,
             v7_partialHydration: true,
-            v7_skipActionErrorRevalidation: true
-        }
+            v7_skipActionErrorRevalidation: true,
+        },
     });
     return <RouterProvider future={{ v7_startTransition: true }} router={browserRouter} />;
 };
