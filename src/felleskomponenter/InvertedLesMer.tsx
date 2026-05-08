@@ -29,6 +29,7 @@ export default function InvertedLestMer(props: Props) {
             <div>
                 <ReadMore open={vis} onClick={toggle} header={tekst} children={null} />
             </div>
+            {/* @ts-ignore react-collapse bundles older @types/react incompatible with React 19 */}
             <Collapse isOpened={vis}>{vis ? children : null}</Collapse>
         </div>
     );
