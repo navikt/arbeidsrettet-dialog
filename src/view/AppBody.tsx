@@ -45,14 +45,11 @@ const AppBody = () => {
 
     return (
         <div className="flex flex-1 flex-col">
-            {isMobile ? <StatusAdvarsel /> : null}
+            <StatusAdvarsel />
             <div className="flex flex-1 max-h-full">
                 <DialogOversikt />
                 <WaitForAllData />
-                <div className="flex flex-1 flex-col">
-                    <div className="hidden md:flex flex-col p-2 bg-ax-bg-sunken">
-                        {!isMobile ? <StatusAdvarsel /> : null}
-                    </div>
+                <div className="flex flex-1 border border-solid border-ax-bg-neutral-moderate-pressed flex-col">
                     <DialogHeaderFeil />
                     <Outlet />
                 </div>

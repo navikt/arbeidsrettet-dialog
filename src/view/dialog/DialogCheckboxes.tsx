@@ -33,7 +33,7 @@ const DialogCheckboxes = ({
     ferdigBehandletDisabled,
 }: Props) => {
     return (
-        <div className="mb-2 pl-1">
+        <div className="mb-2 bg-ax-bg-default p-4">
             <CheckboxGroup legend={'Filter'} hideLegend value={values}>
                 <div className="flex gap-4">
                     <Checkbox
