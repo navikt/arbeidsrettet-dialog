@@ -12,7 +12,6 @@ import { dataOrUndefined } from './Provider';
 import { useRootLoaderData } from '../routing/loaders';
 import StatusAdvarsel from './statusAdvarsel/StatusAdvarsel';
 import DialogHeaderFeil from './dialog/DialogHeaderFeil';
-import { Breakpoint, useBreakpoint } from './utils/useBreakpoint';
 
 function hash(val: string) {
     const utf8 = new TextEncoder().encode(val);
