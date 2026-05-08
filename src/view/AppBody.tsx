@@ -38,8 +38,6 @@ const AppBody = () => {
     const oppfolgingContext = useOppfolgingContext();
     const brukerdata = useUserInfoContext();
     const oppfolgingData = dataOrUndefined(oppfolgingContext);
-    const breakpoint = useBreakpoint();
-    const isMobile = [Breakpoint.sm, Breakpoint.initial].includes(breakpoint);
 
     useLogBruker(brukerdata, oppfolgingData);
 

@@ -1,9 +1,9 @@
-import { GlobalAlert, InfoCard, InlineMessage, Link } from '@navikt/ds-react';
+import { GlobalAlert, Link } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
     readonly children: React.ReactNode;
-    readonly title?: string;
+    readonly title: string;
 }
 
 export default function StatusAdvarselWrapper({ children, title }: Props) {
