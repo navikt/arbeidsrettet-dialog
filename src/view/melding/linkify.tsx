@@ -3,6 +3,10 @@ import React from 'react';
 
 const urlRegex = /((?:[\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+)/gi;
 
+const isSafeUrl = (url: string): boolean => {
+    return /^https?:\/\//i.test(url) || url.toLowerCase().startsWith('www.');
+};
+
 interface TextSection {
     value: string;
     type: 'text' | 'link';
@@ -83,7 +87,7 @@ const mergeTextParts = (allMatches: RegExpExecArray[], text: string): TextSectio
 };
 
 export const splitOnLinks = (text: string): TextSection[] => {
-    const allMatches = collectMatches(text).filter((match) => !isMarkdownLink(match, text));
+    const allMatches = collectMatches(text).filter((match) => !isMarkdownLink(match, text) && isSafeUrl(match[0]));
     if (!allMatches?.length) return [{ value: text, type: 'text' }];
     return mergeTextParts(allMatches, text);
 };
