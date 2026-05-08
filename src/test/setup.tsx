@@ -5,9 +5,6 @@ import { cleanup } from '@testing-library/react';
 // @ts-ignore
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-// jsdom installerer sin egen AbortController/AbortSignal/Request som er andre klasser
-// enn Nodes native (som undici sin fetch krever). Vi henter Nodes native klasser
-// fra `process` (lastet inn av preload-natives.cjs via --require før jsdom-env settes opp).
 const NativeAbortController = (process as any).__nativeAbortController__ ?? globalThis.AbortController;
 const NativeAbortSignal = (process as any).__nativeAbortSignal__ ?? globalThis.AbortSignal;
 const NativeRequest = (process as any).__nativeRequest__ ?? globalThis.Request;
