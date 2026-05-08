@@ -65,7 +65,7 @@ describe('<AlertStripeContainer/>', () => {
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const { getByText } = render(<StatusAdvarsel />);
-        getByText('Du må være registrert hos Nav for å ha digital dialog med veileder.');
+        getByText('Du må være under oppfølging hos Nav for å ha digital dialog med veileder.');
     });
     it('Bruker med oppf.perioder og ikke under oppf. viser en advarsel - bruker. ', () => {
         useFetchOppfolging.data!.oppfolgingsPerioder = oppfPerioder;
@@ -85,7 +85,9 @@ describe('<AlertStripeContainer/>', () => {
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const wrapper = render(<StatusAdvarsel />);
-        expect(wrapper.baseElement.textContent).toBe('Bruker er ikke under oppfølging og kan ikke sende meldinger');
+        expect(wrapper.baseElement.textContent).toBe(
+            'Advarsel:  Ikke under arbeidsrettet oppfølgingBruker er ikke under oppfølging og kan ikke sende meldinger',
+        );
     });
 
     it('Bruker registret KRR viser en advarsel - veileder.', () => {

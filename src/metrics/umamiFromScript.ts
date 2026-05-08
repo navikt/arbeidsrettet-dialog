@@ -5,8 +5,8 @@ const timeoutMs = 5000;
 let umamiLoadedPromise: Promise<void> | undefined;
 export const startWaitingForUmamiToAppearOnWindow = () => {
     umamiLoadedPromise = new Promise((resolve, reject) => {
-        let timeout: NodeJS.Timeout | undefined;
-        let interval: NodeJS.Timeout | undefined;
+        let timeout: number | undefined;
+        let interval: number | undefined;
 
         timeout = setTimeout(() => {
             clearTimeout(timeout);

@@ -21,7 +21,7 @@ import { Aktivitet } from '../utils/aktivitetTypes';
 import { AktivitetsplanResponse } from '../api/aktivitetsplanGraphql';
 
 const delayIfNotTest = async (ms: number) => {
-    if (process.env.NODE_ENV === 'test') {
+    if (import.meta.env.NODE_ENV === 'test') {
         return;
     }
     await delay(ms);

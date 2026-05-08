@@ -10,7 +10,9 @@ interface Props {
 
 export default function IkkeUnderOppfolging(props: Props) {
     return props.erVeileder ? (
-        <StatusAdvarselWrapper>Bruker er ikke under oppfølging og kan ikke sende meldinger</StatusAdvarselWrapper>
+        <StatusAdvarselWrapper title={'Ikke under arbeidsrettet oppfølging'}>
+            Bruker er ikke under oppfølging og kan ikke sende meldinger
+        </StatusAdvarselWrapper>
     ) : (
         <HarPerioderBruker />
     );
