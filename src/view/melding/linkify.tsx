@@ -4,7 +4,8 @@ import React from 'react';
 const urlRegex = /((?:[\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+)/gi;
 
 const isSafeUrl = (url: string): boolean => {
-    return /^https?:\/\//i.test(url) || url.toLowerCase().startsWith('www.');
+    const lower = url.toLowerCase();
+    return lower.startsWith('http://') || lower.startsWith('https://') || lower.startsWith('www.');
 };
 
 interface TextSection {
