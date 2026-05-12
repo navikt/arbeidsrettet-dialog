@@ -1,44 +1,21 @@
-import { beforeAll, describe } from 'vitest';
-import { act, render, waitFor } from '@testing-library/react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
+import { describe } from 'vitest';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { setupServer } from 'msw/node';
-import { handlers } from '../../mock/handlers';
-import { dialogRoutes, reactRouterFutureFlags } from '../../routing/routes';
-import { Provider } from '../Provider';
+import { setupIntegrationTest } from '../../test/integrationTestSetup';
 
-const fnr = undefined; // Brukerkontekst
-// Be careful to not create router before mockserver is running,
-// calling createMemoryRouter will create the component and fire the loaders
-const memoryRouter = () =>
-    createMemoryRouter(dialogRoutes(fnr), {
-        initialEntries: [`/`],
-        future: reactRouterFutureFlags
-    });
-
-const server = setupServer(...handlers);
+const fnr = '0123456789';
+const { App: IntegrationTestApp, worker } = setupIntegrationTest(fnr, ['/303']);
 
 describe('DialogTrad', () => {
-    beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-
-    //  Close server after all tests
-    afterAll(() => server.close());
-
-    // Reset handlers after each test `important for test isolation`
-    afterEach(() => server.resetHandlers());
+    beforeAll(() => worker.listen({ onUnhandledRequest: 'error' }));
+    afterAll(() => worker.close());
+    afterEach(() => worker.resetHandlers());
 
     it('should display dialog-state from backend', async () => {
-        const { getByLabelText, getByText } = await act(() =>
-            render(
-                <Provider visAktivitetDefault={false} fnr={fnr} erVeileder={!!fnr}>
-                    <RouterProvider future={{ v7_startTransition: true }} router={memoryRouter()} />
-                </Provider>
-            )
-        );
-        const dialogTittel = 'Jobb jeg har nå: LALALA';
-        await waitFor(() => getByText(dialogTittel));
-        await act(async () => getByText(dialogTittel).click());
-        await waitFor(async () => getByLabelText('Skriv om arbeid og oppfølging', { selector: 'textarea' }));
+        const { getByLabelText, getByText } = render(<IntegrationTestApp />);
+        await waitFor(() => getByLabelText('Meldinger'), { timeout: 10000 });
+        await waitFor(() => getByLabelText('Skriv om arbeid og oppfølging', { selector: 'textarea' }));
+        getByText('Jobb jeg har nå: LALALA');
         getByText('Er du fornøyd med oppgfølgingen?');
         getByText('Sånn passe.');
     });

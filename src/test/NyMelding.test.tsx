@@ -15,7 +15,7 @@ describe('Ny melding', () => {
         worker.listen({
             onUnhandledRequest: (request, er) => {
                 console.error(request, er);
-            }
+            },
         });
     });
     afterAll(() => {
@@ -36,49 +36,42 @@ describe('Ny melding', () => {
     };
 
     it('når veileder sender en melding skal payload inneholde dialogId', async () => {
-        const { getByLabelText, getByText } = await act(() => render(<IntegrationTestApp />));
+        const { getByLabelText, getByText } = render(<IntegrationTestApp />);
         await waitFor(() => getByLabelText('Meldinger'), { timeout: 10000 });
         const input = getByLabelText('Skriv om arbeid og oppfølging');
         const melding = 'Dette er en ny melding';
-        fireEvent.change(input, {
-            target: { value: melding }
-        });
-        const sendKnapp = getByText('Send');
-        await act(async () => sendKnapp.click());
-        expectOpprettToHaveBeenCalledWith({
-            tekst: melding,
-            fnr,
-            dialogId: '2'
-        });
+        fireEvent.change(input, { target: { value: melding } });
+        fireEvent.click(getByText('Send'));
+        await waitFor(() =>
+            expectOpprettToHaveBeenCalledWith({
+                tekst: melding,
+                fnr,
+                dialogId: '2',
+            }),
+        );
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
     });
 
     it('når veileder oppretter en ny dialog payload til backend ikke ha dialogId', async () => {
-        const { getByLabelText, getByText } = await act(() => render(<IntegrationTestApp />));
+        const { getByLabelText, getByText } = render(<IntegrationTestApp />);
         await waitFor(() => getByLabelText('Meldinger'), { timeout: 10000 });
-        await act(async () => getByText('Ny dialog').click());
-        const input = getByLabelText('Tema (obligatorisk)');
+        await act(async () => fireEvent.click(getByText('Ny dialog')));
+        await waitFor(() => getByLabelText('Tema (obligatorisk)'));
         const tittel = 'Dette er tittel';
-        await act(() =>
-            fireEvent.change(input, {
-                target: { value: tittel }
-            })
-        );
-        const meldingInput = getByLabelText('Melding (obligatorisk)');
+        await act(async () => fireEvent.change(getByLabelText('Tema (obligatorisk)'), { target: { value: tittel } }));
         const melding = 'Dette er melding';
-        await act(() =>
-            fireEvent.change(meldingInput, {
-                target: { value: melding }
-            })
+        await act(async () =>
+            fireEvent.change(getByLabelText('Melding (obligatorisk)'), { target: { value: melding } }),
         );
-        const sendKnapp = getByText('Send');
-        await act(async () => sendKnapp.click());
-        expectOpprettToHaveBeenCalledWith({
-            fnr,
-            tekst: melding,
-            overskrift: tittel,
-            venterPaaSvarFraBruker: false
-        });
+        await act(async () => fireEvent.click(getByText('Send')));
+        await waitFor(() =>
+            expectOpprettToHaveBeenCalledWith({
+                fnr,
+                tekst: melding,
+                overskrift: tittel,
+                venterPaaSvarFraBruker: false,
+            }),
+        );
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
     });
 });
