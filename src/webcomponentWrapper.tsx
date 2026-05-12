@@ -1,3 +1,4 @@
+// @ts-ignore - vite handles ?inline imports
 import dsStyles from '@navikt/ds-css/dist/index.css?inline';
 import { Provider as ModalProvider } from '@navikt/ds-react';
 import React from 'react';

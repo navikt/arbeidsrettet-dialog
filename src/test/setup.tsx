@@ -5,10 +5,12 @@ import { cleanup } from '@testing-library/react';
 // @ts-ignore
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-const NativeAbortController = (process as any).__nativeAbortController__ ?? globalThis.AbortController;
-const NativeAbortSignal = (process as any).__nativeAbortSignal__ ?? globalThis.AbortSignal;
-const NativeRequest = (process as any).__nativeRequest__ ?? globalThis.Request;
-const NativeFetch = (process as any).__nativeFetch__ ?? globalThis.fetch;
+const process = (globalThis as any).process ?? {};
+
+const NativeAbortController = process.__nativeAbortController__ ?? globalThis.AbortController;
+const NativeAbortSignal = process.__nativeAbortSignal__ ?? globalThis.AbortSignal;
+const NativeRequest = process.__nativeRequest__ ?? globalThis.Request;
+const NativeFetch = process.__nativeFetch__ ?? globalThis.fetch;
 
 // @ts-ignore
 globalThis.AbortController = NativeAbortController;
