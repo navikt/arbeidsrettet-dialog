@@ -62,7 +62,7 @@
   "dependencies": {
     "@grafana/faro-web-sdk": "^1.19.0",
     "@hookform/resolvers": "^3.9.1",
-    "@navikt/aksel-icons": "^7.35.2",
+    "@navikt/aksel-icons": "^8.10.5",
     "@navikt/ds-css": "^8.6.0",
     "@navikt/ds-react": "^8.6.0",
     "@navikt/ds-tailwind": "^8.6.0",
