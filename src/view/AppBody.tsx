@@ -12,7 +12,6 @@ import { dataOrUndefined } from './Provider';
 import { useRootLoaderData } from '../routing/loaders';
 import StatusAdvarsel from './statusAdvarsel/StatusAdvarsel';
 import DialogHeaderFeil from './dialog/DialogHeaderFeil';
-import { Breakpoint, useBreakpoint } from './utils/useBreakpoint';
 
 function hash(val: string) {
     const utf8 = new TextEncoder().encode(val);
@@ -38,21 +37,16 @@ const AppBody = () => {
     const oppfolgingContext = useOppfolgingContext();
     const brukerdata = useUserInfoContext();
     const oppfolgingData = dataOrUndefined(oppfolgingContext);
-    const breakpoint = useBreakpoint();
-    const isMobile = [Breakpoint.sm, Breakpoint.initial].includes(breakpoint);
 
     useLogBruker(brukerdata, oppfolgingData);
 
     return (
         <div className="flex flex-1 flex-col">
-            {isMobile ? <StatusAdvarsel /> : null}
+            <StatusAdvarsel />
             <div className="flex flex-1 max-h-full">
                 <DialogOversikt />
                 <WaitForAllData />
-                <div className="flex flex-1 flex-col">
-                    <div className="hidden md:flex flex-col p-2 bg-ax-bg-sunken">
-                        {!isMobile ? <StatusAdvarsel /> : null}
-                    </div>
+                <div className="flex flex-1 border border-solid border-ax-bg-neutral-moderate-pressed flex-col">
                     <DialogHeaderFeil />
                     <Outlet />
                 </div>

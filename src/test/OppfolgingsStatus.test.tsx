@@ -43,7 +43,7 @@ describe('Statusadvarsler', () => {
                 gitt.bruker().som.harIngenDialog().som.harBrukerSomAldriHarVærtUnderOppfolging();
                 vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
                 const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
-                getByText('Du må være registrert hos Nav for å ha digital dialog med veileder.');
+                getByText('Du må være under oppfølging hos Nav for å ha digital dialog med veileder.');
             });
         });
 
