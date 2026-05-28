@@ -9,11 +9,14 @@ import KanIkkeVarsles from './KanIkkeVarsles';
 import ManuellBruker from './ManuellBruker';
 import ReservertKrr from './ReservertKrr';
 import ErIkkeRegistrertIKrrAdversel from './ErIkkeRegistrertIKrrAdverselBruker';
+import { useHarSkrivetilgangTilBruker } from '../dialogProvider/dialogStore';
+import IkkeTilgang from './IkkeTilgang';
 
 export default function StatusAdvarsel() {
     const oppfolgingDataContext = useOppfolgingContext();
     const oppfolgingData = dataOrUndefined(oppfolgingDataContext);
     const UserInfo = useUserInfoContext();
+    const harSkrivetilgangTilBruker = useHarSkrivetilgangTilBruker();
 
     if (!oppfolgingData || !UserInfo) {
         return null;
@@ -45,6 +48,9 @@ export default function StatusAdvarsel() {
     }
     if (!erRegistrertIKrrBruker) {
         return <ErIkkeRegistrertIKrrAdversel erVeileder={erVeileder} />;
+    }
+    if (erVeileder && harSkrivetilgangTilBruker === false) {
+        return <IkkeTilgang />;
     }
 
     return null;

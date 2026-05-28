@@ -104,3 +104,7 @@ export interface KladdData {
 export interface SistOppdatert {
     sistOppdatert: Date;
 }
+
+export interface TilgangData {
+    harSkrivetilgangTilBruker: boolean;
+}

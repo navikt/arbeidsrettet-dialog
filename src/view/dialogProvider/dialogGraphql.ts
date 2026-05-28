@@ -1,6 +1,6 @@
 import { DialogApi } from '../../api/UseApiBasePath';
 import { sjekkStatuskode, toJson } from '../../utils/Fetch';
-import { DialogData, KladdData } from '../../utils/Typer';
+import { DialogData, KladdData, TilgangData } from '../../utils/Typer';
 import { GraphqlError } from '../../utils/fetchErrors';
 
 const query = `
@@ -36,6 +36,9 @@ const query = `
             dialogId,
             tekst,
             overskrift
+        },
+        tilgang(fnr: $fnr) {
+            harSkrivetilgangTilBruker
         }
     }
 `;
@@ -66,7 +69,7 @@ const sjekkGraphqlFeil = <T>(response: GraphqlResponse<T>): Promise<GraphqlRespo
 
 export const hentDialogerGraphql = async (
     fnr: string | undefined,
-): Promise<GraphqlResponse<{ dialoger: DialogData[]; kladder: KladdData[] }>> => {
+): Promise<GraphqlResponse<{ dialoger: DialogData[]; kladder: KladdData[], tilgang: TilgangData }>> => {
     return fetch(DialogApi.graphql, {
         method: 'POST',
         headers: {
