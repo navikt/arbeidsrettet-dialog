@@ -57,9 +57,9 @@ export const useDialogStore = create(
                         // TODO: Find a way to get previous value
                         // loggChangeInDialog(state.dialoger, dialoger);
                         if (data) {
-                            const { dialoger, kladder } = data;
+                            const { dialoger, kladder, tilgang } = data;
                             set(
-                                { status: Status.OK, dialoger, sistOppdatert: new Date(), error: undefined, kladder },
+                                { status: Status.OK, dialoger, sistOppdatert: new Date(), error: undefined, kladder, tilgang },
                                 false, // flag for overwriting state, default false but needs to be provided when naming actions
                                 'hentDialoger/fulfilled',
                             );
@@ -275,6 +275,8 @@ export const useDialogStore = create(
 
 export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentDialoger));
 export const useSilentlyHentDialoger = () => useDialogStore(useShallow((store) => store.silentlyHentDialoger));
+export const useHarSkrivetilgangTilBruker = () =>
+    useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
     let interval: number;
