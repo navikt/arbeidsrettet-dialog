@@ -70,7 +70,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
     "@vitejs/plugin-react": "^4.7.0",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react-swc": "^4.3.1",
     "core-js": "^3.49.0",
     "date-fns": "^4.4.0",
     "less": "^4.6.4",
