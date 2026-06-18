@@ -104,6 +104,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Sommerjobb';
         case EksternAktivitetTypes.TILPASSET_JOBBSTOTTE:
             return 'Tilpasset jobbstøtte'
+        case EksternAktivitetTypes.VARIG_TILRETTELAGT_ARBEID_ORDINAER:
+            return 'Varig tilrettelagt arbeid i ordinær virksomhet(ny forskrift)';
     }
 }
 
