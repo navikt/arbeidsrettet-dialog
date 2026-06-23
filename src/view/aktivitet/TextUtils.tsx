@@ -102,12 +102,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Høyere utdanning';
         case EksternAktivitetTypes.SOMMERJOBB:
             return 'Sommerjobb';
-        case EksternAktivitetTypes.TILPASSET_JOBBSTOTTE:
-            return 'Tilpasset jobbstøtte';
-        case EksternAktivitetTypes.VARIG_TILRETTELAGT_ARBEID_ORDINAER:
-            return 'Varig tilrettelagt arbeid i ordinær virksomhet(ny forskrift)';
         case EksternAktivitetTypes.TILRETTELAGT_ARBEID_ORDINAER:
-            return 'Tilrettelagt arbeid med oppfølging';
+            return 'Tilrettelagt arbeid i ordinær virksomhet';
     }
 }
 
