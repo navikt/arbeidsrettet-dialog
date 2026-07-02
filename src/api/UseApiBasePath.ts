@@ -24,7 +24,6 @@ export const DialogApi = {
     opprettDialog: `${dialogBasePath}/dialog`,
     sistOppdatert: `${dialogBasePath}/dialog/sistOppdatert`,
     settLest: (dialogId: string) => `${dialogBasePath}/dialog/${dialogId}/les`,
-    logg: `${dialogBasePath}/logger/event`,
     graphql: `${apiBasePath}/veilarbdialog/graphql`
 };
 
