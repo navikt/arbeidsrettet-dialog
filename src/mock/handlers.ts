@@ -105,7 +105,6 @@ export const handlers = [
         '/veilarbdialog/api/dialog',
         failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog),
     ),
-    http.post('/veilarbdialog/api/logger/event', () => new Response()),
     http.post(
         '/veilarbdialog/graphql',
         failOrGetResponse(
