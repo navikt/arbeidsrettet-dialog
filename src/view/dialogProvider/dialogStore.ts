@@ -31,7 +31,7 @@ type DialogStore = DialogState &
         updateDialogWithNewDialog: (dialogData: DialogData) => DialogData;
         stopPolling: () => void;
         setStatus: (status: Status, actionName?: string) => void;
-        pollInterval: number | undefined;
+        pollInterval: ReturnType<typeof setInterval> | undefined;
         currentPollFnr: string | undefined;
         nyDialog: (melding: NyTradArgs) => Promise<DialogData | undefined>;
         nyMelding: (melding: NyMeldingArgs) => Promise<DialogData | undefined>;
@@ -279,7 +279,7 @@ export const useHarSkrivetilgangTilBruker = () =>
     useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
-    let interval: number;
+    let interval: ReturnType<typeof setInterval>;
     interval = setInterval(() => {
         pollForChanges().catch((e) => {
             captureMessage('Klarte ikke polle sistOppdatert');
