@@ -16,7 +16,7 @@ export function Aktivitetskort() {
 
     if (!aktivitet) {
         return (
-            <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/4 border-l border-ax-border-neutral-subtle"></div>
+            <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/6 border-l border-ax-border-neutral-subtle"></div>
         );
     }
 
