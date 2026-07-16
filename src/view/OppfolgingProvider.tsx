@@ -67,12 +67,44 @@ const schema = z.object({
     oppfolging: z.object({
         erUnderOppfolging: z.boolean(),
     }),
+    veilederTilgang: z.object({
+        harVeilederLeseTilgangTilBrukersKontorsperre: z.boolean(),
+    }),
 });
+
+const oppfolgingStatusQuery = `
+    query($fnr: String!) {
+        brukerStatus(fnr: $fnr) {
+            manuell {
+                erManuell
+            }
+            krr {
+                reservertIKrr
+                kanVarsles
+                registrertIKrr
+            }
+        }
+        veilederTilgang(fnr: $fnr) {
+            harVeilederLeseTilgangTilBrukersKontorsperre
+        }
+        oppfolging(fnr: $fnr) {
+            erUnderOppfolging
+        }
+        oppfolgingsPerioder(fnr: $fnr) {
+            id
+            sluttTidspunkt
+            kvpPerioder {
+                startTidspunkt
+                sluttTidspunkt
+            }
+        }
+    }
+`;
 
 const fetchOppfolging = (fnr: string | undefined) =>
     fetchData<GraphqlResponse<OppfolgingDataGraphqlResponse>>(OppfolgingsApi.graphql, {
         method: 'POST',
-        body: fnr ? JSON.stringify({ fnr }) : undefined,
+        body: fnr ? JSON.stringify({ query: oppfolgingStatusQuery, variables: { fnr: fnr || '' } }) : undefined,
     }).then((it) => {
         const data = it.data;
         const validationResult = schema.safeParse(data);
