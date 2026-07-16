@@ -28,13 +28,12 @@ export default function StatusAdvarsel() {
     const erReservertKrr = oppfolgingData.reservasjonKRR;
     const kanVarsles = oppfolgingData.kanVarsles;
     const manuellBruker = oppfolgingData.manuell;
-    const kanReaktiveres = oppfolgingData.kanReaktiveres;
     const erRegistrertIKrrBruker = oppfolgingData.registrertKRR;
 
     if (!erUnderOppfolging && !harOppfolgingsPerioder) {
         return <AldriUnderOppfolging erVeileder={erVeileder} />;
     }
-    if (!erUnderOppfolging || kanReaktiveres) {
+    if (!erUnderOppfolging) {
         return <IkkeUnderOppfolging erVeileder={erVeileder} />;
     }
     if (erReservertKrr) {

@@ -48,26 +48,16 @@ export interface Bruker {
 }
 
 export interface OppfolgingData {
-    fnr: string;
-    aktorId: string;
-    veilederId: StringOrNull;
     reservasjonKRR: boolean;
     registrertKRR: boolean;
     kanVarsles: boolean;
     manuell: boolean;
     underOppfolging: boolean;
     underKvp: boolean;
-    oppfolgingUtgang: StringOrNull;
+    // TODO:  Eskaleringsvarsel er jo flyttet til dialog??
     gjeldendeEskaleringsvarsel: Eskaleringsvarsel | null;
-    kanStarteOppfolging: boolean;
-    avslutningStatus: StringOrNull;
     oppfolgingsPerioder: PeriodeData[];
     harSkriveTilgang: boolean;
-    kanReaktiveres: boolean;
-    inaktiveringsdato: StringOrNull;
-    erSykmeldtMedArbeidsgiver: boolean;
-    servicegruppe: StringOrNull;
-    formidlingsgruppe: StringOrNull;
 }
 
 export interface Eskaleringsvarsel {

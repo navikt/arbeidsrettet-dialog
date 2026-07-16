@@ -24,25 +24,14 @@ const oppfPerioder: PeriodeData[] = [
 ];
 const ingenPerioder: PeriodeData[] = [];
 const oppfolgingData: OppfolgingData = {
-    fnr: 'null',
-    aktorId: 'null',
-    veilederId: '101010',
     reservasjonKRR: true,
     kanVarsles: false,
     manuell: false,
     underOppfolging: false,
     underKvp: false,
-    oppfolgingUtgang: null,
     gjeldendeEskaleringsvarsel: null,
-    kanStarteOppfolging: false,
-    avslutningStatus: null,
     oppfolgingsPerioder: ingenPerioder,
     harSkriveTilgang: true,
-    kanReaktiveres: false,
-    inaktiveringsdato: '2018-08-31T10:46:10.971+01:00',
-    erSykmeldtMedArbeidsgiver: false,
-    formidlingsgruppe: null,
-    servicegruppe: null,
     registrertKRR: false,
 };
 
