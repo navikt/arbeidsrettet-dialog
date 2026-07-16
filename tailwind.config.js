@@ -7,7 +7,7 @@ module.exports = {
             maxWidth: {
                 'screen-w-1/3': '33vw',
                 'screen-w-1/4': '25vw',
-                'screen-w-1/6': '16vw',
+                'screen-w-1/5': '20vw',
                 'max-paragraph': '40rem',
                 248: '40.75rem',
                 lgContainer: '700px',
