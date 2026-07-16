@@ -54,7 +54,7 @@ describe('Ny melding', () => {
 
     it('når veileder oppretter en ny dialog payload til backend ikke ha dialogId', async () => {
         const { getByLabelText, getByText } = render(<IntegrationTestApp />);
-        await waitFor(() => getByLabelText('Meldinger'), { timeout: 10000 });
+        await waitFor(() => getByLabelText('Meldinger'), { timeout: 2000 });
         await act(async () => fireEvent.click(getByText('Ny dialog')));
         await waitFor(() => getByLabelText('Tema (obligatorisk)'));
         const tittel = 'Dette er tittel';
@@ -63,7 +63,7 @@ describe('Ny melding', () => {
         await act(async () =>
             fireEvent.change(getByLabelText('Melding (obligatorisk)'), { target: { value: melding } }),
         );
-        await act(async () => fireEvent.click(getByText('Send')));
+        fireEvent.click(getByText('Send'));
         await waitFor(() =>
             expectOpprettToHaveBeenCalledWith({
                 fnr,

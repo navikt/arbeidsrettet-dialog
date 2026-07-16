@@ -89,3 +89,48 @@ afterEach(() => {
 Element.prototype.scrollTo = () => {};
 // @ts-ignore
 window.matchMedia = (): boolean => true;
+
+interface Storage {
+    length: number;
+    getItem: (key: string) => string | null;
+    clear: () => void;
+    key: (index: number) => string | null;
+    removeItem: (key: string) => void;
+    setItem: (key: string, value: string) => void;
+}
+declare const window: {
+    sessionStorage: Storage;
+    localStorage: Storage;
+};
+
+const ensureMemoryStorage = (storageName: 'sessionStorage' | 'localStorage') => {
+    const current = window[storageName] as any;
+    if (current && typeof current.getItem === 'function') {
+        return;
+    }
+    let store = {} as any;
+    window[storageName] = {
+        get length() {
+            return Object.keys(store).length;
+        },
+        clear() {
+            store = {};
+        },
+        getItem(key: any) {
+            return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+        },
+        key(index: any) {
+            const keys = Object.keys(store);
+            return keys[index] ?? null;
+        },
+        removeItem(key: any) {
+            delete store[key];
+        },
+        setItem(key: any, value: any) {
+            store[key] = String(value);
+        },
+    };
+};
+
+ensureMemoryStorage('localStorage');
+ensureMemoryStorage('sessionStorage');
