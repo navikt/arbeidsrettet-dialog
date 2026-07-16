@@ -16,13 +16,13 @@ export default function useKansendeMelding(): boolean {
         return false;
     }
 
-    const kanVarsles = oppfolgingData.kanVarsles;
+    const kanVarsles = oppfolgingData.brukerStatus.krr?.kanVarsles;
 
     return (
-        oppfolgingData.harSkriveTilgang &&
-        oppfolgingData.underOppfolging &&
-        !oppfolgingData.reservasjonKRR &&
+        oppfolgingData.veilederTilgang.harVeilederLeseTilgangTilBrukersKontorsperre &&
+        oppfolgingData.oppfolging.erUnderOppfolging &&
+        !oppfolgingData.brukerStatus.krr.reservertIKrr &&
         kanVarsles &&
-        !oppfolgingData.manuell
+        !oppfolgingData.brukerStatus.manuell.erManuell
     );
 }

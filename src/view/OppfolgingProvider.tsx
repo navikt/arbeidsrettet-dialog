@@ -1,18 +1,17 @@
 import { Status } from '../api/typer';
 import { OppfolgingsApi } from '../api/UseApiBasePath';
-import { fetchData } from '../utils/Fetch';
-import { OppfolgingData } from '../utils/Typer';
+import { fetchData, sjekkStatuskode } from '../utils/Fetch';
+import { OppfolgingData, StringOrNull } from '../utils/Typer';
 import { createGenericStore } from '../utils/genericStore';
 import { useShallow } from 'zustand/react/shallow';
 import z from 'zod';
+import { GraphqlResponse } from './dialogProvider/dialogGraphql';
 
 export interface OppfolgingDataProviderType {
     data?: OppfolgingDataGraphqlResponse;
     status: Status;
     hentOppfolging: (fnr: string | undefined) => Promise<OppfolgingDataGraphqlResponse | undefined>;
 }
-
-const oppfolgingUrl = OppfolgingsApi.oppfolgingUrl;
 
 export interface OppfolgingDataGraphqlResponse {
     veilederTilgang: {
@@ -21,6 +20,15 @@ export interface OppfolgingDataGraphqlResponse {
     oppfolging: {
         erUnderOppfolging: boolean;
     };
+    oppfolgingsPerioder: {
+        id: string;
+        startTidspunkt: string;
+        sluttTidspunkt: StringOrNull;
+        kvpPerioder: {
+            startTidspunkt: string;
+            sluttTidspunkt: StringOrNull;
+        }[];
+    }[];
     brukerStatus: {
         manuell: {
             erManuell: boolean;
@@ -62,9 +70,19 @@ const schema = z.object({
 });
 
 const fetchOppfolging = (fnr: string | undefined) =>
-    fetchData<{ data: OppfolgingDataGraphqlResponse; errors: any[] }>(oppfolgingUrl, {
+    fetchData<GraphqlResponse<OppfolgingDataGraphqlResponse>>(OppfolgingsApi.graphql, {
         method: 'POST',
         body: fnr ? JSON.stringify({ fnr }) : undefined,
+    }).then((it) => {
+        const data = it.data;
+        const validationResult = schema.safeParse(data);
+        if (!validationResult.success) {
+            console.warn(
+                'Veilarboppfolging graphql validation failed: ',
+                JSON.stringify(validationResult.error.issues),
+            );
+        }
+        return it.data;
     });
 
 export const useOppfolgingStore = createGenericStore<
@@ -72,6 +90,7 @@ export const useOppfolgingStore = createGenericStore<
     string | undefined,
     OppfolgingDataGraphqlResponse
 >(undefined as OppfolgingDataGraphqlResponse | undefined, fetchOppfolging, 'hente oppfolging');
+
 export const useOppfolgingContext = (): OppfolgingDataProviderType =>
     useOppfolgingStore(
         useShallow((store) => ({
@@ -81,3 +100,15 @@ export const useOppfolgingContext = (): OppfolgingDataProviderType =>
             hentOppfolging: store.fetch,
         })),
     );
+
+export const useErUnderKvp = () => {
+    return (
+        useOppfolgingContext()
+            .data?.oppfolgingsPerioder.find((it) => !it.sluttTidspunkt)
+            ?.kvpPerioder.find((it) => !it.sluttTidspunkt) || false
+    );
+};
+
+export const useErUnderOppfolging = () => {
+    return useOppfolgingStore(useShallow((store) => store.data?.oppfolging?.erUnderOppfolging || false));
+};

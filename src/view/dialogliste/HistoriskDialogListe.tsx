@@ -3,7 +3,7 @@ import React from 'react';
 
 import InvertedLestMer from '../../felleskomponenter/InvertedLesMer';
 import { DialogData } from '../../utils/Typer';
-import { useOppfolgingContext } from '../OppfolgingProvider';
+import { useErUnderKvp, useOppfolgingContext } from '../OppfolgingProvider';
 import { dataOrUndefined } from '../Provider';
 import { DialogPreviewListe } from './DialogPreview';
 
@@ -19,17 +19,17 @@ interface HistoriskeDialogerTekst {
 
 const defaultTekst = {
     knapptekst: 'Se dialoger fra tidligere perioder',
-    tittel: 'Dialoger fra tidligere perioder'
+    tittel: 'Dialoger fra tidligere perioder',
 };
 
 const bareKVPTekst = {
     knapptekst: 'Se dialoger fra perioden du var i Kvalifiseringsprogrammet',
-    tittel: 'Dialoger fra perioden du var i Kvalifiseringsprogrammet'
+    tittel: 'Dialoger fra perioden du var i Kvalifiseringsprogrammet',
 };
 
 const KVPOgHistoriskTekst = {
     knapptekst: 'Se dialoger fra tidligere perioder og fra perioden du var i Kvalifiseringsprogrammet',
-    tittel: 'Dialoger fra tidligere oppfølgingsperioder og fra perioden du var i Kvalifiseringsprogrammet'
+    tittel: 'Dialoger fra tidligere oppfølgingsperioder og fra perioden du var i Kvalifiseringsprogrammet',
 };
 
 function useTekst(): HistoriskeDialogerTekst {
@@ -40,11 +40,11 @@ function useTekst(): HistoriskeDialogerTekst {
         return defaultTekst;
     }
 
-    const underOppfolging = oppfolgingData.underOppfolging;
+    const underOppfolging = oppfolgingData.oppfolging.erUnderOppfolging;
     const perioder = oppfolgingData.oppfolgingsPerioder;
-    const naverende = perioder?.find((a) => !a.sluttDato);
+    const naverende = perioder?.find((a) => !a.sluttTidspunkt);
     const kvpPerioder = naverende?.kvpPerioder ? naverende.kvpPerioder : [];
-    const underKVP = oppfolgingData.underKvp;
+    const underKVP = useErUnderKvp();
 
     const underKVPMedAvsluttetePerioder = underKVP && kvpPerioder.length > 1;
     const avsluttetePerioderIkkeUnderKVP = !underKVP && kvpPerioder.length > 0;

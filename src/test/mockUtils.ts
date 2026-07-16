@@ -7,32 +7,38 @@ import * as Provider from '../view/Provider';
 import { Aktivitet } from '../utils/aktivitetTypes';
 import * as AktivitetProvider from '../view/AktivitetProvider';
 import { AktivitetDataProviderType, useAktivitetContext } from '../view/AktivitetProvider';
+import { OppfolgingDataGraphqlResponse } from '../view/OppfolgingProvider';
 
 const testFnr = '01234567890';
 const veilederUserInfo: Bruker = { id: '010101', erVeileder: true, erBruker: false };
 const bukerUserInfo: Bruker = { id: testFnr, erVeileder: false, erBruker: true };
 const oppfPerioder: PeriodeData[] = [];
-const enLukketOppfølgingsPeriode = [
+const enLukketOppfølgingsPeriode: OppfolgingDataGraphqlResponse['oppfolgingsPerioder'] = [
     {
-        aktorId: '1234567988888',
-        veileder: false,
-        startDato: '2017-01-30T10:46:10.971+01:00',
-        sluttDato: '2017-12-31T10:46:10.971+01:00',
-        begrunnelse: null,
+        startTidspunkt: '2017-01-30T10:46:10.971+01:00',
+        sluttTidspunkt: '2017-12-31T10:46:10.971+01:00',
         kvpPerioder: [],
-        uuid: '1',
+        id: '1',
     },
 ];
-const oppfolgingData: OppfolgingData = {
-    reservasjonKRR: false,
-    manuell: false,
-    underOppfolging: true, // eller false
-    underKvp: false,
-    gjeldendeEskaleringsvarsel: null,
+const oppfolgingData: OppfolgingDataGraphqlResponse = {
+    brukerStatus: {
+        manuell: {
+            erManuell: false,
+        },
+        krr: {
+            reservertIKrr: false,
+            kanVarsles: true,
+            registrertIKrr: false,
+        },
+    },
+    oppfolging: {
+        erUnderOppfolging: true, // eller false
+    },
     oppfolgingsPerioder: oppfPerioder,
-    harSkriveTilgang: true,
-    kanVarsles: true,
-    registrertKRR: false,
+    veilederTilgang: {
+        harVeilederLeseTilgangTilBrukersKontorsperre: true,
+    },
 };
 
 const baseOppfolgingsData = {
@@ -44,46 +50,96 @@ const aldriVærtUnderOppfølgingData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: false,
+        oppfolging: {
+            erUnderOppfolging: false,
+        },
         oppfolgingsPerioder: [],
-    },
+    } as OppfolgingDataGraphqlResponse,
 };
 const ikkeLengerUnderOppfølgingData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: false,
+        oppfolging: {
+            erUnderOppfolging: false,
+        },
         oppfolgingsPerioder: enLukketOppfølgingsPeriode,
-    },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingsData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: true,
+        oppfolging: {
+            erUnderOppfolging: true,
+        },
         oppfolgingsPerioder: enLukketOppfølgingsPeriode,
-    },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenReservertIKRRData = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        reservasjonKRR: true,
-    },
+        brukerStatus: {
+            manuell: {
+                erManuell: true,
+            },
+            krr: {
+                reservertIKrr: true,
+                kanVarsles: false,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenManuell = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        manuell: true,
-    },
+        brukerStatus: {
+            manuell: {
+                erManuell: true,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: true,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenKanIkkeVarsles = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        kanVarsles: false,
-    },
+        brukerStatus: {
+            manuell: {
+                erManuell: false,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: false,
+                registrertIKrr: false,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
+};
+
+const underOppfølgingMenKanUtdatertIKrr = {
+    ...underOppfølgingsData,
+    data: {
+        ...underOppfølgingsData.data,
+        brukerStatus: {
+            manuell: {
+                erManuell: false,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: false,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 
 const ingenDialoger = [] as DialogData[];
@@ -149,6 +205,10 @@ const harBrukerUnderOppfølgingMenManuell = () => {
 };
 const harBrukerUnderOppfølgingMenKanIkkeVarsles = () => {
     vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => underOppfølgingMenKanIkkeVarsles);
+    return { som: gitt };
+};
+const harBrukerUnderOppfølgingMenUtdatertIKrr = () => {
+    vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => underOppfølgingMenKanUtdatertIKrr);
     return { som: gitt };
 };
 const veileder = () => {
@@ -231,6 +291,7 @@ const oppfolgingConfig = {
     harBrukerUnderOppfølgingMenReservertIKRR,
     harBrukerUnderOppfølgingMenManuell,
     harBrukerUnderOppfølgingMenKanIkkeVarsles,
+    harBrukerUnderOppfølgingMenUtdatertIKrr,
 };
 
 export const gitt = brukerTypeConfig;

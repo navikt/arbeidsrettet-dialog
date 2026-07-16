@@ -21,7 +21,7 @@ export default function StatusAdvarselWrapper({ children, title }: Props) {
 
 const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kontaktinformasjon';
 
-export function KanIkkeKontakteElektroniskVeileder() {
+export function UtdatertKontaktInformasjonIKrrVeileder() {
     return (
         <GlobalAlert status="warning">
             <GlobalAlert.Header>

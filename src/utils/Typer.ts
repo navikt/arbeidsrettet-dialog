@@ -70,18 +70,15 @@ export interface Eskaleringsvarsel {
 }
 
 export interface PeriodeData {
-    aktorId: string;
-    veileder: boolean;
-    startDato: StringOrNull;
-    sluttDato: StringOrNull;
-    begrunnelse: StringOrNull;
+    startTidspunkt: string;
+    sluttTidspunkt: StringOrNull;
     kvpPerioder: KvpPerioder[];
-    uuid: string;
+    id: string;
 }
 
 interface KvpPerioder {
-    opprettetDato: StringOrNull;
-    avsluttetDato: StringOrNull;
+    startTidspunkt: string;
+    sluttTidspunkt: StringOrNull;
 }
 
 export interface KladdData {

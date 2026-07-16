@@ -1,12 +1,12 @@
 import { Button, ErrorMessage, LocalAlert, Textarea } from '@navikt/ds-react';
-import React, { MutableRefObject, useContext, useRef } from 'react';
+import React, { MutableRefObject, RefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen, setCursorBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { Breakpoint, useBreakpoint } from '../../utils/useBreakpoint';
 import { dataOrUndefined } from '../../Provider';
-import { useOppfolgingContext } from '../../OppfolgingProvider';
+import { useErUnderOppfolging, useOppfolgingContext } from '../../OppfolgingProvider';
 import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
@@ -19,7 +19,7 @@ const MeldingBottomInputInner = () => {
         formState: { errors, isSubmitting },
     } = useFormContext<MeldingFormValues>();
     const breakpoint = useBreakpoint();
-    const textAreaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
+    const textAreaRef: RefObject<HTMLTextAreaElement | null> = useRef(null);
     useFocusBeforeHilsen(textAreaRef);
 
     const formHooks = register('melding');
@@ -75,11 +75,9 @@ const MeldingBottomInputInner = () => {
 };
 
 export const MeldingBottomInput = () => {
-    const oppfolgingContext = useOppfolgingContext();
-    const oppfolging = dataOrUndefined(oppfolgingContext);
+    const underOppfolging = useErUnderOppfolging();
     const dialog = useSelectedDialog();
     if (!dialog) {
-        console.log('Invisble');
         return null;
     }
     return (
@@ -89,7 +87,7 @@ export const MeldingBottomInput = () => {
         >
             <div className="grow justify-self-center ">
                 <ManagedDialogCheckboxes dialog={dialog} />
-                {!oppfolging?.underOppfolging || dialog.historisk ? null : <MeldingBottomInputInner />}
+                {!underOppfolging || dialog.historisk ? null : <MeldingBottomInputInner />}
             </div>
         </section>
     );

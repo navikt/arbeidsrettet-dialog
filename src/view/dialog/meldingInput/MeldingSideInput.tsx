@@ -5,7 +5,7 @@ import { betterErrorMessage, setCursorBeforeHilsen, MeldingInputContext, useFocu
 import { MeldingFormValues } from './MeldingInputBox';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
 import { dataOrUndefined } from '../../Provider';
-import { useOppfolgingContext } from '../../OppfolgingProvider';
+import { useErUnderOppfolging, useOppfolgingContext } from '../../OppfolgingProvider';
 import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 
@@ -62,15 +62,14 @@ const MeldingSideInputInner = () => {
 };
 
 export const MeldingSideInput = () => {
-    const oppfolgingContext = useOppfolgingContext();
-    const oppfolging = dataOrUndefined(oppfolgingContext);
+    const underOppfolging = useErUnderOppfolging();
     const dialog = useSelectedDialog();
     if (!dialog) return null;
     return (
         <section aria-label="Ny melding" className="flex flex-1 bg-white p-4">
             <div className="w-full flex flex-col">
                 <ManagedDialogCheckboxes dialog={dialog} />
-                {!oppfolging?.underOppfolging || dialog.historisk ? null : <MeldingSideInputInner />}
+                {!underOppfolging || dialog.historisk ? null : <MeldingSideInputInner />}
             </div>
         </section>
     );

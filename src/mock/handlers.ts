@@ -111,7 +111,10 @@ export const handlers = [
             harDialogFeilerSkruddPa,
             async (request) => {
                 const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
-                return { data: { dialoger: dialogerPayload, kladder: [], tilgang: { harSkrivetilgangTilBruker: true } }, errors: [] };
+                return {
+                    data: { dialoger: dialogerPayload, kladder: [], tilgang: { harSkrivetilgangTilBruker: true } },
+                    errors: [],
+                };
             },
             1500,
         ),
@@ -120,6 +123,7 @@ export const handlers = [
     // veilarboppfolging
     http.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker, 1000)),
     http.post('/veilarboppfolging/api/v3/oppfolging/hent-status', jsonResponse(oppfolging)),
+    http.post('/veilarboppfolging/api/graphql', jsonResponse({ data: oppfolging, errors: [] })),
     http.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
     // veilarbaktivitet

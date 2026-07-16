@@ -6,33 +6,38 @@ import { Status } from '../../api/typer';
 import { Bruker, OppfolgingData, PeriodeData } from '../../utils/Typer';
 import * as BrukerContext from '../BrukerProvider';
 import * as OppfolgingContext from '../OppfolgingProvider';
-import { OppfolgingDataProviderType } from '../OppfolgingProvider';
+import { OppfolgingDataGraphqlResponse, OppfolgingDataProviderType } from '../OppfolgingProvider';
 import StatusAdvarsel from './StatusAdvarsel';
 
 const veileder: Bruker = { id: '010101', erVeileder: true, erBruker: false };
 const bruker: Bruker = { id: '010101', erVeileder: false, erBruker: true };
 const oppfPerioder: PeriodeData[] = [
     {
-        aktorId: '1234567988888',
-        veileder: false,
-        startDato: '2017-01-30T10:46:10.971+01:00',
-        sluttDato: '2017-12-31T10:46:10.971+01:00',
-        begrunnelse: null,
+        startTidspunkt: '2017-01-30T10:46:10.971+01:00',
+        sluttTidspunkt: '2017-12-31T10:46:10.971+01:00',
         kvpPerioder: [],
-        uuid: '1',
+        id: '1',
     },
 ];
 const ingenPerioder: PeriodeData[] = [];
-const oppfolgingData: OppfolgingData = {
-    reservasjonKRR: true,
-    kanVarsles: false,
-    manuell: false,
-    underOppfolging: false,
-    underKvp: false,
-    gjeldendeEskaleringsvarsel: null,
+const oppfolgingData: OppfolgingDataGraphqlResponse = {
+    brukerStatus: {
+        krr: {
+            kanVarsles: false,
+            reservertIKrr: true,
+            registrertIKrr: false,
+        },
+        manuell: {
+            erManuell: false,
+        },
+    },
+    oppfolging: {
+        erUnderOppfolging: false,
+    },
+    veilederTilgang: {
+        harVeilederLeseTilgangTilBrukersKontorsperre: true,
+    },
     oppfolgingsPerioder: ingenPerioder,
-    harSkriveTilgang: true,
-    registrertKRR: false,
 };
 
 const useFetchOppfolging: OppfolgingDataProviderType = {
@@ -80,7 +85,7 @@ describe('<AlertStripeContainer/>', () => {
     });
 
     it('Bruker registret KRR viser en advarsel - veileder.', () => {
-        useFetchOppfolging.data!.underOppfolging = true;
+        useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
 
         vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
@@ -89,7 +94,7 @@ describe('<AlertStripeContainer/>', () => {
         getByText('Du kan ikke sende meldinger fordi brukeren har reservert seg mot digital kommunikasjon KRR.');
     });
     it('Bruker registret KRR viser en advarsel - bruker. ', () => {
-        useFetchOppfolging.data!.underOppfolging = true;
+        useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
 
         vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
@@ -123,10 +128,10 @@ describe('<AlertStripeContainer/>', () => {
     // });
 
     it('ingen varsler for gyldig status - veileder', () => {
-        useFetchOppfolging.data!.underOppfolging = true;
-        useFetchOppfolging.data!.reservasjonKRR = false;
-        useFetchOppfolging.data!.kanVarsles = true;
-        useFetchOppfolging.data!.registrertKRR = true;
+        useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
+        useFetchOppfolging.data!.brukerStatus.krr.reservertIKrr = false;
+        useFetchOppfolging.data!.brukerStatus.krr.kanVarsles = true;
+        useFetchOppfolging.data!.brukerStatus.krr.registrertIKrr = true;
 
         vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
@@ -136,10 +141,10 @@ describe('<AlertStripeContainer/>', () => {
     });
 
     it('ingen varsler for gyldig status - bruker. ', () => {
-        useFetchOppfolging.data!.underOppfolging = true;
-        useFetchOppfolging.data!.reservasjonKRR = false;
-        useFetchOppfolging.data!.kanVarsles = true;
-        useFetchOppfolging.data!.registrertKRR = true;
+        useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
+        useFetchOppfolging.data!.brukerStatus.krr.reservertIKrr = false;
+        useFetchOppfolging.data!.brukerStatus.krr.kanVarsles = true;
+        useFetchOppfolging.data!.brukerStatus.krr.registrertIKrr = true;
 
         vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
