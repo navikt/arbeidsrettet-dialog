@@ -1,5 +1,5 @@
 import { createMemoryRouter, Outlet, RouterProvider } from 'react-router';
-import { dialogRoutes, reactRouterFutureFlags, RouteIds } from '../routing/routes';
+import { dialogRoutes, RouteIds } from '../routing/routes';
 import React, { ReactElement } from 'react';
 import { Provider } from '../view/Provider';
 import { setupServer } from 'msw/node';
@@ -30,7 +30,6 @@ const AllRoutesInMemory = ({
 }) => {
     const router = createMemoryRouter(dialogRoutes(fnr), {
         initialEntries,
-        future: reactRouterFutureFlags,
     });
     return <RouterProvider router={router} />;
 };
@@ -63,7 +62,6 @@ export const SimpleRouterWithoutProvider = ({
         ],
         {
             initialEntries,
-            future: reactRouterFutureFlags,
         },
     );
     return <RouterProvider router={router} />;

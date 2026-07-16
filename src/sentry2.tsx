@@ -6,7 +6,7 @@ import {
     matchRoutes,
     useLocation,
     useNavigationType,
-} from 'react-router-dom';
+} from 'react-router';
 import { captureConsoleIntegration } from '@sentry/react';
 import { Env, getEnv } from './utils/envUtil';
 

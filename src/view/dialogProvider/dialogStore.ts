@@ -59,7 +59,14 @@ export const useDialogStore = create(
                         if (data) {
                             const { dialoger, kladder, tilgang } = data;
                             set(
-                                { status: Status.OK, dialoger, sistOppdatert: new Date(), error: undefined, kladder, tilgang },
+                                {
+                                    status: Status.OK,
+                                    dialoger,
+                                    sistOppdatert: new Date(),
+                                    error: undefined,
+                                    kladder,
+                                    tilgang,
+                                },
                                 false, // flag for overwriting state, default false but needs to be provided when naming actions
                                 'hentDialoger/fulfilled',
                             );
@@ -131,7 +138,6 @@ export const useDialogStore = create(
             },
             stopPolling: () => {
                 const { pollInterval } = get();
-                console.log('Stopping polling with http');
                 if (pollInterval) {
                     clearInterval(pollInterval);
                     set(
@@ -275,8 +281,7 @@ export const useDialogStore = create(
 
 export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentDialoger));
 export const useSilentlyHentDialoger = () => useDialogStore(useShallow((store) => store.silentlyHentDialoger));
-export const useHarSkrivetilgangTilBruker = () =>
-    useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
+export const useHarSkrivetilgangTilBruker = () => useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
     let interval: ReturnType<typeof setInterval>;

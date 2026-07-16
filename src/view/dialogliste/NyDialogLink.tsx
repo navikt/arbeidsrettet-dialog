@@ -2,7 +2,7 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import React from 'react';
 import { useRoutes } from '../../routing/routes';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const NyDialogLink = ({ disabled }: { disabled: boolean }) => {
     const { nyRoute } = useRoutes();

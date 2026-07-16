@@ -89,3 +89,35 @@ afterEach(() => {
 Element.prototype.scrollTo = () => {};
 // @ts-ignore
 window.matchMedia = (): boolean => true;
+
+const ensureMemoryStorage = (storageName) => {
+    const current = window[storageName];
+    if (current && typeof current.getItem === 'function') {
+        return;
+    }
+    let store = {};
+    window[storageName] = {
+        get length() {
+            return Object.keys(store).length;
+        },
+        clear() {
+            store = {};
+        },
+        getItem(key) {
+            return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+        },
+        key(index) {
+            const keys = Object.keys(store);
+            return keys[index] ?? null;
+        },
+        removeItem(key) {
+            delete store[key];
+        },
+        setItem(key, value) {
+            store[key] = String(value);
+        },
+    };
+};
+
+ensureMemoryStorage('localStorage');
+ensureMemoryStorage('sessionStorage');

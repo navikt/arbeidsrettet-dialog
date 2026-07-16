@@ -13,7 +13,7 @@ import { useErVeileder, useFnrContext } from '../Provider';
 import { useDialogStore } from '../dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
-import { ActionFunction, useFetcher } from 'react-router-dom';
+import { ActionFunction, useFetcher } from 'react-router';
 import { Status } from '../../api/typer';
 import { SubmitTarget } from 'react-router-dom/dist/dom';
 import { NyTradArgs } from '../DialogProvider';
