@@ -1,0 +1,9 @@
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - "@navikt/*"
+allowBuilds:
+  '@swc/core': true
+  core-js: true
+  esbuild: true
+  msw: true
+  protobufjs: true

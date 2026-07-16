@@ -19,7 +19,7 @@
     "build:prod-intern": "tsc --noEmit && vite build --mode=prod-intern --base=https://cdn.nav.no/dab/arbeidsrettet-dialog-prod-intern/build/",
     "build:gh-pages": "VITE_USE_HASH_ROUTER=true vite build --mode=dev-ekstern --base=/arbeidsrettet-dialog/",
     "build": "tsc --noEmit && vite build",
-    "test": "vitest",
+    "test": "pnpmvitest",
     "preview": "vite preview",
     "coverage": "vitest run --coverage",
     "test:coverage": "npm test -- --coverage --watchAll=false",
@@ -137,5 +137,6 @@
   },
   "bugs": {
     "url": "https://github.com/navikt/arbeidsrettet-dialog/issues"
-  }
+  },
+  "packageManager": "pnpm@11.13.1+sha512.b2fc7683b8a6525414e7d13e1ba28caaddde96bf66ec540bfaeb7e702b81f3e0be4d1f295edf7f9fe0396740a8dce4509c582ddf79891f4543fea32d37645f25"
 }
