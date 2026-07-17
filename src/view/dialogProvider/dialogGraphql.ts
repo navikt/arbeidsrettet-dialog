@@ -1,7 +1,7 @@
 import z from 'zod';
 import { DialogApi } from '../../api/UseApiBasePath';
 import { sjekkStatuskode, toJson } from '../../utils/Fetch';
-import { DialogData, KladdData, MeldingsData, StringOrNull, TilgangData } from '../../utils/Typer';
+import { DialogData, KladdData, TilgangData } from '../../utils/Typer';
 import { GraphqlError } from '../../utils/fetchErrors';
 import { StansVarsel } from '../DialogProvider';
 
@@ -95,7 +95,6 @@ const meldingsDataSchema = z.object({
     sendt: z.string(),
     lest: z.boolean(),
     tekst: z.string(),
-    viktig: z.boolean(),
 });
 
 const dialogerSchema = z.array(
