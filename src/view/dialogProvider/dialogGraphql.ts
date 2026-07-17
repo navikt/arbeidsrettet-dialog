@@ -1,6 +1,7 @@
+import z from 'zod';
 import { DialogApi } from '../../api/UseApiBasePath';
 import { sjekkStatuskode, toJson } from '../../utils/Fetch';
-import { DialogData, KladdData, TilgangData } from '../../utils/Typer';
+import { DialogData, KladdData, MeldingsData, StringOrNull, TilgangData } from '../../utils/Typer';
 import { GraphqlError } from '../../utils/fetchErrors';
 import { StansVarsel } from '../DialogProvider';
 
@@ -86,6 +87,61 @@ const sjekkGraphqlFeil = <T>(response: GraphqlResponse<T>): Promise<GraphqlRespo
     return Promise.resolve(response);
 };
 
+const meldingsDataSchema = z.object({
+    id: z.string(),
+    dialogId: z.string(),
+    avsender: z.string(),
+    avsenderId: z.string(),
+    sendt: z.string(),
+    lest: z.boolean(),
+    tekst: z.string(),
+    viktig: z.boolean(),
+});
+
+const dialogerSchema = z.array(
+    z.object({
+        id: z.string(),
+        aktivitetId: z.string().nullable(),
+        overskrift: z.string().nullable(),
+        sisteTekst: z.string().nullable(),
+        sisteDato: z.string(),
+        opprettetDato: z.string().nullable(),
+        historisk: z.boolean(),
+        lest: z.boolean(),
+        venterPaSvar: z.boolean(),
+        ferdigBehandlet: z.boolean(),
+        lestAvBrukerTidspunkt: z.string().nullable(),
+        erLestAvBruker: z.boolean(),
+        henvendelser: z.array(meldingsDataSchema),
+        egenskaper: z.array(z.string()),
+    }),
+);
+
+const kladderSchema = z.array(
+    z.object({
+        dialogId: z.string().nullable(),
+        aktivitetId: z.string().nullable(),
+        overskrift: z.string().nullable(),
+        tekst: z.string().nullable(),
+    }),
+);
+
+const hentDialogerSchema = z.object({
+    dialoger: dialogerSchema,
+    kladder: kladderSchema,
+});
+
+const hentVeilarbdialogDataSchema = z.object({
+    dialoger: dialogerSchema,
+    kladder: kladderSchema,
+    tilgang: z.object({
+        harSkrivetilgangTilBruker: z.boolean(),
+    }),
+    stansVarsel: z.object({
+        tilhorendeDialogId: z.string(),
+    }),
+});
+
 export const hentVeilarbdialogDataGraphql = async (
     fnr: string | undefined,
 ): Promise<
@@ -105,7 +161,17 @@ export const hentVeilarbdialogDataGraphql = async (
         body: JSON.stringify(queryBody(veilarbDialogDataQuery, fnr || '')),
     })
         .then(sjekkStatuskode)
-        .then(toJson);
+        .then(toJson)
+        .then((responseData) => {
+            const validationResult = hentVeilarbdialogDataSchema.safeParse(responseData.data);
+            if (!validationResult.success) {
+                console.warn(
+                    'veilarbdialog graphql validation failed: ',
+                    JSON.stringify(validationResult.error.issues),
+                );
+            }
+            return responseData;
+        });
 };
 
 export const hentDialogerGraphql = async (
@@ -120,5 +186,15 @@ export const hentDialogerGraphql = async (
         body: JSON.stringify(queryBody(dialogDataQuery, fnr || '')),
     })
         .then(sjekkStatuskode)
-        .then(toJson);
+        .then(toJson)
+        .then((responseData) => {
+            const validationResult = hentDialogerSchema.safeParse(responseData.data);
+            if (!validationResult.success) {
+                console.warn(
+                    'veilarbdialog graphql validation failed: ',
+                    JSON.stringify(validationResult.error.issues),
+                );
+            }
+            return responseData;
+        });
 };
