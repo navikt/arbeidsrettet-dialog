@@ -35,6 +35,7 @@ const KVPOgHistoriskTekst = {
 function useTekst(): HistoriskeDialogerTekst {
     const oppfolgingContext = useOppfolgingContext();
     const oppfolgingData = dataOrUndefined(oppfolgingContext);
+    const underKVP = useErUnderKvp();
 
     if (!oppfolgingData) {
         return defaultTekst;
@@ -44,7 +45,6 @@ function useTekst(): HistoriskeDialogerTekst {
     const perioder = oppfolgingData.oppfolgingsPerioder;
     const naverende = perioder?.find((a) => !a.sluttTidspunkt);
     const kvpPerioder = naverende?.kvpPerioder ? naverende.kvpPerioder : [];
-    const underKVP = useErUnderKvp();
 
     const underKVPMedAvsluttetePerioder = underKVP && kvpPerioder.length > 1;
     const avsluttetePerioderIkkeUnderKVP = !underKVP && kvpPerioder.length > 0;
