@@ -33,7 +33,7 @@ export interface DialogData {
 export interface MeldingsData {
     id: string;
     dialogId: string;
-    avsender: string;
+    avsender: string | null;
     avsenderId: string;
     sendt: string;
     lest: boolean;

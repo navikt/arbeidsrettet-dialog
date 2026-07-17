@@ -91,7 +91,7 @@ const meldingsDataSchema = z.object({
     id: z.string(),
     dialogId: z.string(),
     avsender: z.string(),
-    avsenderId: z.string(),
+    avsenderId: z.string().nullable(),
     sendt: z.string(),
     lest: z.boolean(),
     tekst: z.string(),
