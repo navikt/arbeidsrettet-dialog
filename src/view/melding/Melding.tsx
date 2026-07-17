@@ -9,6 +9,7 @@ import { MeldingsData } from '../../utils/Typer';
 import { useUserInfoContext } from '../BrukerProvider';
 import Markdown, { ExtraProps } from 'react-markdown';
 import { linkifyToMarkdown } from './linkify';
+import classNames from 'classnames';
 
 function accessibleText(erBruker: boolean, erMeldingFraBruker: boolean) {
     if (erMeldingFraBruker) {
@@ -40,13 +41,13 @@ export function Melding(props: Props) {
     const erFraSegSelv = (erBruker && erMeldingFraBruker) || (!erBruker && !erMeldingFraBruker);
 
     return (
-        <div className="mt-4" role="row">
+        <div className={classNames('mt-4 flex flex-1', { 'justify-end': erFraSegSelv })} role="row">
             <BodyShort className="hidden">{accessibleText(erBruker, erMeldingFraBruker)}</BodyShort>
             <Chat
                 timestamp={toppTekst}
                 size="small"
                 avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'Nav'}
-                position={erMeldingFraBruker ? 'right' : 'left'}
+                position={erFraSegSelv ? 'right' : 'left'}
                 className={`p-0 ${erFraSegSelv ? 'chat-avatar-info' : 'chat-avatar-neutral'}`}
             >
                 <Chat.Bubble
