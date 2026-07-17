@@ -1,11 +1,10 @@
 import { Button, LocalAlert, Textarea } from '@navikt/ds-react';
-import React, { MutableRefObject, useContext, useRef } from 'react';
+import React, { RefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, setCursorBeforeHilsen, MeldingInputContext, useFocusBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
-import { dataOrUndefined } from '../../Provider';
-import { useErUnderOppfolging, useOppfolgingContext } from '../../OppfolgingProvider';
+import { useErUnderOppfolging } from '../../OppfolgingProvider';
 import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 
@@ -16,7 +15,7 @@ const MeldingSideInputInner = () => {
         getValues,
         formState: { errors, isSubmitting },
     } = useFormContext<MeldingFormValues>();
-    const textAreaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
+    const textAreaRef: RefObject<HTMLTextAreaElement | null> = useRef(null);
     useFocusBeforeHilsen(textAreaRef);
 
     const formHooks = register('melding');
