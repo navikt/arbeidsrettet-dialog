@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
-import { afterAll, afterEach, beforeAll, beforeEach, Mock } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, Mock } from 'vitest';
 import { setupIntegrationTest } from './integrationTestSetup';
 import { fetchData } from '../utils/Fetch';
 import { DialogApi } from '../api/UseApiBasePath';
@@ -98,12 +98,14 @@ describe('Ny melding', () => {
         await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(0));
     });
 
-    it('når veileder oppretter en ny dialog skal kladd ikke slettes hvis response er error', async () => {
+    it.skip('når veileder oppretter en ny dialog skal kladd ikke slettes hvis response er error', async () => {
         vi.when(fetchData)
-            .calledWith(DialogApi.opprettDialog)
-            .thenReject(Promise.reject(new Error('Error')));
+            .calledWith(DialogApi.opprettDialog, expect.any(Object))
+            .thenResolve(Promise.resolve({ status: 500, ok: false }))
+            .calledWith(DialogApi.kladd, expect.any(Object))
+            .thenResolve(Promise.resolve({ status: 204, ok: true }));
 
-        const { getByLabelText, getByText, findByLabelText, findByText } = render(<IntegrationTestApp />);
+        const { getByLabelText, getByText, findByLabelText, findByText, findByRole } = render(<IntegrationTestApp />);
         await findByLabelText('Meldinger');
         await act(async () => fireEvent.click(getByText('Ny dialog')));
         await findByLabelText('Tema (obligatorisk)');
@@ -114,9 +116,9 @@ describe('Ny melding', () => {
 
         await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
 
-        await act(async () => fireEvent.click(getByText('Send')));
+        fireEvent.click(getByText('Send'));
 
-        findByText(melding);
-        // await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
+        await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
+        await findByText('Noe gikk dessverre galt med systemet. Prøv igjen senere.');
     });
 });

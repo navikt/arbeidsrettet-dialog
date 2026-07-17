@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, GuidePanel, TextField, Textarea, BodyShort, Checkbox, LocalAlert } from '@navikt/ds-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { redirect, SubmitTarget, useNavigate } from 'react-router';
 import { z } from 'zod';
@@ -10,7 +10,7 @@ import { findKladd } from '../KladdProvider';
 import { cutStringAtLength } from '../utils/stringUtils';
 import useMeldingStartTekst from './UseMeldingStartTekst';
 import { useErVeileder, useFnrContext } from '../Provider';
-import { useDialogStore, useSilentlyHentDialoger } from '../dialogProvider/dialogStore';
+import { useDialogStore } from '../dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { ActionFunction, useFetcher } from 'react-router';
@@ -18,7 +18,7 @@ import { Status } from '../../api/typer';
 import { NyTradArgs } from '../DialogProvider';
 import { dispatchUpdate, UpdateTypes } from '../../utils/UpdateEvent';
 import { useInnsynsrett } from '../../api/useInnsynsrett';
-import { setCursorBeforeHilsen } from './meldingInput/inputUtils';
+import { debounced, setCursorBeforeHilsen } from './meldingInput/inputUtils';
 
 interface Props {
     defaultTema: string;
@@ -34,16 +34,14 @@ const NyDialogForm = (props: Props) => {
     const startTekst = useMeldingStartTekst();
     const fnr = useFnrContext();
     const [venterPaaSvarFraBruker, setventerPaaSvarFraBruker] = useState<boolean>(false);
-    const { kladder, oppdaterKladd, slettKladd, noeFeilet } = useDialogStore(
+    const { kladd, oppdaterKladd, slettKladd, noeFeilet } = useDialogStore(
         useShallow((store) => ({
-            kladder: store.kladder,
+            kladd: findKladd(store.kladder, null, aktivitetId),
             oppdaterKladd: store.oppdaterKladd,
             slettKladd: store.slettKladd,
             noeFeilet: store.status === Status.ERROR,
         })),
     );
-
-    const kladd = findKladd(kladder, null, aktivitetId);
 
     const defaultValues: NyDialogFormValues = {
         tema: kladd?.overskrift ?? cutStringAtLength(defaultTema, 100, '...'),
@@ -82,46 +80,9 @@ const NyDialogForm = (props: Props) => {
     const melding = watch('melding');
     const tema = watch('tema');
 
-    const timer = useRef<number | undefined>(undefined);
-    const callback = useRef<() => any>(undefined);
-
-    useEffect(() => {
-        return () => {
-            timer.current && clearInterval(timer.current);
-            timer.current && callback.current && callback.current();
-        };
-    }, []);
-
-    /*
-    const {
-        cleanup: stopKladdSyncing,
-        invoke: debouncedOppdaterKladd,
-        hasPendingTask: kladdSkalOppdateres,
-    } = useMemo(() => {
+    const { cleanup: stopKladdSyncing, invoke: debouncedOppdaterKladd } = useMemo(() => {
         return debounced(oppdaterKladd);
     }, []);
-    * */
-
-    const setOppdaterKladdCallbackValues = ({
-        tema,
-        melding,
-    }: {
-        tema: string | undefined;
-        melding: string | undefined;
-    }) => {
-        timer.current && clearInterval(timer.current);
-        callback.current = () => {
-            timer.current = undefined;
-            oppdaterKladd({
-                fnr,
-                dialogId: null,
-                aktivitetId: props.aktivitetId || null,
-                overskrift: tema || null,
-                tekst: melding || null,
-            });
-        };
-        timer.current = window.setTimeout(callback.current, 500);
-    };
 
     useEffect(() => {
         if (dirtyFields.melding || dirtyFields.tema) {
@@ -131,9 +92,15 @@ const NyDialogForm = (props: Props) => {
                 if (!isValid && !melding && !tema) {
                     slettKladd(null, props.aktivitetId);
                 } else if (!isValid) {
-                    timer.current = undefined;
+                    return;
                 } else {
-                    setOppdaterKladdCallbackValues({ melding, tema });
+                    debouncedOppdaterKladd({
+                        fnr,
+                        dialogId: null,
+                        aktivitetId: props.aktivitetId || null,
+                        overskrift: tema || null,
+                        tekst: melding || null,
+                    });
                 }
             });
         }
@@ -141,10 +108,7 @@ const NyDialogForm = (props: Props) => {
 
     const onSubmit = async (data: NyDialogFormValues) => {
         const { tema, melding } = data;
-
-        timer.current && clearInterval(timer.current);
-        timer.current = undefined;
-
+        stopKladdSyncing();
         loggEvent('arbeidsrettet-dialog.ny.dialog', { paaAktivitet: !!aktivitetId });
         // This will submit to route action
         fetcher.submit({ melding, tema, aktivitetId, fnr, venterPaaSvarFraBruker } as SubmitTarget, {
