@@ -6,6 +6,7 @@ import {
     erIkkeUnderOppfolging,
     ingenOppfPerioder,
     erIkkeRegistrertIKRR,
+    erEksternBruker,
 } from './demo/localstorage';
 import { OppfolgingDataGraphqlResponse } from '../view/OppfolgingProvider';
 
@@ -37,9 +38,11 @@ const oppfolgingData: OppfolgingDataGraphqlResponse = {
     oppfolging: {
         erUnderOppfolging: ingenOppfPerioder() ? false : !erIkkeUnderOppfolging(),
     },
-    veilederTilgang: {
-        harVeilederLeseTilgangTilBrukersKontorsperre: true,
-    },
+    veilederTilgang: erEksternBruker()
+        ? null
+        : {
+              harVeilederLeseTilgangTilBrukersKontorsperre: true,
+          },
     oppfolgingsPerioder: ingenOppfPerioder() ? [] : oppfPerioder,
 };
 
