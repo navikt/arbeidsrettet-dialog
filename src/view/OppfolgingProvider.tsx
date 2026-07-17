@@ -1,7 +1,7 @@
 import { Status } from '../api/typer';
 import { OppfolgingsApi } from '../api/UseApiBasePath';
-import { fetchData, sjekkStatuskode } from '../utils/Fetch';
-import { OppfolgingData, StringOrNull } from '../utils/Typer';
+import { fetchData } from '../utils/Fetch';
+import { StringOrNull } from '../utils/Typer';
 import { createGenericStore } from '../utils/genericStore';
 import { useShallow } from 'zustand/react/shallow';
 import z from 'zod';
@@ -14,9 +14,9 @@ export interface OppfolgingDataProviderType {
 }
 
 export interface OppfolgingDataGraphqlResponse {
-    veilederTilgang?: {
+    veilederTilgang: {
         harVeilederLeseTilgangTilBrukersKontorsperre: boolean;
-    };
+    } | null;
     oppfolging: {
         erUnderOppfolging: boolean;
     };
