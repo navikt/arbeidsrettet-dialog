@@ -71,7 +71,7 @@ const schema = z.object({
         .object({
             harVeilederLeseTilgangTilBrukersKontorsperre: z.boolean(),
         })
-        .nullable(),
+        .optional(),
 });
 
 const oppfolgingStatusQuery = (erVeileder: boolean) => `
