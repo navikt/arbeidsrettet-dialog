@@ -14,7 +14,7 @@ export interface OppfolgingDataProviderType {
 }
 
 export interface OppfolgingDataGraphqlResponse {
-    veilederTilgang: {
+    veilederTilgang?: {
         harVeilederLeseTilgangTilBrukersKontorsperre: boolean;
     };
     oppfolging: {
@@ -67,9 +67,11 @@ const schema = z.object({
     oppfolging: z.object({
         erUnderOppfolging: z.boolean(),
     }),
-    veilederTilgang: z.object({
-        harVeilederLeseTilgangTilBrukersKontorsperre: z.boolean(),
-    }),
+    veilederTilgang: z
+        .object({
+            harVeilederLeseTilgangTilBrukersKontorsperre: z.boolean(),
+        })
+        .optional(),
 });
 
 const oppfolgingStatusQuery = `
