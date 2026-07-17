@@ -54,19 +54,8 @@ export interface OppfolgingData {
     manuell: boolean;
     underOppfolging: boolean;
     underKvp: boolean;
-    // TODO:  Eskaleringsvarsel er jo flyttet til dialog??
-    gjeldendeEskaleringsvarsel: Eskaleringsvarsel | null;
     oppfolgingsPerioder: PeriodeData[];
     harSkriveTilgang: boolean;
-}
-
-export interface Eskaleringsvarsel {
-    varselId: string;
-    aktorId: string;
-    opprettetAv: string;
-    opprettetDato: string;
-    avsluttetDato: StringOrNull;
-    tilhorendeDialogId: number;
 }
 
 export interface PeriodeData {

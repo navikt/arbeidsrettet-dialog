@@ -3,15 +3,16 @@ import React from 'react';
 import { VenterSvarFraBruker, VenterSvarFraNAV, ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
 import { DialogData } from '../../utils/Typer';
 import { useErVeileder } from '../Provider';
+import { useGjeldendeStansVarselDialogId } from '../dialogProvider/dialogStore';
 
 interface Props {
     dialog: DialogData;
 }
 
-function erViktig(dialog: DialogData): boolean {
+function erViktig(dialog: DialogData, gjeldendeStansVarselDialogId: string | undefined): boolean {
     if (dialog.egenskaper.length > 0) {
         if (dialog.egenskaper[0] === 'ESKALERINGSVARSEL') {
-            return true;
+            return dialog.id === gjeldendeStansVarselDialogId;
         }
         return true;
     }
@@ -21,12 +22,13 @@ function erViktig(dialog: DialogData): boolean {
 export function EtikettListe({ dialog }: Props) {
     const { historisk, ferdigBehandlet, venterPaSvar } = dialog;
     const erVeileder = useErVeileder();
+    const gjeldendeStansVarselDialogId = useGjeldendeStansVarselDialogId();
 
     if (historisk) {
         return null;
     }
 
-    const dialogErViktig = erViktig(dialog);
+    const dialogErViktig = erViktig(dialog, gjeldendeStansVarselDialogId);
     const visVenterPaaNav = !ferdigBehandlet && erVeileder;
 
     return (

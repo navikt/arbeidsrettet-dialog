@@ -1,12 +1,11 @@
 import { Button, ErrorMessage, LocalAlert, Textarea } from '@navikt/ds-react';
-import React, { MutableRefObject, RefObject, useContext, useRef } from 'react';
+import React, { RefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen, setCursorBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { Breakpoint, useBreakpoint } from '../../utils/useBreakpoint';
-import { dataOrUndefined } from '../../Provider';
-import { useErUnderOppfolging, useOppfolgingContext } from '../../OppfolgingProvider';
+import { useErUnderOppfolging } from '../../OppfolgingProvider';
 import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';

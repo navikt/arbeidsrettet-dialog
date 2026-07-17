@@ -332,6 +332,7 @@ export const useHentVeilarbdialogData = () => useDialogStore(useShallow((store) 
 export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentVeilarbdialogData));
 export const useSilentlyHentDialoger = () => useDialogStore(useShallow((store) => store.silentlyHentDialoger));
 export const useHarSkrivetilgangTilBruker = () => useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
+export const useGjeldendeStansVarselDialogId = () => useDialogStore((store) => store.stansVarsel?.tilhorendeDialogId);
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
     let interval: ReturnType<typeof setInterval>;
