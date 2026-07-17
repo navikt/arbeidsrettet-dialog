@@ -136,9 +136,11 @@ const hentVeilarbdialogDataSchema = z.object({
     tilgang: z.object({
         harSkrivetilgangTilBruker: z.boolean(),
     }),
-    stansVarsel: z.object({
-        tilhorendeDialogId: z.string(),
-    }),
+    stansVarsel: z
+        .object({
+            tilhorendeDialogId: z.string(),
+        })
+        .nullable(),
 });
 
 export const hentVeilarbdialogDataGraphql = async (
