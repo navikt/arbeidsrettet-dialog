@@ -148,7 +148,6 @@ export const dialoger = [
         id: '2',
         aktivitetId: '1',
         overskrift: 'Memes',
-        sisteTekst: 'Hei. Hva er status her? Har du finnet Kaptain Sabeltann?',
         sisteDato: '2018-01-28T12:48:56.097+01:00',
         opprettetDato: '2018-02-27T12:48:56.081+01:00',
         historisk: false,

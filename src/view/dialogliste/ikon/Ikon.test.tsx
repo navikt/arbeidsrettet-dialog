@@ -18,7 +18,6 @@ const dialogUtenAktivitet: DialogData = {
     opprettetDato: null,
     overskrift: 'Overskrift',
     sisteDato: '2024-11-01T09:58:58.061Z',
-    sisteTekst: 'asdfs'
 };
 
 describe('Ikon (DialogPreviewIkon)', () => {

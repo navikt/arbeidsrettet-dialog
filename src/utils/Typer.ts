@@ -17,7 +17,6 @@ export interface DialogData {
     id: string;
     aktivitetId: StringOrNull;
     overskrift: StringOrNull;
-    sisteTekst: StringOrNull;
     sisteDato: string;
     opprettetDato: StringOrNull;
     historisk: boolean;
@@ -36,7 +35,6 @@ export interface MeldingsData {
     avsender: string | null;
     avsenderId: string;
     sendt: string;
-    lest: boolean;
     tekst: string;
     viktig: boolean;
 }

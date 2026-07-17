@@ -10,7 +10,6 @@ const dialogerQuery = `
         id,
         aktivitetId,
         overskrift,
-        sisteTekst,
         sisteDato,
         opprettetDato,
         oppfolgingsperiode,
@@ -24,7 +23,6 @@ const dialogerQuery = `
         egenskaper,
         henvendelser {
             id,
-            lest,
             avsender,
             avsenderId,
             dialogId,
@@ -93,7 +91,6 @@ const meldingsDataSchema = z.object({
     avsender: z.string(),
     avsenderId: z.string().nullable(),
     sendt: z.string(),
-    lest: z.boolean(),
     tekst: z.string(),
 });
 
@@ -102,7 +99,6 @@ const dialogerSchema = z.array(
         id: z.string(),
         aktivitetId: z.string().nullable(),
         overskrift: z.string().nullable(),
-        sisteTekst: z.string().nullable(),
         sisteDato: z.string(),
         opprettetDato: z.string().nullable(),
         historisk: z.boolean(),
