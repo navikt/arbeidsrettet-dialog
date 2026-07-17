@@ -104,7 +104,7 @@ const oppfolgingStatusQuery = `
 const fetchOppfolging = (fnr: string | undefined) =>
     fetchData<GraphqlResponse<OppfolgingDataGraphqlResponse>>(OppfolgingsApi.graphql, {
         method: 'POST',
-        body: fnr ? JSON.stringify({ query: oppfolgingStatusQuery, variables: { fnr: fnr || '' } }) : undefined,
+        body: JSON.stringify({ query: oppfolgingStatusQuery, variables: { fnr: fnr || '' } }),
     }).then((it) => {
         const data = it.data;
         const validationResult = schema.safeParse(data);
