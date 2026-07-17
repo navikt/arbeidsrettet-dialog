@@ -56,7 +56,7 @@ const veilarbDialogDataQuery = `
         tilgang(fnr: $fnr) {
             harSkrivetilgangTilBruker
         }
-        stansVarsel {
+        stansVarsel(fnr: $fnr) {
             tilhorendeDialogId
         }
     }
