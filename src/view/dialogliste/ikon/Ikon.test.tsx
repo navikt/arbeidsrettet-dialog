@@ -11,11 +11,9 @@ const dialogUtenAktivitet: DialogData = {
     id: '1',
     aktivitetId: null,
     egenskaper: [],
-    erLestAvBruker: false,
     henvendelser: [],
     lest: false,
     lestAvBrukerTidspunkt: null,
-    opprettetDato: null,
     overskrift: 'Overskrift',
     sisteDato: '2024-11-01T09:58:58.061Z',
 };

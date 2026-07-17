@@ -18,13 +18,11 @@ export interface DialogData {
     aktivitetId: StringOrNull;
     overskrift: StringOrNull;
     sisteDato: string;
-    opprettetDato: StringOrNull;
     historisk: boolean;
     lest: boolean;
     venterPaSvar: boolean;
     ferdigBehandlet: boolean;
     lestAvBrukerTidspunkt: StringOrNull;
-    erLestAvBruker: boolean;
     henvendelser: MeldingsData[];
     egenskaper: string[];
 }

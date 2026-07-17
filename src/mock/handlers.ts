@@ -112,7 +112,12 @@ export const handlers = [
             async (request) => {
                 const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
                 return {
-                    data: { dialoger: dialogerPayload, kladder: [], tilgang: { harSkrivetilgangTilBruker: true } },
+                    data: {
+                        dialoger: dialogerPayload,
+                        kladder: [],
+                        tilgang: { harSkrivetilgangTilBruker: true },
+                        stansVarsel: null,
+                    },
                     errors: [],
                 };
             },

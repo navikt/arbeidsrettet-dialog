@@ -10,13 +10,11 @@ const dialoger: DialogData[] = [
         id: '10',
         overskrift: 'Systemutvikler',
         sisteDato: '2017-01-28T12:48:56.097+01:00',
-        opprettetDato: '2018-02-27T12:48:56.081+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: false,
         ferdigBehandlet: false,
         lestAvBrukerTidspunkt: '2018-02-28T12:48:56.081+01:00',
-        erLestAvBruker: false,
         aktivitetId: 'STILLING1',
         henvendelser: [
             {
@@ -86,13 +84,11 @@ const dialoger: DialogData[] = [
         id: '2',
         overskrift: 'Du har fått et varsel fra Nav',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: true,
         venterPaSvar: false,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: '2018-02-02T11:50:20.615+01:00',
-        erLestAvBruker: true,
         aktivitetId: null,
         henvendelser: [
             {
@@ -111,13 +107,11 @@ const dialoger: DialogData[] = [
         id: '4',
         overskrift: 'Automatiske dialoger',
         sisteDato: '2018-01-28T12:48:56.097+01:00',
-        opprettetDato: '2018-02-27T12:48:56.081+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: false,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: null,
         henvendelser: [
             {
@@ -251,13 +245,11 @@ const dialoger: DialogData[] = [
         id: '5',
         overskrift: 'Gruppeaktivitet',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: false,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: null,
         henvendelser: [
             {
@@ -276,13 +268,11 @@ const dialoger: DialogData[] = [
         id: '6',
         overskrift: 'Samtale om søkekrav',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: true,
         venterPaSvar: false,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'SAMTALEREFERAT1',
         henvendelser: [
             {
@@ -301,13 +291,11 @@ const dialoger: DialogData[] = [
         id: '7',
         overskrift: 'Kiropraktortime',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: true,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'ARENATA11',
         henvendelser: [
             {
@@ -326,13 +314,11 @@ const dialoger: DialogData[] = [
         id: '11',
         overskrift: 'Fiskeoppdrett',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'SOKEAVTALE2',
         henvendelser: [
             {
@@ -351,13 +337,11 @@ const dialoger: DialogData[] = [
         id: '100',
         overskrift: 'Fiskeoppdrett',
         sisteDato: '2018-02-01T11:52:20.615+01:00',
-        opprettetDato: '2018-02-01T11:52:20.535+01:00',
         historisk: true,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'SOKEAVTALE2',
         henvendelser: [
             {
@@ -376,13 +360,11 @@ const dialoger: DialogData[] = [
         id: '200',
         overskrift: 'Hei, vi har en stilling som kan passe for deg',
         sisteDato: '2021-02-01T11:52:20.615+01:00',
-        opprettetDato: '2021-02-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'STILLING_FRA_NAV_1',
         henvendelser: [
             {
@@ -401,13 +383,11 @@ const dialoger: DialogData[] = [
         id: '201',
         overskrift: 'Hei, vi har en stilling som kan passe for deg',
         sisteDato: '2021-09-01T11:52:20.615+01:00',
-        opprettetDato: '2021-09-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'STILLING_FRA_NAV_2',
         henvendelser: [
             {
@@ -426,13 +406,11 @@ const dialoger: DialogData[] = [
         id: '301',
         overskrift: 'Baker Jonson',
         sisteDato: '2021-09-01T11:52:20.615+01:00',
-        opprettetDato: '2022-09-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'EKSTERNAKTIVITET_1',
         henvendelser: [
             {
@@ -451,13 +429,11 @@ const dialoger: DialogData[] = [
         id: '302',
         overskrift: 'Maler Hansson',
         sisteDato: '2021-09-01T11:52:20.615+01:00',
-        opprettetDato: '2022-09-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'EKSTERNAKTIVITET_2',
         henvendelser: [
             {
@@ -476,13 +452,11 @@ const dialoger: DialogData[] = [
         id: '303',
         overskrift: 'Ijobb',
         sisteDato: '2023-09-01T11:52:20.615+01:00',
-        opprettetDato: '2023-09-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'IJOBB1',
         henvendelser: [
             {
@@ -510,13 +484,11 @@ const dialoger: DialogData[] = [
         id: '304',
         overskrift: 'Arbeidsforberende trening',
         sisteDato: '2023-09-01T11:52:20.615+01:00',
-        opprettetDato: '2023-09-01T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'EKSTERNAKTIVITET_4',
         henvendelser: [
             {
@@ -541,13 +513,11 @@ const dialoger: DialogData[] = [
         id: '305',
         overskrift: 'Lenker her!',
         sisteDato: '2023-09-02T11:52:20.615+01:00',
-        opprettetDato: '2023-09-02T11:52:20.535+01:00',
         historisk: false,
         lest: false,
         venterPaSvar: true,
         ferdigBehandlet: true,
         lestAvBrukerTidspunkt: null,
-        erLestAvBruker: false,
         aktivitetId: 'EKSTERNAKTIVITET_4',
         henvendelser: [
             {
@@ -609,13 +579,11 @@ export const opprettEllerOppdaterDialog = async (req: StrictRequest<DefaultBodyT
             overskrift:
                 body.overskrift === undefined || body.overskrift === null ? rndId().toString() : body.overskrift,
             sisteDato: new Date().toISOString(),
-            opprettetDato: new Date().toISOString(),
             historisk: false,
             lest: true,
             venterPaSvar: false,
             ferdigBehandlet: bruker().erVeileder,
             lestAvBrukerTidspunkt: null,
-            erLestAvBruker: false,
             aktivitetId: body.aktivitetId || null,
             henvendelser: [nyMelding],
             egenskaper: [],
@@ -648,13 +616,11 @@ export const opprettDialogEtterRender = () => {
             id: `${dialogId}`,
             overskrift: 'Sender denne mens du ser på :)',
             sisteDato: new Date().toISOString(),
-            opprettetDato: new Date().toISOString(),
             historisk: false,
             lest: false,
             venterPaSvar: false,
             ferdigBehandlet: true,
             lestAvBrukerTidspunkt: null,
-            erLestAvBruker: false,
             aktivitetId: null,
             henvendelser: [
                 {
