@@ -74,7 +74,7 @@ const schema = z.object({
         .nullable(),
 });
 
-const oppfolgingStatusQuery = `
+const oppfolgingStatusQuery = (erVeileder: boolean) => `
     query($fnr: String!) {
         brukerStatus(fnr: $fnr) {
             manuell {
@@ -86,9 +86,7 @@ const oppfolgingStatusQuery = `
                 registrertIKrr
             }
         }
-        veilederTilgang(fnr: $fnr) {
-            harVeilederLeseTilgangTilBrukersKontorsperre
-        }
+        ${erVeileder ? 'veilederTilgang(fnr: $fnr) { harVeilederLeseTilgangTilBrukersKontorsperre }' : ''}
         oppfolging(fnr: $fnr) {
             erUnderOppfolging
         }
@@ -106,7 +104,7 @@ const oppfolgingStatusQuery = `
 const fetchOppfolging = (fnr: string | undefined) =>
     fetchData<GraphqlResponse<OppfolgingDataGraphqlResponse>>(OppfolgingsApi.graphql, {
         method: 'POST',
-        body: JSON.stringify({ query: oppfolgingStatusQuery, variables: { fnr: fnr || '' } }),
+        body: JSON.stringify({ query: oppfolgingStatusQuery(!!fnr), variables: { fnr: fnr || '' } }),
     }).then((it) => {
         const data = it.data;
         const validationResult = schema.safeParse(data);
