@@ -2,48 +2,67 @@ import { DialogApi } from '../../api/UseApiBasePath';
 import { sjekkStatuskode, toJson } from '../../utils/Fetch';
 import { DialogData, KladdData, TilgangData } from '../../utils/Typer';
 import { GraphqlError } from '../../utils/fetchErrors';
+import { StansVarsel } from '../DialogProvider';
 
-const query = `
-    query($fnr: String!, $bareMedAktiviteter: Boolean) {
-        dialoger(fnr: $fnr, bareMedAktiviteter: $bareMedAktiviteter) {
+const dialogerQuery = `
+    dialoger(fnr: $fnr, bareMedAktiviteter: $bareMedAktiviteter) {
+        id,
+        aktivitetId,
+        overskrift,
+        sisteTekst,
+        sisteDato,
+        opprettetDato,
+        oppfolgingsperiode,
+        historisk,
+        lest,
+        venterPaSvar,
+        ferdigBehandlet,
+        lestAvBrukerTidspunkt,
+        erLestAvBruker,
+        oppfolgingsperiode,
+        egenskaper,
+        henvendelser {
             id,
-            aktivitetId,
-            overskrift,
-            sisteTekst,
-            sisteDato,
-            opprettetDato,
-            oppfolgingsperiode,
-            historisk,
             lest,
-            venterPaSvar,
-            ferdigBehandlet,
-            lestAvBrukerTidspunkt,
-            erLestAvBruker,
-            oppfolgingsperiode,
-            egenskaper,
-            henvendelser {
-                id,
-                lest,
-                avsender,
-                avsenderId,
-                dialogId,
-                sendt,
-                tekst
-            }
-        },
-        kladder(fnr: $fnr) {
-            aktivitetId,
+            avsender,
+            avsenderId,
             dialogId,
-            tekst,
-            overskrift
-        },
-        tilgang(fnr: $fnr) {
-            harSkrivetilgangTilBruker
+            sendt,
+            tekst
         }
     }
 `;
 
-const queryBody = (fnr: string) => ({
+const kladdQuery = `
+    kladder(fnr: $fnr) {
+        aktivitetId,
+        dialogId,
+        tekst,
+        overskrift
+    }
+`;
+
+const dialogDataQuery = `
+    query($fnr: String!, $bareMedAktiviteter: Boolean) {
+        ${dialogerQuery}
+        ${kladdQuery}
+    }
+`;
+
+const veilarbDialogDataQuery = `
+    query($fnr: String!, $bareMedAktiviteter: Boolean) {
+        ${dialogerQuery}
+        ${kladdQuery}
+        tilgang(fnr: $fnr) {
+            harSkrivetilgangTilBruker
+        }
+        stansVarsel {
+            tilhorendeDialogId
+        }
+    }
+`;
+
+const queryBody = (query: string, fnr: string) => ({
     query,
     variables: {
         fnr,
@@ -67,16 +86,38 @@ const sjekkGraphqlFeil = <T>(response: GraphqlResponse<T>): Promise<GraphqlRespo
     return Promise.resolve(response);
 };
 
-export const hentDialogerGraphql = async (
+export const hentVeilarbdialogDataGraphql = async (
     fnr: string | undefined,
-): Promise<GraphqlResponse<{ dialoger: DialogData[]; kladder: KladdData[], tilgang: TilgangData }>> => {
+): Promise<
+    GraphqlResponse<{
+        dialoger: DialogData[];
+        kladder: KladdData[];
+        tilgang: TilgangData;
+        stansVarsel: StansVarsel | null;
+    }>
+> => {
     return fetch(DialogApi.graphql, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Nav-Consumer-Id': 'arbeidsrettet-dialog',
         },
-        body: JSON.stringify(queryBody(fnr || '')),
+        body: JSON.stringify(queryBody(veilarbDialogDataQuery, fnr || '')),
+    })
+        .then(sjekkStatuskode)
+        .then(toJson);
+};
+
+export const hentDialogerGraphql = async (
+    fnr: string | undefined,
+): Promise<GraphqlResponse<{ dialoger: DialogData[]; kladder: KladdData[] }>> => {
+    return fetch(DialogApi.graphql, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Nav-Consumer-Id': 'arbeidsrettet-dialog',
+        },
+        body: JSON.stringify(queryBody(dialogDataQuery, fnr || '')),
     })
         .then(sjekkStatuskode)
         .then(toJson);

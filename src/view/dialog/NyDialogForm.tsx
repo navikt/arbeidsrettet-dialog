@@ -10,7 +10,7 @@ import { findKladd } from '../KladdProvider';
 import { cutStringAtLength } from '../utils/stringUtils';
 import useMeldingStartTekst from './UseMeldingStartTekst';
 import { useErVeileder, useFnrContext } from '../Provider';
-import { useDialogStore } from '../dialogProvider/dialogStore';
+import { useDialogStore, useSilentlyHentDialoger } from '../dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { ActionFunction, useFetcher } from 'react-router';
@@ -91,6 +91,16 @@ const NyDialogForm = (props: Props) => {
             timer.current && callback.current && callback.current();
         };
     }, []);
+
+    /*
+    const {
+        cleanup: stopKladdSyncing,
+        invoke: debouncedOppdaterKladd,
+        hasPendingTask: kladdSkalOppdateres,
+    } = useMemo(() => {
+        return debounced(oppdaterKladd);
+    }, []);
+    * */
 
     const setOppdaterKladdCallbackValues = ({
         tema,
@@ -234,7 +244,7 @@ export const nyDialogAction: (fnr: string | undefined) => ActionFunction =
                 return null;
             }
         } catch (error) {
-            console.error(error);
+            console.error('Ny dialog error', error);
             return null;
         }
     };

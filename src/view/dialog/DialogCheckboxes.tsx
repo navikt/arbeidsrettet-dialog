@@ -1,11 +1,9 @@
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Status } from '../../api/typer';
 import { notEmpty } from '../../utils/TypeHelper';
 import { useDialogContext } from '../DialogProvider';
-import { useOppfolgingContext } from '../OppfolgingProvider';
-import { dataOrUndefined, useFnrContext } from '../Provider';
-import { useSelectedDialog } from '../utils/useAktivitetId';
+import { useFnrContext } from '../Provider';
 import { useUserInfoContext } from '../BrukerProvider';
 import { useHentDialoger } from '../dialogProvider/dialogStore';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
