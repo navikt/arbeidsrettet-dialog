@@ -29,8 +29,7 @@ export const captureMaybeError = (errorMessage: string, error: Error | any) => {
     ) {
         error.message = errorMessage;
         captureException(error);
-    }
-    if (error instanceof Error) {
+    } else if (error instanceof Error) {
         captureException(new Error(errorMessage, { cause: error }));
     } else {
         captureMessage(errorMessage);
