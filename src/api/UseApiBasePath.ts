@@ -24,19 +24,19 @@ export const DialogApi = {
     opprettDialog: `${dialogBasePath}/dialog`,
     sistOppdatert: `${dialogBasePath}/dialog/sistOppdatert`,
     settLest: (dialogId: string) => `${dialogBasePath}/dialog/${dialogId}/les`,
-    graphql: `${apiBasePath}/veilarbdialog/graphql`
+    graphql: `${apiBasePath}/veilarbdialog/graphql`,
 };
 
 export const aktivitetBasePath = `${apiBasePath}/veilarbaktivitet`;
 export const AktivitetApi = {
     hentAktiviteter: `${aktivitetBasePath}/api/aktivitet`,
     hentArenaAktiviteter: `${aktivitetBasePath}/api/arena/tiltak`,
-    hentFeatureToggles: `${aktivitetBasePath}/api/feature?${featureToggleQuery}`
+    hentFeatureToggles: `${aktivitetBasePath}/api/feature?${featureToggleQuery}`,
 };
 
 const oppfolgingBasePath = `${apiBasePath}/veilarboppfolging/api`;
 export const OppfolgingsApi = {
     me: `${oppfolgingBasePath}/oppfolging/me`,
     settDigigtal: `${oppfolgingBasePath}/oppfolging/settDigital`,
-    oppfolgingUrl: `${oppfolgingBasePath}/v3/oppfolging/hent-status`
+    graphql: `${oppfolgingBasePath}/graphql`,
 };

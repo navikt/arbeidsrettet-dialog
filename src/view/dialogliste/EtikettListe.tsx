@@ -1,36 +1,34 @@
 import React from 'react';
 
 import { VenterSvarFraBruker, VenterSvarFraNAV, ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
-import { DialogData, OppfolgingData } from '../../utils/Typer';
-import { useOppfolgingContext } from '../OppfolgingProvider';
-import { dataOrUndefined, useErVeileder } from '../Provider';
+import { DialogData } from '../../utils/Typer';
+import { useErVeileder } from '../Provider';
+import { useGjeldendeStansVarselDialogId } from '../dialogProvider/dialogStore';
 
 interface Props {
     dialog: DialogData;
 }
 
-function erViktig(dialog: DialogData, oppfolging?: OppfolgingData): boolean {
+function erViktig(dialog: DialogData, gjeldendeStansVarselDialogId: string | undefined): boolean {
     if (dialog.egenskaper.length > 0) {
         if (dialog.egenskaper[0] === 'ESKALERINGSVARSEL') {
-            return oppfolging?.gjeldendeEskaleringsvarsel?.tilhorendeDialogId.toString() === dialog.id;
+            return dialog.id === gjeldendeStansVarselDialogId;
         }
-
         return true;
     }
-
     return false;
 }
 
 export function EtikettListe({ dialog }: Props) {
     const { historisk, ferdigBehandlet, venterPaSvar } = dialog;
     const erVeileder = useErVeileder();
-    const oppfolging = useOppfolgingContext();
+    const gjeldendeStansVarselDialogId = useGjeldendeStansVarselDialogId();
 
     if (historisk) {
         return null;
     }
 
-    const dialogErViktig = erViktig(dialog, dataOrUndefined(oppfolging));
+    const dialogErViktig = erViktig(dialog, gjeldendeStansVarselDialogId);
     const visVenterPaaNav = !ferdigBehandlet && erVeileder;
 
     return (

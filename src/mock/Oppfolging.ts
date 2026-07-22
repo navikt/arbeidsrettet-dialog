@@ -5,46 +5,45 @@ import {
     erManuellBruker,
     erIkkeUnderOppfolging,
     ingenOppfPerioder,
-    erIkkeRegistrertIKRR
+    erIkkeRegistrertIKRR,
+    erEksternBruker,
 } from './demo/localstorage';
+import { OppfolgingDataGraphqlResponse } from '../view/OppfolgingProvider';
 
 const oppfPerioder: PeriodeData[] = [
     {
-        aktorId: '1234567988888',
-        veileder: false,
-        startDato: '2017-01-30T10:46:10.971+01:00',
-        sluttDato: '2017-12-31T10:46:10.971+01:00',
-        begrunnelse: null,
+        startTidspunkt: '2017-01-30T10:46:10.971+01:00',
+        sluttTidspunkt: '2017-12-31T10:46:10.971+01:00',
         kvpPerioder: [],
-        uuid: '1'
+        id: '1',
     },
     {
-        aktorId: '1234567988888',
-        veileder: false,
-        startDato: '2018-01-31T10:46:10.971+01:00',
-        sluttDato: null,
-        begrunnelse: null,
+        startTidspunkt: '2018-01-31T10:46:10.971+01:00',
+        sluttTidspunkt: null,
         kvpPerioder: [],
-        uuid: '2'
-    }
+        id: '2',
+    },
 ];
-const oppfolgingData = {
-    fnr: null,
-    veilederId: '101010',
-    reservasjonKRR: erKRRBruker(),
-    manuell: erManuellBruker(),
-    underOppfolging: ingenOppfPerioder() ? false : !erIkkeUnderOppfolging(),
-    underKvp: false,
-    oppfolgingUtgang: null,
-    gjeldendeEskaleringsvarsel: null,
-    kanStarteOppfolging: false,
-    avslutningStatus: null,
+const oppfolgingData: OppfolgingDataGraphqlResponse = {
+    brukerStatus: {
+        manuell: {
+            erManuell: erManuellBruker(),
+        },
+        krr: {
+            reservertIKrr: erKRRBruker(),
+            registrertIKrr: !erIkkeRegistrertIKRR(),
+            kanVarsles: !brukerKanIkkeVarsles(),
+        },
+    },
+    oppfolging: {
+        erUnderOppfolging: ingenOppfPerioder() ? false : !erIkkeUnderOppfolging(),
+    },
+    veilederTilgang: erEksternBruker()
+        ? null
+        : {
+              harVeilederLeseTilgangTilBrukersKontorsperre: true,
+          },
     oppfolgingsPerioder: ingenOppfPerioder() ? [] : oppfPerioder,
-    harSkriveTilgang: true,
-    kanReaktiveres: false,
-    kanVarsles: !brukerKanIkkeVarsles(),
-    inaktiveringsdato: '2018-08-31T10:46:10.971+01:00',
-    registrertKRR: !erIkkeRegistrertIKRR()
 };
 
 export default oppfolgingData;

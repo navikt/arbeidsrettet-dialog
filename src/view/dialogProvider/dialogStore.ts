@@ -8,13 +8,14 @@ import { isAfter } from 'date-fns';
 import { devtools } from 'zustand/middleware';
 import { EventType, closeWebsocket, listenForNyDialogEvents } from '../../api/nyDialogWs';
 import { useShallow } from 'zustand/react/shallow';
-import { hentDialogerGraphql } from './dialogGraphql';
+import { hentDialogerGraphql, hentVeilarbdialogDataGraphql } from './dialogGraphql';
 import { eqKladd, KladdStore } from '../KladdProvider';
 import { UnautorizedError } from '../../utils/fetchErrors';
 import { captureMaybeError, captureMessage } from '../../utils/errorCapture';
 
 export const initDialogState: DialogState = {
     isSessionExpired: false,
+    stansVarsel: null,
     status: Status.INITIAL,
     sistOppdatert: new Date(),
     dialoger: [],
@@ -24,7 +25,10 @@ type DialogStore = DialogState &
     KladdStore & {
         kladder: KladdData[];
         silentlyHentDialoger: (fnr: string | undefined) => Promise<void>;
+        /* Bare dialoger og kladd */
         hentDialoger: (fnr: string | undefined) => Promise<void>;
+        /* Dialoger, kladder, tilgang og stansVarsel */
+        hentVeilarbdialogData: (fnr: string | undefined) => Promise<void>;
         pollForChanges: (fnr: string | undefined) => Promise<void>;
         configurePoll(config: { fnr: string | undefined; useWebsockets: boolean; erBruker: boolean }): void;
         updateDialogInDialoger: (dialogData: DialogData) => DialogData;
@@ -49,23 +53,23 @@ export const useDialogStore = create(
             kladder: [] as KladdData[],
             kladdStatus: Status.INITIAL,
             // Actions / functions / mutations
+
+            /* Silent as in don't set status to pending which will trigger spinners */
             silentlyHentDialoger: async (fnr) => {
                 const { isSessionExpired } = get();
                 if (isSessionExpired) return;
                 return hentDialogerGraphql(fnr)
                     .then(({ data, errors }) => {
-                        // TODO: Find a way to get previous value
-                        // loggChangeInDialog(state.dialoger, dialoger);
                         if (data) {
-                            const { dialoger, kladder, tilgang } = data;
+                            const { dialoger, kladder } = data;
                             set(
                                 {
                                     status: Status.OK,
-                                    dialoger,
                                     sistOppdatert: new Date(),
                                     error: undefined,
+                                    // Data fields
+                                    dialoger,
                                     kladder,
-                                    tilgang,
                                 },
                                 false, // flag for overwriting state, default false but needs to be provided when naming actions
                                 'hentDialoger/fulfilled',
@@ -100,6 +104,51 @@ export const useDialogStore = create(
                 );
                 const { silentlyHentDialoger } = get();
                 await silentlyHentDialoger(fnr);
+            },
+            hentVeilarbdialogData: async (fnr) => {
+                set(
+                    (state) => ({
+                        status: isDialogReloading(state.status) ? Status.RELOADING : Status.PENDING,
+                        error: undefined,
+                    }),
+                    false,
+                    'hentVeilarbDialogData/pending',
+                );
+                return hentVeilarbdialogDataGraphql(fnr)
+                    .then(({ data, errors }) => {
+                        if (data) {
+                            const { dialoger, kladder, tilgang, stansVarsel } = data;
+                            set(
+                                {
+                                    status: Status.OK,
+                                    sistOppdatert: new Date(),
+                                    error: undefined,
+                                    // Data fields
+                                    dialoger,
+                                    tilgang,
+                                    kladder,
+                                    stansVarsel,
+                                },
+                                false, // flag for overwriting state, default false but needs to be provided when naming actions
+                                'hentVeilarbDialogData/fulfilled',
+                            );
+                        }
+                        if (errors && errors.length > 0) {
+                            set(
+                                (prevState) => ({ ...prevState, status: Status.ERROR, error: errors[0].message }),
+                                false,
+                                'hentVeilarbDialogData/error',
+                            );
+                        }
+                    })
+                    .catch((e) => {
+                        captureMaybeError(`Kunne ikke hente dialogdata ${e.toString()}`, e);
+                        set(
+                            (prevState) => ({ ...prevState, status: Status.ERROR, error: e }),
+                            false,
+                            'hentVeilarbDialogData/error',
+                        );
+                    });
             },
             configurePoll({ fnr, useWebsockets, erBruker }) {
                 const { pollForChanges, currentPollFnr } = get();
@@ -279,9 +328,11 @@ export const useDialogStore = create(
     ),
 );
 
-export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentDialoger));
+export const useHentVeilarbdialogData = () => useDialogStore(useShallow((store) => store.hentVeilarbdialogData));
+export const useHentDialoger = () => useDialogStore(useShallow((store) => store.hentVeilarbdialogData));
 export const useSilentlyHentDialoger = () => useDialogStore(useShallow((store) => store.silentlyHentDialoger));
 export const useHarSkrivetilgangTilBruker = () => useDialogStore((store) => store.tilgang?.harSkrivetilgangTilBruker);
+export const useGjeldendeStansVarselDialogId = () => useDialogStore((store) => store.stansVarsel?.tilhorendeDialogId);
 
 const onIntervalWithCleanup = (pollForChanges: () => Promise<void>) => {
     let interval: ReturnType<typeof setInterval>;

@@ -5,7 +5,7 @@ import { OppfolgingsApi } from '../../api/UseApiBasePath';
 import { fetchData } from '../../utils/Fetch';
 import { UpdateTypes, dispatchUpdate } from '../../utils/UpdateEvent';
 import { useOppfolgingContext } from '../OppfolgingProvider';
-import StatusAdvarselWrapper, { KanIkkeKontakteElektroniskVeileder } from './StatusAdvarselWrapper';
+import StatusAdvarselWrapper, { UtdatertKontaktInformasjonIKrrVeileder } from './StatusAdvarselWrapper';
 import { useFnrContext } from '../Provider';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 function ManuellBruker(props: Props) {
-    return props.erVeileder ? <KanIkkeKontakteElektroniskVeileder /> : <Bruker />;
+    return props.erVeileder ? <UtdatertKontaktInformasjonIKrrVeileder /> : <Bruker />;
 }
 
 function Bruker() {

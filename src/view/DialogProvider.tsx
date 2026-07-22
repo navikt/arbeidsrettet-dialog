@@ -48,12 +48,15 @@ export interface DialogDataProviderType {
     setVenterPaSvar: (dialog: DialogData, venterPaSvar: boolean) => Promise<DialogData>;
 }
 
+export type StansVarsel = { tilhorendeDialogId: string | undefined };
+
 export interface DialogState {
     isSessionExpired: boolean;
     status: Status;
     sistOppdatert: Date;
     dialoger: DialogData[];
     tilgang?: TilgangData;
+    stansVarsel: StansVarsel | null;
     error?: string;
 }
 

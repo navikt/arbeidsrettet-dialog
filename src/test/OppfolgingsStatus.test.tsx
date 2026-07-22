@@ -111,7 +111,7 @@ describe('Statusadvarsler', () => {
         });
     });
 
-    describe('Kan ikke varsles', () => {
+    describe('Kan ikke varsles og ikke registrert i krr', () => {
         it('veileder ser advarsel når bruker er under oppf. men ikke kan varsler (krr-attributt)', async () => {
             gitt.veileder().som.harIngenDialog().som.harBrukerUnderOppfølgingMenKanIkkeVarsles();
             const { findByText } = render(<MemoryRouterMedBareDialogOversikt />);
@@ -125,6 +125,24 @@ describe('Statusadvarsler', () => {
             const { findByText } = render(<MemoryRouterMedBareDialogOversikt />);
             await findByText(
                 'Du kan ikke sende meldinger i dialogen fordi du ikke har registrert e-post eller telefonnummeret ditt i kontakt og reservasjonsregisteret (KRR).',
+            );
+        });
+    });
+
+    describe('Kan ikke varsles men er registrert i krr', () => {
+        it('veileder ser advarsel når bruker er under oppf. men ikke kan varsler (krr-attributt)', async () => {
+            gitt.veileder().som.harIngenDialog().som.harBrukerUnderOppfølgingMenUtdatertIKrr();
+            const { findByText } = render(<MemoryRouterMedBareDialogOversikt />);
+            await findByText(
+                'Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen til brukeren er utdatert i KRR.',
+            );
+        });
+
+        it('bruker ser advarsel når bruker er under oppf. men ikke kan varsles (krr-attributt)', async () => {
+            gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenUtdatertIKrr();
+            const { findByText } = render(<MemoryRouterMedBareDialogOversikt />);
+            await findByText(
+                'Du kan ikke sende meldinger i dialogen fordi kontaktinformasjonen din er utdatert i kontakt og reservasjonsregisteret (KRR).',
             );
         });
     });

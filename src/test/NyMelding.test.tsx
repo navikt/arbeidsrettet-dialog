@@ -1,14 +1,18 @@
 import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
-import { afterAll, afterEach, beforeAll, Mock } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, Mock } from 'vitest';
 import { setupIntegrationTest } from './integrationTestSetup';
 import { fetchData } from '../utils/Fetch';
 import { DialogApi } from '../api/UseApiBasePath';
+import { useDialogStore } from '../view/dialogProvider/dialogStore';
 
 const fnr = '0123456789';
 const { App: IntegrationTestApp, worker } = setupIntegrationTest(fnr);
 
 vi.mock('../utils/Fetch', { spy: true });
+
+const tittel = 'Dette er tittel';
+const melding = 'Dette er melding';
 
 describe('Ny melding', () => {
     beforeAll(() => {
@@ -18,6 +22,11 @@ describe('Ny melding', () => {
             },
         });
     });
+
+    beforeEach(() => {
+        (fetchData as unknown as Mock).mockReset();
+    });
+
     afterAll(() => {
         worker.close();
     });
@@ -39,7 +48,6 @@ describe('Ny melding', () => {
         const { getByLabelText, getByText } = render(<IntegrationTestApp />);
         await waitFor(() => getByLabelText('Meldinger'), { timeout: 10000 });
         const input = getByLabelText('Skriv om arbeid og oppfølging');
-        const melding = 'Dette er en ny melding';
         fireEvent.change(input, { target: { value: melding } });
         fireEvent.click(getByText('Send'));
         await waitFor(() =>
@@ -52,14 +60,12 @@ describe('Ny melding', () => {
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
     });
 
-    it('når veileder oppretter en ny dialog payload til backend ikke ha dialogId', async () => {
+    it('når veileder oppretter en ny dialog skal payload til backend ikke ha dialogId', async () => {
         const { getByLabelText, getByText } = render(<IntegrationTestApp />);
         await waitFor(() => getByLabelText('Meldinger'), { timeout: 2000 });
         await act(async () => fireEvent.click(getByText('Ny dialog')));
         await waitFor(() => getByLabelText('Tema (obligatorisk)'));
-        const tittel = 'Dette er tittel';
         await act(async () => fireEvent.change(getByLabelText('Tema (obligatorisk)'), { target: { value: tittel } }));
-        const melding = 'Dette er melding';
         await act(async () =>
             fireEvent.change(getByLabelText('Melding (obligatorisk)'), { target: { value: melding } }),
         );
@@ -73,5 +79,46 @@ describe('Ny melding', () => {
             }),
         );
         await waitFor(() => getByText('Sendt. Bruker får beskjed på sms eller e-post om en halvtime'));
+    });
+
+    it('når veileder oppretter en ny dialog skal kladd slettes hvis response er success', async () => {
+        const { getByLabelText, getByText, findByLabelText } = render(<IntegrationTestApp />);
+        await findByLabelText('Meldinger');
+        await act(async () => fireEvent.click(getByText('Ny dialog')));
+        await findByLabelText('Tema (obligatorisk)');
+        await act(async () => fireEvent.change(getByLabelText('Tema (obligatorisk)'), { target: { value: tittel } }));
+        await act(async () =>
+            fireEvent.change(getByLabelText('Melding (obligatorisk)'), { target: { value: melding } }),
+        );
+
+        await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
+
+        fireEvent.click(getByText('Send'));
+
+        await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(0));
+    });
+
+    it.skip('når veileder oppretter en ny dialog skal kladd ikke slettes hvis response er error', async () => {
+        vi.when(fetchData)
+            .calledWith(DialogApi.opprettDialog, expect.any(Object))
+            .thenResolve(Promise.resolve({ status: 500, ok: false }))
+            .calledWith(DialogApi.kladd, expect.any(Object))
+            .thenResolve(Promise.resolve({ status: 204, ok: true }));
+
+        const { getByLabelText, getByText, findByLabelText, findByText, findByRole } = render(<IntegrationTestApp />);
+        await findByLabelText('Meldinger');
+        await act(async () => fireEvent.click(getByText('Ny dialog')));
+        await findByLabelText('Tema (obligatorisk)');
+        await act(async () => fireEvent.change(getByLabelText('Tema (obligatorisk)'), { target: { value: tittel } }));
+        await act(async () =>
+            fireEvent.change(getByLabelText('Melding (obligatorisk)'), { target: { value: melding } }),
+        );
+
+        await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
+
+        fireEvent.click(getByText('Send'));
+
+        await waitFor(() => expect(useDialogStore.getState().kladder).toHaveLength(1));
+        await findByText('Noe gikk dessverre galt med systemet. Prøv igjen senere.');
     });
 });

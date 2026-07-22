@@ -23,13 +23,13 @@ interface InitialLoaderData {
 export const initialPageLoader = (fnr: string | undefined) => async () => {
     return {
         features: useFeatureToggleStore.getState().fetch(undefined),
-        dialoger: useDialogStore.getState().hentDialoger(fnr),
+        dialoger: useDialogStore.getState().hentVeilarbdialogData(fnr),
         me: useBrukerDataStore.getState().fetch(undefined),
         oppfolging: useOppfolgingStore.getState().fetch(fnr),
         veilederNavn: fnr ? useVeilederNavnStore.getState().fetch(fnr) : Promise.resolve(null),
         aktiviteter: useAktivitetStore.getState().fetch(fnr),
         arenaAktiviteter: useTiltaksAktivitetStore.getState().fetch(fnr),
-        innsynsrett: useInnsynsrettStore.getState().fetch(fnr)
+        innsynsrett: useInnsynsrettStore.getState().fetch(fnr),
     };
 };
 

@@ -69,7 +69,6 @@ if (typeof window !== 'undefined') window.WebSocket = NoopWebSocket;
 
 vi.mock('../felleskomponenter/logging', () => ({
     default: vi.fn(),
-    loggChangeInDialog: vi.fn(),
 }));
 
 afterAll(async () => {
