@@ -9,10 +9,10 @@ interface Props {
     dialog: DialogData;
 }
 
-function erViktig(dialog: DialogData, gjeldendeStansVarselDialogId: string | undefined): boolean {
+function erViktig(dialog: DialogData, gjeldendeStansVarselDialogId: number | undefined): boolean {
     if (dialog.egenskaper.length > 0) {
         if (dialog.egenskaper[0] === 'ESKALERINGSVARSEL') {
-            return dialog.id === gjeldendeStansVarselDialogId;
+            return dialog.id === gjeldendeStansVarselDialogId?.toString();
         }
         return true;
     }

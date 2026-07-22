@@ -132,7 +132,7 @@ const hentVeilarbdialogDataSchema = z.object({
     }),
     stansVarsel: z
         .object({
-            tilhorendeDialogId: z.string(),
+            tilhorendeDialogId: z.number(),
         })
         .nullable(),
 });
