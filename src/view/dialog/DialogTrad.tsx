@@ -18,6 +18,7 @@ import { useRootLoaderData } from '../../routing/loaders';
 import { DialogData } from '../../utils/Typer';
 import { MaybeAktivitet } from '../AktivitetProvider';
 import { captureMessage } from '../../utils/errorCapture';
+import aktivitet from '../../mock/Aktivitet';
 
 export const DialogTrad = () => {
     const [searchParams] = useSearchParams();
@@ -91,8 +92,14 @@ export const DialogTrad = () => {
         <Suspense fallback={<DialogLoader />}>
             <Await resolve={requiredData}>
                 <ValgtDialog>
-                    {({ dialog }) => (
-                        <section className={classNames('flex w-full grow xl:max-w-none flex-col 2xl:flex-row')}>
+                    {({ dialog, aktivitet, visAktivitet }) => (
+                        <section
+                            className={classNames('flex w-full grow xl:max-w-none', {
+                                'flex-col lg:flex-row 2xl:flex-row': aktivitet && !visAktivitet,
+                                'flex-col 2xl:flex-row': aktivitet && visAktivitet,
+                                'flex-col lg:flex-row': !aktivitet,
+                            })}
+                        >
                             <div className="flex min-h-16 flex-1 grow flex-col">
                                 <Meldinger dialogData={dialog} />
                                 <HistoriskInfo />

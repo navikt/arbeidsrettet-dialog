@@ -134,9 +134,7 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
     const Input = useCallback(() => {
         if (visAktivitet && [Breakpoint.md, Breakpoint.lg, Breakpoint.xl].includes(breakpoint)) {
             return <MeldingBottomInput />;
-        } else if (
-            [Breakpoint.initial, Breakpoint.sm, Breakpoint.md, Breakpoint.lg, Breakpoint.xl].includes(breakpoint)
-        ) {
+        } else if ([Breakpoint.initial, Breakpoint.sm, Breakpoint.md].includes(breakpoint)) {
             return <MeldingBottomInput />;
         } else {
             return <MeldingSideInput />;
