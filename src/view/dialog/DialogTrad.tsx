@@ -18,7 +18,6 @@ import { useRootLoaderData } from '../../routing/loaders';
 import { DialogData } from '../../utils/Typer';
 import { MaybeAktivitet } from '../AktivitetProvider';
 import { captureMessage } from '../../utils/errorCapture';
-import aktivitet from '../../mock/Aktivitet';
 
 export const DialogTrad = () => {
     const [searchParams] = useSearchParams();
