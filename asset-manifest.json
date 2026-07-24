@@ -1,0 +1,155 @@
+{
+  "_App-BedNyafq.js": {
+    "file": "assets/App-BedNyafq.js",
+    "name": "App",
+    "imports": [
+      "index.html",
+      "_const-BW-mG3N2.js"
+    ],
+    "css": [
+      "assets/App-D1z_NFg6.css"
+    ]
+  },
+  "_App-D1z_NFg6.css": {
+    "file": "assets/App-D1z_NFg6.css",
+    "src": "_App-D1z_NFg6.css"
+  },
+  "_const-BW-mG3N2.js": {
+    "file": "assets/const-BW-mG3N2.js",
+    "name": "const",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_hash-BI9JGeRt.js": {
+    "file": "assets/hash-BI9JGeRt.js",
+    "name": "hash"
+  },
+  "_scrub-DjqCfjHz.js": {
+    "file": "assets/scrub-DjqCfjHz.js",
+    "name": "scrub"
+  },
+  "_transport-C-LLLg8i.js": {
+    "file": "assets/transport-C-LLLg8i.js",
+    "name": "transport",
+    "imports": [
+      "_scrub-DjqCfjHz.js"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-CiDqY4n3.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/webcomponentWrapper.tsx",
+      "src/rootWrapper.tsx",
+      "src/mock/index.tsx"
+    ]
+  },
+  "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js": {
+    "file": "assets/rrweb-snapshot-Ws4IxV_Z.js",
+    "name": "rrweb-snapshot",
+    "src": "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@grafana/rrweb/dist/rrweb.js": {
+    "file": "assets/rrweb-BsYm1f6X.js",
+    "name": "rrweb",
+    "src": "node_modules/@grafana/rrweb/dist/rrweb.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@nais/apm/dist/replay/events.js": {
+    "file": "assets/events-D_DLI9L3.js",
+    "name": "events",
+    "src": "node_modules/@nais/apm/dist/replay/events.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_scrub-DjqCfjHz.js",
+      "_hash-BI9JGeRt.js"
+    ]
+  },
+  "node_modules/@nais/apm/dist/replay/recording.js": {
+    "file": "assets/recording-DWvTd9rY.js",
+    "name": "recording",
+    "src": "node_modules/@nais/apm/dist/replay/recording.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_hash-BI9JGeRt.js",
+      "_transport-C-LLLg8i.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@grafana/rrweb/dist/rrweb.js"
+    ]
+  },
+  "node_modules/@nais/apm/dist/replay/snapshot.js": {
+    "file": "assets/snapshot-cD-g5A0r.js",
+    "name": "snapshot",
+    "src": "node_modules/@nais/apm/dist/replay/snapshot.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_scrub-DjqCfjHz.js",
+      "_hash-BI9JGeRt.js",
+      "_transport-C-LLLg8i.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js"
+    ]
+  },
+  "node_modules/@nais/apm/dist/tracing.js": {
+    "file": "assets/tracing-C6WJlxyM.js",
+    "name": "tracing",
+    "src": "node_modules/@nais/apm/dist/tracing.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "src/mock/index.tsx": {
+    "file": "assets/mock-DKhR-bAd.js",
+    "name": "mock",
+    "src": "src/mock/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_const-BW-mG3N2.js"
+    ],
+    "css": [
+      "assets/mock-BOM-lgQd.css"
+    ]
+  },
+  "src/rootWrapper.tsx": {
+    "file": "assets/rootWrapper-Mmbh3ZzF.js",
+    "name": "rootWrapper",
+    "src": "src/rootWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_scrub-DjqCfjHz.js",
+      "_const-BW-mG3N2.js",
+      "_App-BedNyafq.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@nais/apm/dist/tracing.js",
+      "node_modules/@nais/apm/dist/replay/recording.js",
+      "node_modules/@nais/apm/dist/replay/events.js",
+      "node_modules/@nais/apm/dist/replay/snapshot.js"
+    ],
+    "css": [
+      "assets/rootWrapper-1WKYFbrb.css"
+    ]
+  },
+  "src/webcomponentWrapper.tsx": {
+    "file": "assets/webcomponentWrapper-BVtoFJh9.js",
+    "name": "webcomponentWrapper",
+    "src": "src/webcomponentWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_const-BW-mG3N2.js",
+      "_App-BedNyafq.js"
+    ]
+  }
+}
