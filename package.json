@@ -62,11 +62,11 @@
   "dependencies": {
     "@grafana/faro-web-sdk": "^1.19.0",
     "@hookform/resolvers": "^5.4.0",
+    "@nais/apm": "^0.5.0",
     "@navikt/aksel-icons": "^8.13.0",
     "@navikt/ds-css": "^8.11.1",
     "@navikt/ds-react": "^8.11.1",
     "@navikt/ds-tailwind": "^8.11.1",
-    "@sentry/react": "^8.55.2",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.1",
     "@vitejs/plugin-react": "^4.7.0",
@@ -94,6 +94,7 @@
     "@babel/cli": "^7.29.7",
     "@babel/core": "^7.29.7",
     "@navikt/nav-dekoratoren-moduler": "^3.7.2",
+    "@storybook/addon-docs": "^10.4.6",
     "@storybook/addon-links": "^10.4.6",
     "@storybook/addon-onboarding": "^10.4.6",
     "@storybook/blocks": "^8.6.18",
@@ -127,8 +128,7 @@
     "storybook": "^10.4.6",
     "tailwindcss": "^4.2.1",
     "typescript": "^7.0.2",
-    "vitest": "^5.0.0-beta.6",
-    "@storybook/addon-docs": "^10.4.6"
+    "vitest": "^5.0.0-beta.6"
   },
   "msw": {
     "workerDirectory": [
@@ -138,5 +138,5 @@
   "bugs": {
     "url": "https://github.com/navikt/arbeidsrettet-dialog/issues"
   },
-  "packageManager": "pnpm@11.15.1+sha512.81350b07e53c9538a02f1f2303b4290fa2d7be04e56e2a970c4cc4b417dc761de196edabd49d55c7dc9580db81007c44143e4e3d7e462b3000d23c255122d065"
+  "packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72"
 }
