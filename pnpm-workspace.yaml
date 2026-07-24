@@ -7,3 +7,8 @@ allowBuilds:
   esbuild: true
   msw: true
   protobufjs: true
+
+registries:
+  default: 'https://registry.npmjs.org/'
+  '@nais': 'https://npm.pkg.github.com/'
+  '@navikt': 'https://npm.pkg.github.com/'
