@@ -34,7 +34,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/dev-ekstern.yaml
+          RESOURCE: nais/nais-dev-ekstern-gcp.yaml
           VARS: nais/pto/pto-dev-uten-ingress.yaml
       - name: Slack Notification (deploy failure)
         if: failure()
@@ -61,7 +61,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: prod-gcp
-          RESOURCE: nais/prod-ekstern.yaml
+          RESOURCE: nais/nais-prod-ekstern-gcp.yaml
           VARS: nais/pto/pto-prod-uten-ingress.yaml
       - name: Slack Notification (deploy failure)
         if: failure()
@@ -88,7 +88,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/dev-ekstern.yaml
+          RESOURCE: nais/nais-dev-ekstern-gcp.yaml
           VARS: nais/dab/dab-dev-med-ingress.yaml
       - name: Slack Notification (deploy failure)
         if: failure()
@@ -115,7 +115,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: prod-gcp
-          RESOURCE: nais/prod-ekstern.yaml
+          RESOURCE: nais/nais-prod-ekstern-gcp.yaml
           VARS: nais/dab/dab-prod-med-ingress.yaml
       - name: Slack Notification (deploy failure)
         if: failure()
@@ -143,7 +143,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/dev-ekstern.yaml
+          RESOURCE: nais/nais-dev-ekstern-gcp.yaml
           VARS: nais/pto/pto-dev-med-ingress.yaml
       - name: Slack Notification (rollback success)
         if: success()
@@ -181,7 +181,7 @@ jobs:
         uses: nais/deploy/actions/deploy@2d18f050f07b6a007864c6a57070ed915d571beb
         env:
           CLUSTER: prod-gcp
-          RESOURCE: nais/prod-ekstern.yaml
+          RESOURCE: nais/nais-prod-ekstern-gcp.yaml
           VARS: nais/pto/pto-prod-med-ingress.yaml
       - name: Slack Notification (rollback success)
         if: success()
