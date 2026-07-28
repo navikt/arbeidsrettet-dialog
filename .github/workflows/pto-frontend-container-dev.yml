@@ -26,3 +26,4 @@ jobs:
               env:
                   CLUSTER: dev-gcp
                   RESOURCE: nais/nais-dev-ekstern-gcp.yaml
+                  VARS: nais/dab/dab-dev-uten-ingress.yaml

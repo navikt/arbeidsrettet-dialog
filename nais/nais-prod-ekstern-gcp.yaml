@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: arbeidsrettet-dialog
-  namespace: pto
+  namespace: {{namespace}}
   labels:
-    team: pto
+    team: {{team}}
 spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.07.08_13.04-322d75e7b179
   port: 8080
@@ -29,8 +29,12 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
+  {{#if ingresses}}
   ingresses:
-    - https://www.nav.no/arbeid/dialog
+  {{ #each ingresses as |url|}}
+      - {{url } }
+  {{/each}}
+  {{/if}}
   accessPolicy:
     outbound:
       external:
@@ -45,7 +49,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
   idporten:
-    enabled: true
+    enabled: {{#if ingresses}}true{{else}}false{{/if}}
     sidecar:
       enabled: true
       autoLogin: true
