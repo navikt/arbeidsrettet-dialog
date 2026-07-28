@@ -59,8 +59,6 @@ spec:
   gcp:
     buckets:
       - name: arbeidsrettet-dialog-prod
-  envFrom:
-    - configmap: pto-config
   env:
     - name: JSON_CONFIG
       value: >
