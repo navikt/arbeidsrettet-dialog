@@ -31,8 +31,8 @@ spec:
       runtime: nodejs
   {{#if ingresses}}
   ingresses:
-  {{ #each ingresses as |url|}}
-      - {{url } }
+  {{#each ingresses as |url|}}
+      - {{url }}
   {{/each}}
   {{/if}}
   accessPolicy:
