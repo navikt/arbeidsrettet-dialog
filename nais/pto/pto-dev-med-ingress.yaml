@@ -1,4 +1,0 @@
-namespace: pto
-team: pto
-ingresses:
-  - https://pto.ekstern.dev.nav.no/arbeid/dialog
