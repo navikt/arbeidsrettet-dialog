@@ -30,7 +30,7 @@ spec:
       enabled: true
       runtime: nodejs
   ingresses:
-    - https://www.nav.no/arbeid/dialog
+    - https://pto.ekstern.dev.nav.no/arbeid/dialog
   accessPolicy:
     outbound:
       external:
