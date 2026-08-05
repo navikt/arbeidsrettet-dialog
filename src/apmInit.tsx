@@ -3,7 +3,7 @@ import { init, captureMessage, captureException } from '@nais/apm';
 
 init({
     app: 'arbeidsrettet-dialog',
-    namespace: 'pto',
+    namespace: 'dab',
     environment: getEnv(),
     ignoreErrors: [
         // /^Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.$/,
