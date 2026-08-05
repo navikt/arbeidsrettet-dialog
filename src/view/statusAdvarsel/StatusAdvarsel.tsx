@@ -5,7 +5,7 @@ import { useOppfolgingContext } from '../OppfolgingProvider';
 import { dataOrUndefined } from '../Provider';
 import AldriUnderOppfolging from './AldriUnderOppfolging';
 import IkkeUnderOppfolging from './IkkeUnderOppfolging';
-import KanIkkeVarsles from './KanIkkeVarsles';
+import UtdatertKontaktInformasjonIKRRVarsel from './UtdatertKontaktInformasjonIKRRVarsel';
 import ManuellBruker from './ManuellBruker';
 import ReservertKrr from './ReservertKrr';
 import ErIkkeRegistrertIKrrAdversel from './ErIkkeRegistrertIKrrAdverselBruker';
@@ -23,18 +23,17 @@ export default function StatusAdvarsel() {
     }
 
     const erVeileder = UserInfo.erVeileder;
-    const erUnderOppfolging = oppfolgingData.underOppfolging;
+    const erUnderOppfolging = oppfolgingData.oppfolging.erUnderOppfolging;
     const harOppfolgingsPerioder = oppfolgingData.oppfolgingsPerioder.length > 0;
-    const erReservertKrr = oppfolgingData.reservasjonKRR;
-    const kanVarsles = oppfolgingData.kanVarsles;
-    const manuellBruker = oppfolgingData.manuell;
-    const kanReaktiveres = oppfolgingData.kanReaktiveres;
-    const erRegistrertIKrrBruker = oppfolgingData.registrertKRR;
+    const erReservertKrr = oppfolgingData.brukerStatus.krr.reservertIKrr;
+    const kanVarsles = oppfolgingData.brukerStatus.krr.kanVarsles;
+    const manuellBruker = oppfolgingData.brukerStatus.manuell.erManuell;
+    const erRegistrertIKrrBruker = oppfolgingData.brukerStatus.krr.registrertIKrr;
 
     if (!erUnderOppfolging && !harOppfolgingsPerioder) {
         return <AldriUnderOppfolging erVeileder={erVeileder} />;
     }
-    if (!erUnderOppfolging || kanReaktiveres) {
+    if (!erUnderOppfolging) {
         return <IkkeUnderOppfolging erVeileder={erVeileder} />;
     }
     if (erReservertKrr) {
@@ -44,7 +43,7 @@ export default function StatusAdvarsel() {
         return <ManuellBruker erVeileder={erVeileder} />;
     }
     if (!kanVarsles && erRegistrertIKrrBruker) {
-        return <KanIkkeVarsles erVeileder={erVeileder} />;
+        return <UtdatertKontaktInformasjonIKRRVarsel erVeileder={erVeileder} />;
     }
     if (!erRegistrertIKrrBruker) {
         return <ErIkkeRegistrertIKrrAdversel erVeileder={erVeileder} />;

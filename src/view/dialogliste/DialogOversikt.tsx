@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import React, { Suspense } from 'react';
 import { Await } from 'react-router';
 import { AKTIVITETSPLAN_URL, MINSIDE_URL } from '../../constants';
-import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { useDialoger } from '../DialogProvider';
 import InfoVedIngenDialoger from '../info/InfoVedIngenDialoger';
 import OmDialogLenke from '../info/OmDialogLenke';
@@ -35,7 +34,6 @@ const DialogOversiktHeader = ({ erVeileder }: { erVeileder: boolean }) => {
 };
 
 const DialogOversikt = () => {
-    const kanSendeMelding = useKansendeMelding();
     const dialoger = useDialoger();
     const isDialogOrNyRoute = useIsDialogOrNyRoute();
     const erVeileder = useErVeileder();
@@ -56,7 +54,7 @@ const DialogOversikt = () => {
             <div className="relative flex flex-1 flex-col overflow-y-scroll border-r border-ax-border-neutral-subtle bg-ax-bg-sunken p-2">
                 <>
                     <div className="flex gap-2 p-1 pb-2">
-                        <NyDialogLink disabled={!kanSendeMelding} />
+                        <NyDialogLink visKanIkkeSendeSom={'disabled'} />
                         <OmDialogLenke />
                     </div>
                     <Suspense>

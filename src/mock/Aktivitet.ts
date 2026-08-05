@@ -8,9 +8,7 @@ import {
 } from '../utils/aktivitetTypes';
 import oppfolging from './Oppfolging';
 
-const gjeldendeOppfolgingsPeriode = oppfolging.oppfolgingsPerioder.find((periode) => !periode.sluttDato) || {
-    uuid: '1'
-};
+const gjeldendeOppfolgingsPeriode = oppfolging.oppfolgingsPerioder.find((periode) => !periode.sluttTidspunkt)!
 
 export const moteAktivitet: Aktivitet = {
     adresse: 'Nordre strandvei 56',
@@ -53,7 +51,7 @@ export const moteAktivitet: Aktivitet = {
     transaksjonsType: 'REFERAT_PUBLISERT',
     type: AktivitetTypes.MOTE,
     versjon: '213019',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const stilingAktivitet: Aktivitet = {
     adresse: null,
@@ -96,7 +94,7 @@ export const stilingAktivitet: Aktivitet = {
     type: AktivitetTypes.STILLING,
     versjon: '1',
     malid: null,
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const samtalereferatAktivitet: Aktivitet = {
     adresse: null,
@@ -140,7 +138,7 @@ export const samtalereferatAktivitet: Aktivitet = {
     transaksjonsType: 'REFERAT_ENDRET',
     type: AktivitetTypes.SAMTALEREFERAT,
     versjon: '213394',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const behandlingAktivitet: Aktivitet = {
     adresse: null,
@@ -183,7 +181,7 @@ export const behandlingAktivitet: Aktivitet = {
     transaksjonsType: 'STATUS_ENDRET',
     type: AktivitetTypes.BEHANDLING,
     versjon: '213381',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const sokeavtaleAktivitet: Aktivitet = {
     adresse: null,
@@ -227,7 +225,7 @@ export const sokeavtaleAktivitet: Aktivitet = {
     transaksjonsType: 'STATUS_ENDRET',
     type: AktivitetTypes.SOKEAVTALE,
     versjon: '210092',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 const sokeavtaleAktivitet2: Aktivitet = {
     adresse: null,
@@ -271,7 +269,7 @@ const sokeavtaleAktivitet2: Aktivitet = {
     transaksjonsType: 'STATUS_ENDRET',
     type: AktivitetTypes.SOKEAVTALE,
     versjon: '210092',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const ijobbAktivitet: Aktivitet = {
     adresse: null,
@@ -314,7 +312,7 @@ export const ijobbAktivitet: Aktivitet = {
     transaksjonsType: 'STATUS_ENDRET',
     type: AktivitetTypes.IJOBB,
     versjon: '210077',
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 };
 export const stillingFraNav: Aktivitet = {
     versjon: '5345437',
@@ -353,7 +351,7 @@ export const stillingFraNav: Aktivitet = {
         //     mobil: null
         // }
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 const stillingFraNav2: Aktivitet = {
     versjon: '5345436',
@@ -387,7 +385,7 @@ const stillingFraNav2: Aktivitet = {
         soknadsfrist: '2020-09-30T10:46:51.622+01:00',
         svarfrist: '2020-09-30T10:46:51.622+01:00'
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 export const midl_lonnstilsk = {
     versjon: '5345436',
@@ -407,7 +405,7 @@ export const midl_lonnstilsk = {
     eksternAktivitet: {
         type: EksternAktivitetTypes.MIDLERTIDIG_LONNSTILSKUDD
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 const varig_lonnstilsk = {
     versjon: '5345436',
@@ -427,7 +425,7 @@ const varig_lonnstilsk = {
     eksternAktivitet: {
         type: EksternAktivitetTypes.VARIG_LONNSTILSKUDD
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 export const arena_tiltak = {
     versjon: '5345436',
@@ -448,7 +446,7 @@ export const arena_tiltak = {
     eksternAktivitet: {
         type: EksternAktivitetTypes.ARENA_TILTAK
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 const avklaring = {
     versjon: '5345436',
@@ -469,7 +467,7 @@ const avklaring = {
     eksternAktivitet: {
         type: EksternAktivitetTypes.AVKLARAG
     },
-    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.uuid
+    oppfolgingsperiodeId: gjeldendeOppfolgingsPeriode.id
 } as Aktivitet;
 
 const aktiviteter: Aktivitet[] = [

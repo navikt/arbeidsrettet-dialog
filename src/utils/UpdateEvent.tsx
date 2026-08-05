@@ -4,12 +4,12 @@ import { useHentAktiviteter } from '../view/AktivitetProvider';
 import { useOppfolgingContext } from '../view/OppfolgingProvider';
 import { useEventListener } from '../view/utils/useEventListner';
 import { useFnrContext } from '../view/Provider';
-import { useHentDialoger } from '../view/dialogProvider/dialogStore';
+import { useHentVeilarbdialogData } from '../view/dialogProvider/dialogStore';
 
 export enum UpdateTypes {
     Dialog = 'DIALOG',
     Oppfolging = 'OPPFOLGING',
-    Aktivitet = 'AKTIVITET'
+    Aktivitet = 'AKTIVITET',
 }
 /*
         'uppdate' er en skrivefeil, men jeg ser at det samme navnet blir brukt i aktivitetsplanen, arbeidsrettet-dialog og veilarbpersonflate,
@@ -24,7 +24,7 @@ const eventName = 'uppdate';
 
 export function dispatchUpdate(update: UpdateTypes) {
     window.dispatchEvent(
-        new CustomEvent<UpdateEventType>(eventName, { detail: { uppdate: update, avsender: 'dialog' } })
+        new CustomEvent<UpdateEventType>(eventName, { detail: { uppdate: update, avsender: 'dialog' } }),
     );
 }
 
@@ -35,7 +35,7 @@ function isUpdateEvent(toBeDetermined: CustomEvent): toBeDetermined is CustomEve
 export function UppdateEventHandler() {
     const fnr = useFnrContext();
     const hentAktiviteter = useHentAktiviteter();
-    const hentDialoger = useHentDialoger();
+    const hentVeilarbdialogData = useHentVeilarbdialogData();
     const oppfolgingContext = useOppfolgingContext();
     useEventListener(eventName, (event) => {
         if (!isUpdateEvent(event)) {
@@ -53,7 +53,7 @@ export function UppdateEventHandler() {
             case UpdateTypes.Aktivitet:
                 return hentAktiviteter(fnr);
             case UpdateTypes.Dialog:
-                return hentDialoger(fnr);
+                return hentVeilarbdialogData(fnr);
             case UpdateTypes.Oppfolging:
                 return oppfolgingContext.hentOppfolging(fnr);
         }

@@ -1,100 +1,145 @@
 import * as OppfolgingProvider from '../view/OppfolgingProvider';
 import * as BrukerProvider from '../view/BrukerProvider';
 import * as DialogProvider from '../view/DialogProvider';
-import { Bruker, DialogData, OppfolgingData, PeriodeData } from '../utils/Typer';
+import { Bruker, DialogData, PeriodeData } from '../utils/Typer';
 import { Status } from '../api/typer';
 import * as Provider from '../view/Provider';
 import { Aktivitet } from '../utils/aktivitetTypes';
 import * as AktivitetProvider from '../view/AktivitetProvider';
-import { AktivitetDataProviderType, useAktivitetContext } from '../view/AktivitetProvider';
+import { AktivitetDataProviderType } from '../view/AktivitetProvider';
+import { OppfolgingDataGraphqlResponse } from '../view/OppfolgingProvider';
 
 const testFnr = '01234567890';
 const veilederUserInfo: Bruker = { id: '010101', erVeileder: true, erBruker: false };
 const bukerUserInfo: Bruker = { id: testFnr, erVeileder: false, erBruker: true };
 const oppfPerioder: PeriodeData[] = [];
-const enLukketOppfølgingsPeriode = [
+const enLukketOppfølgingsPeriode: OppfolgingDataGraphqlResponse['oppfolgingsPerioder'] = [
     {
-        aktorId: '1234567988888',
-        veileder: false,
-        startDato: '2017-01-30T10:46:10.971+01:00',
-        sluttDato: '2017-12-31T10:46:10.971+01:00',
-        begrunnelse: null,
+        startTidspunkt: '2017-01-30T10:46:10.971+01:00',
+        sluttTidspunkt: '2017-12-31T10:46:10.971+01:00',
         kvpPerioder: [],
-        uuid: '1'
-    }
+        id: '1',
+    },
 ];
-const oppfolgingData: OppfolgingData = {
-    fnr: testFnr,
-    veilederId: '101010',
-    reservasjonKRR: false,
-    manuell: false,
-    underOppfolging: true, // eller false
-    underKvp: false,
-    oppfolgingUtgang: null,
-    gjeldendeEskaleringsvarsel: null,
-    kanStarteOppfolging: false,
-    avslutningStatus: null,
+const oppfolgingData: OppfolgingDataGraphqlResponse = {
+    brukerStatus: {
+        manuell: {
+            erManuell: false,
+        },
+        krr: {
+            reservertIKrr: false,
+            kanVarsles: true,
+            registrertIKrr: false,
+        },
+    },
+    oppfolging: {
+        erUnderOppfolging: true, // eller false
+    },
     oppfolgingsPerioder: oppfPerioder,
-    harSkriveTilgang: true,
-    kanReaktiveres: false,
-    inaktiveringsdato: '2018-08-31T10:46:10.971+01:00',
-    aktorId: 'null',
-    erSykmeldtMedArbeidsgiver: false,
-    formidlingsgruppe: null,
-    kanVarsles: true,
-    servicegruppe: null,
-    registrertKRR: false
+    veilederTilgang: {
+        harVeilederLeseTilgangTilBrukersKontorsperre: true,
+    },
 };
 
 const baseOppfolgingsData = {
     data: oppfolgingData,
     status: Status.OK,
-    hentOppfolging: () => Promise.resolve(undefined)
+    hentOppfolging: () => Promise.resolve(undefined),
 };
 const aldriVærtUnderOppfølgingData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: false,
-        oppfolgingsPerioder: []
-    }
+        oppfolging: {
+            erUnderOppfolging: false,
+        },
+        oppfolgingsPerioder: [],
+    } as OppfolgingDataGraphqlResponse,
 };
 const ikkeLengerUnderOppfølgingData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: false,
-        oppfolgingsPerioder: enLukketOppfølgingsPeriode
-    }
+        oppfolging: {
+            erUnderOppfolging: false,
+        },
+        oppfolgingsPerioder: enLukketOppfølgingsPeriode,
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingsData = {
     ...baseOppfolgingsData,
     data: {
         ...baseOppfolgingsData.data,
-        underOppfolging: true,
-        oppfolgingsPerioder: enLukketOppfølgingsPeriode
-    }
+        oppfolging: {
+            erUnderOppfolging: true,
+        },
+        oppfolgingsPerioder: enLukketOppfølgingsPeriode,
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenReservertIKRRData = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        reservasjonKRR: true
-    }
+        brukerStatus: {
+            manuell: {
+                erManuell: true,
+            },
+            krr: {
+                reservertIKrr: true,
+                kanVarsles: false,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenManuell = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        manuell: true
-    }
+        brukerStatus: {
+            manuell: {
+                erManuell: true,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: true,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 const underOppfølgingMenKanIkkeVarsles = {
     ...underOppfølgingsData,
     data: {
         ...underOppfølgingsData.data,
-        kanVarsles: false
-    }
+        brukerStatus: {
+            manuell: {
+                erManuell: false,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: false,
+                registrertIKrr: false,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
+};
+
+const underOppfølgingMenKanUtdatertIKrr = {
+    ...underOppfølgingsData,
+    data: {
+        ...underOppfølgingsData.data,
+        brukerStatus: {
+            manuell: {
+                erManuell: false,
+            },
+            krr: {
+                reservertIKrr: false,
+                kanVarsles: false,
+                registrertIKrr: true,
+            },
+        },
+    } as OppfolgingDataGraphqlResponse,
 };
 
 const ingenDialoger = [] as DialogData[];
@@ -103,7 +148,6 @@ export const dialoger = [
         id: '2',
         aktivitetId: '1',
         overskrift: 'Memes',
-        sisteTekst: 'Hei. Hva er status her? Har du finnet Kaptain Sabeltann?',
         sisteDato: '2018-01-28T12:48:56.097+01:00',
         opprettetDato: '2018-02-27T12:48:56.081+01:00',
         historisk: false,
@@ -121,7 +165,7 @@ export const dialoger = [
                 sendt: '2018-02-27T12:48:56.097+01:00',
                 lest: true,
                 tekst: 'Hei. Hva er status her? Har du finnet Kaptain Sabeltann?',
-                viktig: false
+                viktig: false,
             },
             {
                 id: '2',
@@ -131,11 +175,11 @@ export const dialoger = [
                 sendt: '2018-02-28T12:48:56.097+01:00',
                 lest: true,
                 tekst: 'Hei. Leter enda på sjøen :)',
-                viktig: false
-            }
+                viktig: false,
+            },
         ],
-        egenskaper: []
-    }
+        egenskaper: [],
+    },
 ];
 
 const harBrukerUnderOppfolging = () => {
@@ -160,6 +204,10 @@ const harBrukerUnderOppfølgingMenManuell = () => {
 };
 const harBrukerUnderOppfølgingMenKanIkkeVarsles = () => {
     vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => underOppfølgingMenKanIkkeVarsles);
+    return { som: gitt };
+};
+const harBrukerUnderOppfølgingMenUtdatertIKrr = () => {
+    vi.spyOn(OppfolgingProvider, 'useOppfolgingContext').mockImplementation(() => underOppfølgingMenKanUtdatertIKrr);
     return { som: gitt };
 };
 const veileder = () => {
@@ -187,14 +235,14 @@ const harDialogMedAktivitet = (aktivitet: Aktivitet) => {
     const dialogWithAktivitet: DialogData[] = [
         {
             ...dialoger[0],
-            aktivitetId: aktivitet.id
-        }
+            aktivitetId: aktivitet.id,
+        },
     ];
     const aktivitetProvider: AktivitetDataProviderType = {
         aktiviteterStatus: Status.OK,
         aktiviteter: [aktivitet],
         arenaAktiviteter: [],
-        arenaAktiviteterStatus: Status.OK
+        arenaAktiviteterStatus: Status.OK,
     };
     vi.spyOn(AktivitetProvider, 'useAktivitetDataProvider').mockImplementation(() => aktivitetProvider);
     vi.spyOn(AktivitetProvider, 'useAktivitetContext').mockImplementation(() => aktivitetProvider);
@@ -206,8 +254,8 @@ const harDialogSomVenterPåBruker = () => {
         {
             ...dialoger[0],
             venterPaSvar: true,
-            historisk: false
-        }
+            historisk: false,
+        },
     ];
     vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialogSomVenterPåNAV);
     return { som: oppfolgingConfig };
@@ -217,8 +265,8 @@ const harDialogSomIkkeErFerdigBehandlet = () => {
         {
             ...dialoger[0],
             ferdigBehandlet: false,
-            historisk: false
-        }
+            historisk: false,
+        },
     ];
     vi.spyOn(DialogProvider, 'useDialoger').mockImplementation(() => dialogSomVenterPåNAV);
     return { som: oppfolgingConfig };
@@ -226,14 +274,14 @@ const harDialogSomIkkeErFerdigBehandlet = () => {
 
 const brukerTypeConfig = {
     veileder,
-    bruker
+    bruker,
 };
 const dialogerConfig = {
     harIngenDialog,
     harDialog,
     harDialogMedAktivitet,
     harDialogSomVenterPåBruker,
-    harDialogSomIkkeErFerdigBehandlet
+    harDialogSomIkkeErFerdigBehandlet,
 };
 const oppfolgingConfig = {
     harBrukerUnderOppfolging,
@@ -241,7 +289,8 @@ const oppfolgingConfig = {
     harBrukerIkkeLengerErUnderOppfolging,
     harBrukerUnderOppfølgingMenReservertIKRR,
     harBrukerUnderOppfølgingMenManuell,
-    harBrukerUnderOppfølgingMenKanIkkeVarsles
+    harBrukerUnderOppfølgingMenKanIkkeVarsles,
+    harBrukerUnderOppfølgingMenUtdatertIKrr,
 };
 
 export const gitt = brukerTypeConfig;

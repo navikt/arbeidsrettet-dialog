@@ -17,15 +17,12 @@ export interface DialogData {
     id: string;
     aktivitetId: StringOrNull;
     overskrift: StringOrNull;
-    sisteTekst: StringOrNull;
     sisteDato: string;
-    opprettetDato: StringOrNull;
     historisk: boolean;
     lest: boolean;
     venterPaSvar: boolean;
     ferdigBehandlet: boolean;
     lestAvBrukerTidspunkt: StringOrNull;
-    erLestAvBruker: boolean;
     henvendelser: MeldingsData[];
     egenskaper: string[];
 }
@@ -33,10 +30,9 @@ export interface DialogData {
 export interface MeldingsData {
     id: string;
     dialogId: string;
-    avsender: string;
+    avsender: string | null;
     avsenderId: string;
     sendt: string;
-    lest: boolean;
     tekst: string;
     viktig: boolean;
 }
@@ -48,50 +44,26 @@ export interface Bruker {
 }
 
 export interface OppfolgingData {
-    fnr: string;
-    aktorId: string;
-    veilederId: StringOrNull;
     reservasjonKRR: boolean;
     registrertKRR: boolean;
     kanVarsles: boolean;
     manuell: boolean;
     underOppfolging: boolean;
     underKvp: boolean;
-    oppfolgingUtgang: StringOrNull;
-    gjeldendeEskaleringsvarsel: Eskaleringsvarsel | null;
-    kanStarteOppfolging: boolean;
-    avslutningStatus: StringOrNull;
     oppfolgingsPerioder: PeriodeData[];
     harSkriveTilgang: boolean;
-    kanReaktiveres: boolean;
-    inaktiveringsdato: StringOrNull;
-    erSykmeldtMedArbeidsgiver: boolean;
-    servicegruppe: StringOrNull;
-    formidlingsgruppe: StringOrNull;
-}
-
-export interface Eskaleringsvarsel {
-    varselId: string;
-    aktorId: string;
-    opprettetAv: string;
-    opprettetDato: string;
-    avsluttetDato: StringOrNull;
-    tilhorendeDialogId: number;
 }
 
 export interface PeriodeData {
-    aktorId: string;
-    veileder: boolean;
-    startDato: StringOrNull;
-    sluttDato: StringOrNull;
-    begrunnelse: StringOrNull;
+    startTidspunkt: string;
+    sluttTidspunkt: StringOrNull;
     kvpPerioder: KvpPerioder[];
-    uuid: string;
+    id: string;
 }
 
 interface KvpPerioder {
-    opprettetDato: StringOrNull;
-    avsluttetDato: StringOrNull;
+    startTidspunkt: string;
+    sluttTidspunkt: StringOrNull;
 }
 
 export interface KladdData {

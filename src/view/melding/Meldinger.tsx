@@ -50,11 +50,11 @@ export function Meldinger(props: Props) {
             tabIndex={0}
             role="grid"
         >
-            <div className="xl:w-full xl:max-w-248 flex flex-col justify-end">
+            <div className="xl:w-full flex flex-col justify-end">
                 <Heading level="3" size={'medium'} className="hidden">
                     Meldinger
                 </Heading>
-                <div className="mb-4">
+                <div className="mb-4 flex flex-col">
                     {sorterteHenvendelser.map((henvendelse, index) => (
                         <React.Fragment key={henvendelse.id}>
                             <Melding

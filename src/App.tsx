@@ -7,7 +7,7 @@ import { Provider } from './view/Provider';
 import { Routes } from './routing/routes';
 import { useShallow } from 'zustand/react/shallow';
 import { useFnrStore } from './fnrStore';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import { Theme } from '@navikt/ds-react';
 
 interface Props {
