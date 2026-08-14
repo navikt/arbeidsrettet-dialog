@@ -56,9 +56,6 @@ spec:
   tokenx:
     enabled:
       true
-  gcp:
-    buckets:
-      - name: arbeidsrettet-dialog-prod
   env:
     - name: JSON_CONFIG
       value: >
