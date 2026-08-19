@@ -116,7 +116,7 @@ export const handlers = [
                         dialoger: dialogerPayload,
                         kladder: [],
                         tilgang: { harSkrivetilgangTilBruker: true },
-                        stansVarsel: null,
+                        stansVarsel: { tilhorendeDialogId: 2 },
                     },
                     errors: [],
                 };
