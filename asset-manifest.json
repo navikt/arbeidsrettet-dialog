@@ -1,0 +1,150 @@
+{
+  "_App-CctsG4UB.js": {
+    "file": "assets/App-CctsG4UB.js",
+    "name": "App",
+    "imports": [
+      "index.html",
+      "_const-D9aIaAIN.js"
+    ],
+    "css": [
+      "assets/App-D1z_NFg6.css"
+    ]
+  },
+  "_App-D1z_NFg6.css": {
+    "file": "assets/App-D1z_NFg6.css",
+    "src": "_App-D1z_NFg6.css"
+  },
+  "_const-D9aIaAIN.js": {
+    "file": "assets/const-D9aIaAIN.js",
+    "name": "const",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_hash-BI9JGeRt.js": {
+    "file": "assets/hash-BI9JGeRt.js",
+    "name": "hash"
+  },
+  "_transport-D8ovteAc.js": {
+    "file": "assets/transport-D8ovteAc.js",
+    "name": "transport",
+    "imports": [
+      "src/rootWrapper.tsx"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-C3O7jIvC.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/webcomponentWrapper.tsx",
+      "src/rootWrapper.tsx",
+      "src/mock/index.tsx"
+    ]
+  },
+  "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js": {
+    "file": "assets/rrweb-snapshot-DPfNEsPy.js",
+    "name": "rrweb-snapshot",
+    "src": "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@grafana/rrweb/dist/rrweb.js": {
+    "file": "assets/rrweb-DafnCgiR.js",
+    "name": "rrweb",
+    "src": "node_modules/@grafana/rrweb/dist/rrweb.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@nais/apm/dist/replay/events.js": {
+    "file": "assets/events-DbyOg-0A.js",
+    "name": "events",
+    "src": "node_modules/@nais/apm/dist/replay/events.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_hash-BI9JGeRt.js",
+      "src/rootWrapper.tsx"
+    ]
+  },
+  "node_modules/@nais/apm/dist/replay/recording.js": {
+    "file": "assets/recording-DH_Hekkr.js",
+    "name": "recording",
+    "src": "node_modules/@nais/apm/dist/replay/recording.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_hash-BI9JGeRt.js",
+      "_transport-D8ovteAc.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@grafana/rrweb/dist/rrweb.js"
+    ]
+  },
+  "node_modules/@nais/apm/dist/replay/snapshot.js": {
+    "file": "assets/snapshot-DHrulx4y.js",
+    "name": "snapshot",
+    "src": "node_modules/@nais/apm/dist/replay/snapshot.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_hash-BI9JGeRt.js",
+      "_transport-D8ovteAc.js",
+      "src/rootWrapper.tsx"
+    ],
+    "dynamicImports": [
+      "node_modules/@grafana/rrweb-snapshot/dist/rrweb-snapshot.js"
+    ]
+  },
+  "node_modules/@nais/apm/dist/tracing.js": {
+    "file": "assets/tracing-db8nOijI.js",
+    "name": "tracing",
+    "src": "node_modules/@nais/apm/dist/tracing.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "src/mock/index.tsx": {
+    "file": "assets/mock-HxENr28r.js",
+    "name": "mock",
+    "src": "src/mock/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_const-D9aIaAIN.js"
+    ],
+    "css": [
+      "assets/mock-BOM-lgQd.css"
+    ]
+  },
+  "src/rootWrapper.tsx": {
+    "file": "assets/rootWrapper-DbPPflnZ.js",
+    "name": "rootWrapper",
+    "src": "src/rootWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_const-D9aIaAIN.js",
+      "_App-CctsG4UB.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@nais/apm/dist/tracing.js",
+      "node_modules/@nais/apm/dist/replay/recording.js",
+      "node_modules/@nais/apm/dist/replay/events.js",
+      "node_modules/@nais/apm/dist/replay/snapshot.js"
+    ],
+    "css": [
+      "assets/rootWrapper-DYUjpVhh.css"
+    ]
+  },
+  "src/webcomponentWrapper.tsx": {
+    "file": "assets/webcomponentWrapper-WFT8RtoH.js",
+    "name": "webcomponentWrapper",
+    "src": "src/webcomponentWrapper.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_const-D9aIaAIN.js",
+      "_App-CctsG4UB.js"
+    ]
+  }
+}
