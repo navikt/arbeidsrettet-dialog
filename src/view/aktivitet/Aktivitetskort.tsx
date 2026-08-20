@@ -16,7 +16,7 @@ export function Aktivitetskort() {
 
     if (!aktivitet) {
         return (
-            <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/4 border-l border-ax-border-neutral-subtle"></div>
+            <div className="hidden 2xl:flex 2xl:w-full 2xl:max-w-screen-w-1/4 border-l border-ax-border-neutral-subtle bg-[var(--ax-bg-default)]"></div>
         );
     }
 
@@ -25,6 +25,7 @@ export function Aktivitetskort() {
         <div
             className={classNames(
                 ' w-full border-l border-ax-border-neutral-subtle lg:max-w-[320px] xl:max-w-screen-w-1/3 2xl:flex 2xl:max-w-screen-w-1/4',
+                'bg-[var(--ax-bg-default)]',
                 {
                     'lg:flex hidden': !harDialog && aktivitet,
                     hidden: !visAktivitet,

@@ -1,7 +1,7 @@
 import './polyfill';
 
 import { USE_MOCK } from './constants';
-import { erEksternBruker } from './mock/demo/localstorage';
+import { erEksternBruker, initializeMockTheme } from './mock/demo/localstorage';
 import { initAnalytics } from './metrics/initAnalytics';
 
 const exportToNavSpa = () => {
@@ -26,6 +26,7 @@ const renderApp = () => {
 };
 
 if (USE_MOCK) {
+    initializeMockTheme();
     const fnr = erEksternBruker() ? undefined : '12345678901';
     if (fnr) {
         const webComponentTag = document.createElement('dab-dialog');

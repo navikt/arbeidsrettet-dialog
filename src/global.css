@@ -13,6 +13,70 @@
     border: 1px solid var(--ax-border-neutral) !important;
 }
 
+.chat-bubble-info {
+    background: #D8F9FF !important;
+    border: 1px solid #0096b1 !important;
+}
+
+.chat-bubble-neutral {
+    background: #ffffff !important;
+    border: 1px solid var(--ax-border-neutral) !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-info .aksel-chat__avatar,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-info {
+    background: #1d3d4a !important;
+    border: 1px solid #4ea3bf !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-neutral .aksel-chat__avatar,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-neutral {
+    background: #3b3028 !important;
+    border: 1px solid #b79f87 !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-info .aksel-chat__bubble,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-neutral .aksel-chat__bubble,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-info,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-neutral {
+    color: #ffffff !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-info .aksel-chat__bubble,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-info[data-color='brand-blue'] {
+    background: #1d3d4a !important;
+    border: 1px solid #4ea3bf !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-neutral .aksel-chat__bubble,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-bubble-neutral[data-color='brand-beige'] {
+    background: #3b3028 !important;
+    border: 1px solid #b79f87 !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-info .aksel-chat__bubble a,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-neutral .aksel-chat__bubble a {
+    color: #ffffff !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-info .aksel-chat__avatar,
+:is([data-theme='dark'], .aksel-theme.dark) .chat-avatar-neutral .aksel-chat__avatar {
+    color: #ffffff !important;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .aksel-chat__bubble .prose {
+    --tw-prose-body: #ffffff;
+    --tw-prose-headings: #ffffff;
+    --tw-prose-links: #ffffff;
+    --tw-prose-bold: #ffffff;
+    --tw-prose-counters: #ffffff;
+    --tw-prose-bullets: #ffffff;
+}
+
+:is([data-theme='dark'], .aksel-theme.dark) .aksel-chat__bubble .prose :is(p, li, strong, em, code, a) {
+    color: #ffffff !important;
+}
+
 .prose-compact {
     /* Make sure bullet points in lists are correct color */
     --tw-prose-bullets: currentColor;
