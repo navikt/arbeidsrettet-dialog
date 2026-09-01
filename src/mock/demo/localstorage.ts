@@ -1,3 +1,5 @@
+import { ThemeMode } from '../../theme';
+
 export const LocalStorageElement = {
     BRUKER_TYPE: 'brukertype',
     IKKE_UNDER_OPPFOLGING: 'ikke_under_oppfolging',
@@ -12,12 +14,13 @@ export const LocalStorageElement = {
     AKTIVITET_FEILER: 'aktivitet_feiler',
     ARENAAKTIVITET_FEILER: 'arenaaktivitet_feiler',
     NY_DIALOG_SEND_MELDING_FEILER: 'ny_dialog_eller_send_melding_feiler',
-    ER_IKKE_REGISTRERT_I_KRR: 'er_ikke_registrert_i_krr'
+    ER_IKKE_REGISTRERT_I_KRR: 'er_ikke_registrert_i_krr',
+    THEME_MODE: 'theme_mode',
 };
 
 export const BRUKER_TYPE = {
     INTERN: 'intern',
-    EKSTERN: 'ekstern'
+    EKSTERN: 'ekstern',
 };
 
 export const settLocalStorage = (key: string, value: any) => {
@@ -58,6 +61,31 @@ export const harArenaaktivitetFeilerSkruddPa = () => erSatt(LocalStorageElement.
 
 export const harNyDialogEllerSendMeldingFeilerSkruddPa = () =>
     erSatt(LocalStorageElement.NY_DIALOG_SEND_MELDING_FEILER);
+
+export const getThemeMode = (): ThemeMode => {
+    return hentFraLocalStorage(LocalStorageElement.THEME_MODE) === 'dark' ? 'dark' : 'light';
+};
+
+export const applyMockTheme = (theme: ThemeMode) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle('light', theme === 'light');
+
+    if (document.body) {
+        document.body.setAttribute('data-theme', theme);
+        document.body.classList.toggle('dark', theme === 'dark');
+        document.body.classList.toggle('light', theme === 'light');
+    }
+};
+
+export const setThemeMode = (theme: ThemeMode) => {
+    settLocalStorage(LocalStorageElement.THEME_MODE, theme);
+    applyMockTheme(theme);
+};
+
+export const initializeMockTheme = () => {
+    applyMockTheme(getThemeMode());
+};
 
 export function getFailureRate(): number {
     const value = hentFraLocalStorage(LocalStorageElement.FAILURE_RATE);

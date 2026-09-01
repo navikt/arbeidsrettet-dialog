@@ -19,7 +19,10 @@ import {
     settLocalStorage,
     erUnder18,
     erIkkeRegistrertIKRR,
+    getThemeMode,
+    setThemeMode,
 } from './localstorage';
+import { ThemeMode } from '../../theme';
 
 interface Props {
     skul: () => void;
@@ -102,6 +105,11 @@ const tekniskTilstandRadios = [
     },
 ];
 
+const themeRadios: { label: string; value: ThemeMode }[] = [
+    { label: 'Lys', value: 'light' },
+    { label: 'Mork', value: 'dark' },
+];
+
 const getChecked = (values: { label: string; value: string; checked: boolean }[]): string[] => {
     return values.filter((it) => it.checked).map((it) => it.value);
 };
@@ -135,6 +143,10 @@ const DemoDashboard = (props: Props) => {
         window.location.reload();
     };
 
+    const endreTheme = (value: ThemeMode) => {
+        setThemeMode(value);
+    };
+
     return (
         <section className="flex flex-wrap px-4 py-8">
             <Heading level="1" size="medium" className="blokk-s">
@@ -147,6 +159,13 @@ const DemoDashboard = (props: Props) => {
                 onChange={endreBrukerType}
             >
                 {brukertypeRadios.map(({ label, value }) => (
+                    <Radio key={value} id={value} value={value}>
+                        {label}
+                    </Radio>
+                ))}
+            </RadioGroup>
+            <RadioGroup legend="Tema" name="theme-rdio-panel" value={getThemeMode()} onChange={endreTheme}>
+                {themeRadios.map(({ label, value }) => (
                     <Radio key={value} id={value} value={value}>
                         {label}
                     </Radio>

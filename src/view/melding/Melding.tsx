@@ -51,17 +51,8 @@ export function Melding(props: Props) {
                 className={`p-0 ${erFraSegSelv ? 'chat-avatar-info' : 'chat-avatar-neutral'}`}
             >
                 <Chat.Bubble
-                    style={
-                        erFraSegSelv
-                            ? {
-                                  border: '1px solid #0096b1',
-                                  background: '#D8F9FF',
-                              }
-                            : {
-                                  border: '1px solid var(--ax-border-neutral)',
-                                  background: '#ffffff',
-                              }
-                    }
+                    className={erFraSegSelv ? 'chat-bubble-info' : 'chat-bubble-neutral'}
+                    data-color={erFraSegSelv ? 'brand-blue' : 'brand-beige'}
                 >
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
