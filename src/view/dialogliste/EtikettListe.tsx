@@ -32,10 +32,10 @@ export function EtikettListe({ dialog }: Props) {
     const visVenterPaaNav = !ferdigBehandlet && erVeileder;
 
     return (
-        <>
+        <div className="flex flex-wrap gap-1.5">
             <VenterSvarFraBruker visible={venterPaSvar} erVeileder={erVeileder} />
             <ViktigMelding visible={dialogErViktig} />
             <VenterSvarFraNAV visible={visVenterPaaNav} />
-        </>
+        </div>
     );
 }
