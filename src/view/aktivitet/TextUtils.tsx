@@ -104,6 +104,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Sommerjobb';
         case EksternAktivitetTypes.TILRETTELAGT_ARBEID_ORDINAER:
             return 'Tilrettelagt arbeid i ordinær virksomhet';
+        case EksternAktivitetTypes.WORKOP:
+            return 'Møteplass for arbeidsgivere og unge arbeidssøkere';
     }
 }
 
