@@ -106,6 +106,8 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Tilrettelagt arbeid i ordinær virksomhet';
         case EksternAktivitetTypes.WORKOP:
             return 'Møteplass for arbeidsgivere og unge arbeidssøkere';
+        case EksternAktivitetTypes.DELE_CV_MED_ARBEIDSGIVER:
+            return 'Stilling fra Nav';
     }
 }
 

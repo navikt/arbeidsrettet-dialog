@@ -166,6 +166,7 @@ export enum EksternAktivitetTypes {
     SOMMERJOBB = 'SOMMERJOBB',
     TILRETTELAGT_ARBEID_ORDINAER = 'TILRETTELAGT_ARBEID_ORDINAER',
     WORKOP = 'WORKOP',
+    DELE_CV_MED_ARBEIDSGIVER = 'DELE_CV_MED_ARBEIDSGIVER',
 }
 
 export enum ArenaAktivitetTypes {
