@@ -118,7 +118,7 @@
     "graphql": "^16.14.1",
     "husky": "^9.1.7",
     "import-sort-style-module": "^6.0.0",
-    "jsdom": "^29.1.1",
+    "jsdom": "^30.0.1",
     "lint-staged": "^17.0.7",
     "msw": "^2.14.6",
     "postcss": "^8.5.28",
