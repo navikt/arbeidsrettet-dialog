@@ -108,7 +108,7 @@
     "@types/react-collapse": "^5.0.4",
     "@types/react-dom": "^19.2.3",
     "@types/uuid": "^9.0.8",
-    "@vitest/coverage-istanbul": "5.0.0-beta.5",
+    "@vitest/coverage-istanbul": "5.0.0",
     "@vitest/coverage-v8": "5.0.0",
     "autoprefixer": "^10.5.0",
     "babel-plugin-transform-regex": "^6.1.0",
