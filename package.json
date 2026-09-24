@@ -93,7 +93,7 @@
   "devDependencies": {
     "@babel/cli": "^7.29.7",
     "@babel/core": "^7.29.7",
-    "@navikt/nav-dekoratoren-moduler": "^3.7.2",
+    "@navikt/nav-dekoratoren-moduler": "^4.3.0",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/addon-links": "^10.6.0",
     "@storybook/addon-onboarding": "^10.6.0",
