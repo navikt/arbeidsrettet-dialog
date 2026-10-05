@@ -37,6 +37,6 @@ export const AktivitetApi = {
 const oppfolgingBasePath = `${apiBasePath}/veilarboppfolging/api`;
 export const OppfolgingsApi = {
     me: `${oppfolgingBasePath}/oppfolging/me`,
-    settDigigtal: `${oppfolgingBasePath}/oppfolging/settDigital`,
+    settDigital: `${oppfolgingBasePath}/v3/oppfolging/settDigital`,
     graphql: `${oppfolgingBasePath}/graphql`,
 };

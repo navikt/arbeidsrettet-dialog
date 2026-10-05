@@ -107,7 +107,7 @@ describe('Statusadvarsler', () => {
             const { findByText } = render(<MemoryRouterMedBareDialogOversikt />);
             const button = await findByText('Endre til digital oppfølging');
             button.click();
-            expect(fetchData).toHaveBeenCalledWith(OppfolgingsApi.settDigigtal, { method: 'POST' });
+            expect(fetchData).toHaveBeenCalledWith(OppfolgingsApi.settDigital, { method: 'POST' });
         });
     });
 

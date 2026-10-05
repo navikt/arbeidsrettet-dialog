@@ -21,7 +21,7 @@ function Bruker() {
     const fnr = useFnrContext();
 
     const fjernManuell = () => {
-        fetchData(OppfolgingsApi.settDigigtal, {
+        fetchData(OppfolgingsApi.settDigital, {
             method: 'POST',
         })
             .then(() => oppfolgingData.hentOppfolging(fnr))
