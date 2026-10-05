@@ -57,6 +57,8 @@ spec:
     enabled:
       true
   env:
+    - name: NODE_OPTIONS
+      value: '--trace-warnings'
     - name: JSON_CONFIG
       value: >
         {
