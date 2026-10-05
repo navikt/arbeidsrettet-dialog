@@ -12,15 +12,15 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v7
+            - uses: pnpm/action-setup@v4
             - uses: actions/setup-node@v7
               with:
                   registry-url: "https://npm.pkg.github.com"
                   node-version: 24
-            - name: Install bun
-              uses: oven-sh/setup-bun@v2
-            - name: Install dependencies (bun)
-              run: bun install
+                  cache: 'pnpm'
+            - name: Install dependencies (pnpm)
+              run: pnpm install --frozen-lockfile
               env:
-                BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-            - run: npm run test
-            - run: npm run build
+                NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+            - run: pnpm run test
+            - run: pnpm run build
