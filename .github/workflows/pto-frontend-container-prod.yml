@@ -18,15 +18,15 @@ jobs:
         permissions:
           id-token: write
         steps:
-            - uses: actions/checkout@v7
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
             - name: deploy gcp prod ekstern
-              uses: nais/deploy/actions/deploy@v3
+              uses: nais/deploy/actions/deploy@9850be311389ca754d9a9f2280615419d738c891 # v3
               env:
                   CLUSTER: prod-gcp
                   RESOURCE: nais/nais-prod-ekstern-gcp.yaml
             - name: Slack Notification (deploy failure)
               if: failure()
-              uses: rtCamp/action-slack-notify@v2
+              uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2
               env:
                   SLACK_COLOR: danger
                   SLACK_USERNAME: Github Actions
