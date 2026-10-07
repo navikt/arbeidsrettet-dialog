@@ -8,7 +8,6 @@ import { Routes } from './routing/routes';
 import { useShallow } from 'zustand/react/shallow';
 import { useFnrStore } from './fnrStore';
 import { createBrowserRouter } from 'react-router';
-import { Theme } from '@navikt/ds-react';
 
 interface Props {
     enhet?: string;
@@ -21,17 +20,15 @@ const App = (props: Props) => {
     const fnr = useFnrStore(useShallow((state) => state.fnr));
     return (
         <Provider visAktivitetDefault={visAktivitetDefault} fnr={fnr} erVeileder={!!fnr}>
-            <Theme theme="light">
-                <UppdateEventHandler />
-                <div
-                    className={cx('flex overflow-auto flex-row', {
-                        'max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)]': erInternFlate,
-                        'max-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)]': !erInternFlate,
-                    })}
-                >
-                    <Routes createRouter={props.createRouter} />
-                </div>
-            </Theme>
+            <UppdateEventHandler />
+            <div
+                className={cx('flex overflow-auto flex-row', {
+                    'max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)]': erInternFlate,
+                    'max-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)]': !erInternFlate,
+                })}
+            >
+                <Routes createRouter={props.createRouter} />
+            </div>
         </Provider>
     );
 };

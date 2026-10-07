@@ -52,7 +52,7 @@
 }
 
 .valgtDialog {
-    background-color: #e6f0ff;
+    background-color: var(--ax-bg-accent-soft);
     border-color: var(--ax-border-accent);
 }
 

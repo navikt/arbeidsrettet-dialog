@@ -13,7 +13,7 @@ import {
     useMatches,
     useParams,
 } from 'react-router';
-import { RouterProvider } from 'react-router/dom';
+import { RouterProvider } from 'react-router';
 import React from 'react';
 import { erEksternFlate, erInternFlate, USE_HASH_ROUTER } from '../constants';
 import { stripTrailingSlash } from '../api/UseApiBasePath';

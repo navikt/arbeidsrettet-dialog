@@ -82,7 +82,7 @@ export const MeldingBottomInput = () => {
     return (
         <section
             aria-label="Ny melding"
-            className="flex justify-center border-t border-ax-border-neutral-subtle p-4 overflow-y-scroll"
+            className="flex justify-center border-t border-ax-border-neutral-subtle bg-[var(--ax-bg-default)] p-4 overflow-y-scroll"
         >
             <div className="grow justify-self-center ">
                 <ManagedDialogCheckboxes dialog={dialog} />
