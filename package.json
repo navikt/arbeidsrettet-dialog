@@ -91,8 +91,8 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@babel/cli": "^7.29.7",
-    "@babel/core": "^7.29.7",
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.6",
     "@navikt/nav-dekoratoren-moduler": "^4.5.0",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/addon-links": "^10.6.0",
