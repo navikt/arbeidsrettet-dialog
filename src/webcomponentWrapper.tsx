@@ -33,7 +33,8 @@ export class DabDialog extends HTMLElement {
             const root = createRoot(appRoot);
             root.render(
                 <ModalProvider rootElement={shadowDomFirstChild}>
-                    <App createRouter={createBrowserRouter} />
+                    {/* Bare veilederflaten rendres som webcomponent */}
+                    <App erVeileder={true} createRouter={createBrowserRouter} />
                 </ModalProvider>,
             );
         } catch (e) {

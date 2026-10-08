@@ -3,22 +3,15 @@ import React from 'react';
 import { expect } from 'vitest';
 
 import { Status } from '../../api/typer';
-import { Bruker, OppfolgingData, PeriodeData } from '../../utils/Typer';
+import { Bruker, PeriodeData } from '../../utils/Typer';
 import * as BrukerContext from '../BrukerProvider';
 import * as OppfolgingContext from '../OppfolgingProvider';
 import { OppfolgingDataGraphqlResponse, OppfolgingDataProviderType } from '../OppfolgingProvider';
 import StatusAdvarsel from './StatusAdvarsel';
+import { gitt } from '../../test/mockUtils';
 
 const veileder: Bruker = { id: '010101', erVeileder: true, erBruker: false };
 const bruker: Bruker = { id: '010101', erVeileder: false, erBruker: true };
-const oppfPerioder: PeriodeData[] = [
-    {
-        startTidspunkt: '2017-01-30T10:46:10.971+01:00',
-        sluttTidspunkt: '2017-12-31T10:46:10.971+01:00',
-        kvpPerioder: [],
-        id: '1',
-    },
-];
 const ingenPerioder: PeriodeData[] = [];
 const oppfolgingData: OppfolgingDataGraphqlResponse = {
     brukerStatus: {
@@ -48,24 +41,19 @@ const useFetchOppfolging: OppfolgingDataProviderType = {
 
 describe('<AlertStripeContainer/>', () => {
     it('Bruker uten oppf.perioder og ikke under oppf. viser en advarsel - veileder.', () => {
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
-        vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
+        gitt.veileder().som.harIngenDialog().som.harBrukerSomAldriHarVærtUnderOppfolging();
 
         const { getByText } = render(<StatusAdvarsel />);
         getByText('Denne brukeren har ikke vært og er ikke under arbeidrettet oppfølging.');
     });
     it('Bruker uten oppf.perioder og ikke under oppf. viser en advarsel - bruker. ', () => {
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
-        vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
+        gitt.bruker().som.harIngenDialog().som.harBrukerSomAldriHarVærtUnderOppfolging();
 
         const { getByText } = render(<StatusAdvarsel />);
         getByText('Du må være under oppfølging hos Nav for å ha digital dialog med veileder.');
     });
     it('Bruker med oppf.perioder og ikke under oppf. viser en advarsel - bruker. ', () => {
-        useFetchOppfolging.data!.oppfolgingsPerioder = oppfPerioder;
-
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
-        vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
+        gitt.bruker().som.harIngenDialog().som.harBrukerIkkeLengerErUnderOppfolging();
 
         const { getByText, getByRole } = render(<StatusAdvarsel />);
         getByText('Du er ikke lenger registrert hos Nav');
@@ -73,10 +61,7 @@ describe('<AlertStripeContainer/>', () => {
         expect(getByRole('link').textContent).toBe('Registrer deg hos Nav');
     });
     it('Bruker med oppf.perioder, ikke under oppf. viser advarsel - veileder', () => {
-        useFetchOppfolging.data!.oppfolgingsPerioder = oppfPerioder;
-
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
-        vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
+        gitt.veileder().som.harIngenDialog().som.harBrukerIkkeLengerErUnderOppfolging();
 
         const wrapper = render(<StatusAdvarsel />);
         expect(wrapper.baseElement.textContent).toBe(
@@ -94,10 +79,7 @@ describe('<AlertStripeContainer/>', () => {
         getByText('Du kan ikke sende meldinger fordi brukeren har reservert seg mot digital kommunikasjon KRR.');
     });
     it('Bruker registret KRR viser en advarsel - bruker. ', () => {
-        useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
-
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
-        vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
+        gitt.bruker().som.harIngenDialog().som.harBrukerUnderOppfølgingMenReservertIKRR();
 
         const { getByText, getByRole } = render(<StatusAdvarsel />);
         getByText(
