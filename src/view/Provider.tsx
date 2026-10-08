@@ -10,8 +10,9 @@ import { useDialogStore } from './dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
 
 export const FNRContext = React.createContext<string | undefined>(undefined);
+export const ErVeilederContext = React.createContext<boolean>(false);
 export const useFnrContext = () => useContext(FNRContext);
-export const useErVeileder = () => useContext(FNRContext) !== undefined;
+export const useErVeileder = () => useContext(ErVeilederContext);
 
 type ProviderType<T> = {
     data?: T;
@@ -40,8 +41,8 @@ export function Provider(props: Props) {
         useShallow((store) => ({
             configurePoll: store.configurePoll,
             stopPolling: store.stopPolling,
-            dialogstatus: store.status
-        }))
+            dialogstatus: store.status,
+        })),
     );
 
     useEffect(() => {
@@ -59,19 +60,21 @@ export function Provider(props: Props) {
         configurePoll({
             erBruker: bruker?.erBruker,
             fnr,
-            useWebsockets: feature['arbeidsrettet-dialog.websockets']
+            useWebsockets: feature['arbeidsrettet-dialog.websockets'],
         });
     }, [klarTilAaPolle, fnr]);
 
     return (
         <DialogContext.Provider value={dialogDataProvider}>
-            <FNRContext.Provider value={fnr}>
-                <ViewStateProvider>
-                    <AktivitetToggleProvider defaultValue={visAktivitetDefault || false}>
-                        {children}
-                    </AktivitetToggleProvider>
-                </ViewStateProvider>
-            </FNRContext.Provider>
+            <ErVeilederContext.Provider value={props.erVeileder}>
+                <FNRContext.Provider value={fnr}>
+                    <ViewStateProvider>
+                        <AktivitetToggleProvider defaultValue={visAktivitetDefault || false}>
+                            {children}
+                        </AktivitetToggleProvider>
+                    </ViewStateProvider>
+                </FNRContext.Provider>
+            </ErVeilederContext.Provider>
         </DialogContext.Provider>
     );
 }

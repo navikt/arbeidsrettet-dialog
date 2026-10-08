@@ -9,5 +9,6 @@ import { createBrowserRouter } from 'react-router';
 
 export const renderAsReactRoot = () => {
     const rootElement = document.getElementById('root');
-    createRoot(rootElement!).render(<App createRouter={createBrowserRouter} />);
+    // Bare brukerflaten rendres på denne måten
+    createRoot(rootElement!).render(<App erVeileder={false} createRouter={createBrowserRouter} />);
 };
