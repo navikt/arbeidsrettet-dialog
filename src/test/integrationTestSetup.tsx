@@ -1,5 +1,5 @@
 import { createMemoryRouter, Outlet, RouterProvider } from 'react-router';
-import { dialogRoutes, reactRouterFutureFlags, RouteIds } from '../routing/routes';
+import { dialogRoutes, RouteIds } from '../routing/routes';
 import React, { ReactElement } from 'react';
 import { Provider } from '../view/Provider';
 import { setupServer } from 'msw/node';
@@ -9,7 +9,7 @@ export const setupIntegrationTest = (fnr: string | undefined, initialRouteEntrie
     const ProviderAndRouter = fullRouterAndProvider(fnr, initialRouteEntries);
     return {
         worker: setupServer(...handlers), // TODO: Handlers should mock
-        App: () => <ProviderAndRouter />
+        App: () => <ProviderAndRouter />,
     };
 };
 
@@ -23,21 +23,20 @@ export const fullRouterAndProvider = (fnr: string | undefined, initialEntries: s
 
 const AllRoutesInMemory = ({
     fnr,
-    initialEntries
+    initialEntries,
 }: {
     fnr: string | undefined;
     initialEntries: string[] | undefined;
 }) => {
     const router = createMemoryRouter(dialogRoutes(fnr), {
         initialEntries,
-        future: reactRouterFutureFlags
     });
-    return <RouterProvider future={{ v7_startTransition: true }} router={router} />;
+    return <RouterProvider router={router} />;
 };
 
 export const SimpleRouterWithoutProvider = ({
     initialEntries,
-    children
+    children,
 }: {
     children: ReactElement;
     initialEntries: string[] | undefined;
@@ -56,15 +55,14 @@ export const SimpleRouterWithoutProvider = ({
                     {
                         id: RouteIds.Dialog,
                         path: ':dialogId',
-                        element: children
-                    }
-                ]
-            }
+                        element: children,
+                    },
+                ],
+            },
         ],
         {
             initialEntries,
-            future: reactRouterFutureFlags
-        }
+        },
     );
-    return <RouterProvider future={{ v7_startTransition: true }} router={router} />;
+    return <RouterProvider router={router} />;
 };

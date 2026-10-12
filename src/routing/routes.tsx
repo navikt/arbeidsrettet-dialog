@@ -3,10 +3,19 @@ import NyDialogTrad from '../view/dialog/NyDialogTrad';
 import { Aktivitetskort } from '../view/aktivitet/Aktivitetskort';
 import { DialogTrad } from '../view/dialog/DialogTrad';
 import IkkeValgtDialogMelding from '../view/dialog/IkkeValgtDialogMelding';
-import { createMemoryRouter, Navigate, RouteObject, RouterProvider, useMatches, useParams } from 'react-router';
+import {
+    createMemoryRouter,
+    createBrowserRouter,
+    createHashRouter,
+    useSearchParams,
+    Navigate,
+    RouteObject,
+    useMatches,
+    useParams,
+} from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import React from 'react';
 import { erEksternFlate, erInternFlate, USE_HASH_ROUTER } from '../constants';
-import { createBrowserRouter, createHashRouter, useSearchParams } from 'react-router-dom';
 import { stripTrailingSlash } from '../api/UseApiBasePath';
 import { initialPageLoader } from './loaders';
 import { useFnrContext } from '../view/Provider';
@@ -25,7 +34,7 @@ export const useRoutes = () => {
         baseRoute,
         dialogRoute,
         nyRoute,
-        informasjonRoute
+        informasjonRoute,
     };
 };
 
@@ -46,7 +55,7 @@ export enum RouteIds {
     NyDialog = 'ny-dialog',
     Dialog = 'Dialog',
     IkkeValgtDialog = 'ikke-valgt-dialog',
-    Root = 'root'
+    Root = 'root',
 }
 
 /* On small screens sidebar is hidden, use this hook for checking if sidebar should be hidden on mobile */
@@ -74,7 +83,7 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                             <Aktivitetskort />
                         </div>
                     </>
-                )
+                ),
             },
             {
                 path: ':dialogId',
@@ -87,7 +96,7 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                             <Aktivitetskort />
                         </div>
                     </>
-                )
+                ),
             },
             {
                 path: '',
@@ -96,45 +105,32 @@ export const dialogRoutes = (fnr: string | undefined): RouteObject[] => [
                     <div className="flex min-h-0 flex-1">
                         <IkkeValgtDialogMelding />
                     </div>
-                )
+                ),
             },
             {
                 path: ':fnr/ny',
-                element: <RedirectToNyDialogWithoutFnr />
+                element: <RedirectToNyDialogWithoutFnr />,
             },
             {
                 path: ':fnr/:dialogId',
-                element: <RedirectToDialogWithoutFnr />
+                element: <RedirectToDialogWithoutFnr />,
             },
             {
                 path: '*',
-                element: <Navigate to={'/'} />
-            }
-        ]
-    }
+                element: <Navigate to={'/'} />,
+            },
+        ],
+    },
 ];
-
-/* Will be removed in v7 */
-export const reactRouterFutureFlags = {
-    v7_relativeSplatPath: true,
-    v7_fetcherPersist: true,
-    v7_normalizeFormMethod: true,
-    v7_partialHydration: true,
-    v7_skipActionErrorRevalidation: true
-};
 
 export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRouter }) => {
     const fnr = useFnrContext();
     if (USE_HASH_ROUTER) {
-        const hashRouter = createHashRouter(dialogRoutes(fnr), {
-            future: reactRouterFutureFlags
-        });
+        const hashRouter = createHashRouter(dialogRoutes(fnr));
         return <RouterProvider router={hashRouter} />;
     }
-    if (process.env.NODE_ENV === 'test') {
-        const inMemoryRouter = createMemoryRouter(dialogRoutes(fnr), {
-            future: reactRouterFutureFlags
-        });
+    if (import.meta.env.NODE_ENV === 'test') {
+        const inMemoryRouter = createMemoryRouter(dialogRoutes(fnr));
         return <RouterProvider router={inMemoryRouter} />;
     }
     // Denne er kun for github app eller lokalt (?)
@@ -143,13 +139,6 @@ export const Routes = ({ createRouter }: { createRouter: typeof createBrowserRou
     else if (erEksternFlate) basename = '/arbeid/dialog';
     const browserRouter = createRouter(dialogRoutes(fnr), {
         basename,
-        future: {
-            v7_relativeSplatPath: true,
-            v7_fetcherPersist: true,
-            v7_normalizeFormMethod: true,
-            v7_partialHydration: true,
-            v7_skipActionErrorRevalidation: true
-        }
     });
-    return <RouterProvider future={{ v7_startTransition: true }} router={browserRouter} />;
+    return <RouterProvider router={browserRouter} />;
 };

@@ -14,7 +14,7 @@ const IkkeValgtDialogMelding = () => {
     return (
         <Suspense fallback={<LoadingDialoger />}>
             <Await resolve={loaderData.dialoger}>
-                <div className="hidden w-full justify-center border-r border-ax-border-neutral-subtle bg-ax-bg-neutral-soft pt-8 md:flex lg:max-w-lgContainer xl:max-w-none">
+                <div className="hidden w-full justify-center border-r border-ax-border-neutral-subtle bg-ax-bg-sunken pt-8 md:flex lg:max-w-lgContainer xl:max-w-none">
                     {harDialoger ? <DialogIkkeValgt /> : <InfoVedIngenDialoger className="mx-2" />}
                 </div>
             </Await>
@@ -24,7 +24,7 @@ const IkkeValgtDialogMelding = () => {
 
 const LoadingDialoger = () => {
     return (
-        <div className="hidden w-full justify-center border-r border-ax-border-neutral-subtle bg-ax-bg-neutral-soft pt-8 md:flex lg:max-w-lgContainer xl:max-w-none">
+        <div className="hidden w-full justify-center border-r border-ax-border-neutral-subtle bg-ax-bg-sunken pt-8 md:flex lg:max-w-lgContainer xl:max-w-none">
             <Loader size="xlarge" />
         </div>
     );

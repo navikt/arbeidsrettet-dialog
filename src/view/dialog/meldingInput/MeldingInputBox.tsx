@@ -31,8 +31,8 @@ const schema = (startTekst: string) =>
             .min(1, 'Du må fylle ut en melding')
             .max(maxMeldingsLengde, `Meldingen kan ikke være mer enn ${maxMeldingsLengde}`)
             .refine((melding) => melding !== startTekst, {
-                message: 'Du må fylle ut en melding'
-            })
+                message: 'Du må fylle ut en melding',
+            }),
     });
 
 export type MeldingFormValues = z.infer<ReturnType<typeof schema>>;
@@ -54,8 +54,8 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
             kladder: store.kladder,
             oppdaterKladd: store.oppdaterKladd,
             slettKladd: store.slettKladd,
-            oppdaterStatus: store.kladdStatus
-        }))
+            oppdaterStatus: store.kladdStatus,
+        })),
     );
 
     const kladd = kladder.find((k) => k.aktivitetId === valgtDialog.aktivitetId && k.dialogId === valgtDialog.id);
@@ -63,11 +63,11 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
     const setViewState = useSetViewContext();
 
     const defaultValues: MeldingFormValues = {
-        melding: kladd?.tekst || startTekst
+        melding: kladd?.tekst || startTekst,
     };
     const formHandlers = useForm<MeldingFormValues>({
         defaultValues,
-        resolver: zodResolver(schema(startTekst))
+        resolver: zodResolver(schema(startTekst)),
     });
     const { handleSubmit, reset, watch } = formHandlers;
 
@@ -80,7 +80,7 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
     const {
         cleanup: stopKladdSyncing,
         invoke: debouncedOppdaterKladd,
-        hasPendingTask: kladdSkalOppdateres
+        hasPendingTask: kladdSkalOppdateres,
     } = useMemo(() => {
         return debounced(oppdaterKladd);
     }, []);
@@ -92,7 +92,7 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
             dialogId: valgtDialog.id,
             aktivitetId: valgtDialog.aktivitetId,
             overskrift: null,
-            tekst: melding
+            tekst: melding,
         });
     }, [melding]);
 
@@ -141,7 +141,13 @@ const MeldingInputBox = ({ dialog: valgtDialog }: Props) => {
         }
     }, [breakpoint, visAktivitet]);
 
-    if (!kanSendeHenveldelse && erVeileder) return <ManagedDialogCheckboxes dialog={valgtDialog} />; //hvis bruker går inn uner krr eller manuel må veileder kunne fjerne venter på
+    // hvis bruker er reservert i krr eller er manuell må veileder fortsatt kunne fjerne venter på svar fra <nav|bruker>
+    if (!kanSendeHenveldelse && erVeileder)
+        return (
+            <div className="p-4">
+                <ManagedDialogCheckboxes dialog={valgtDialog} />
+            </div>
+        );
 
     if (!kanSendeHenveldelse) {
         return null;

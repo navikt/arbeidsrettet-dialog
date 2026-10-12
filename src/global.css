@@ -3,6 +3,16 @@
 @plugin "@tailwindcss/typography";
 @config '../tailwind.config.js';
 
+.chat-avatar-info .aksel-chat__avatar {
+    background: #D8F9FF !important;
+    border: 1px solid #0096b1 !important;
+}
+
+.chat-avatar-neutral .aksel-chat__avatar {
+    background: #ffffff !important;
+    border: 1px solid var(--ax-border-neutral) !important;
+}
+
 .prose-compact {
     /* Make sure bullet points in lists are correct color */
     --tw-prose-bullets: currentColor;
@@ -33,7 +43,6 @@
         margin-bottom: 0 !important;
     }
 
-    /* Dont add extra space inside nested lists */
     & li > :is(ul, ol) {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -45,4 +54,3 @@
     }
 
 }
-

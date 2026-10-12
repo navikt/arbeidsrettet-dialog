@@ -7,7 +7,7 @@ import { Provider } from './view/Provider';
 import { Routes } from './routing/routes';
 import { useShallow } from 'zustand/react/shallow';
 import { useFnrStore } from './fnrStore';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import { Theme } from '@navikt/ds-react';
 
 interface Props {
@@ -24,7 +24,7 @@ const App = (props: Props) => {
             <Theme theme="light">
                 <UppdateEventHandler />
                 <div
-                    className={cx('flex flex-row', {
+                    className={cx('flex overflow-auto flex-row', {
                         'max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)]': erInternFlate,
                         'max-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)]': !erInternFlate,
                     })}

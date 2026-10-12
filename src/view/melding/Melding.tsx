@@ -9,6 +9,7 @@ import { MeldingsData } from '../../utils/Typer';
 import { useUserInfoContext } from '../BrukerProvider';
 import Markdown from 'react-markdown';
 import { linkifyToMarkdown } from './linkify';
+import classNames from 'classnames';
 import {
     renderMarkdownH1Tag,
     renderMarkdownH2Tag,
@@ -47,20 +48,31 @@ export function Melding(props: Props) {
     const erFraSegSelv = (erBruker && erMeldingFraBruker) || (!erBruker && !erMeldingFraBruker);
 
     return (
-        <div className="mt-4" role="row">
+        <div className={classNames('mt-4 flex flex-1', { 'justify-end': erFraSegSelv })} role="row">
             <BodyShort className="hidden">{accessibleText(erBruker, erMeldingFraBruker)}</BodyShort>
             <Chat
                 timestamp={toppTekst}
                 size="small"
-                avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'NAV'}
-                position={erMeldingFraBruker ? 'right' : 'left'}
-                className="p-0"
-                variant={erFraSegSelv ? 'info' : 'subtle'}
+                avatar={erMeldingFraBruker ? <PersonIcon aria-hidden className="!h-6 !w-6" /> : 'Nav'}
+                position={erFraSegSelv ? 'right' : 'left'}
+                className={`p-0 ${erFraSegSelv ? 'chat-avatar-info' : 'chat-avatar-neutral'}`}
             >
-                <Chat.Bubble>
+                <Chat.Bubble
+                    style={
+                        erFraSegSelv
+                            ? {
+                                  border: '1px solid #0096b1',
+                                  background: '#D8F9FF',
+                              }
+                            : {
+                                  border: '1px solid var(--ax-border-neutral)',
+                                  background: '#ffffff',
+                              }
+                    }
+                >
                     <div className="flex flex-col items-start">
                         <ViktigMelding visible={viktigMarkering} />
-                        <span className="prose prose-md prose-compact mt-2 max-w-none">
+                        <span className="prose prose-md wrap-anywhere prose-compact mt-2 max-w-none">
                             <Markdown
                                 remarkPlugins={[remarkBreaks]}
                                 components={{

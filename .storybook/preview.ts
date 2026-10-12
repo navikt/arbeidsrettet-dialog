@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { handlers } from '../src/mock/handlers';
 import { rest } from 'msw';
@@ -51,7 +51,7 @@ const configurableMocks = ['/veilarbaktivitet/api/feature', '/veilarboppfolging/
 const preview: Preview = {
     parameters: {
         viewport: {
-            viewports
+            options: viewports
         },
         actions: { argTypesRegex: '^on[A-Z].*' },
         controls: {

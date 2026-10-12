@@ -5,7 +5,7 @@ import { OppfolgingsApi } from '../../api/UseApiBasePath';
 import { fetchData } from '../../utils/Fetch';
 import { UpdateTypes, dispatchUpdate } from '../../utils/UpdateEvent';
 import { useOppfolgingContext } from '../OppfolgingProvider';
-import StatusAdvarselWrapper, { KanIkkeKontakteElektroniskVeileder } from './StatusAdvarselWrapper';
+import StatusAdvarselWrapper, { UtdatertKontaktInformasjonIKrrVeileder } from './StatusAdvarselWrapper';
 import { useFnrContext } from '../Provider';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 function ManuellBruker(props: Props) {
-    return props.erVeileder ? <KanIkkeKontakteElektroniskVeileder /> : <Bruker />;
+    return props.erVeileder ? <UtdatertKontaktInformasjonIKrrVeileder /> : <Bruker />;
 }
 
 function Bruker() {
@@ -21,8 +21,8 @@ function Bruker() {
     const fnr = useFnrContext();
 
     const fjernManuell = () => {
-        fetchData(OppfolgingsApi.settDigigtal, {
-            method: 'POST'
+        fetchData(OppfolgingsApi.settDigital, {
+            method: 'POST',
         })
             .then(() => oppfolgingData.hentOppfolging(fnr))
             .then(() => dispatchUpdate(UpdateTypes.Oppfolging));
@@ -30,7 +30,7 @@ function Bruker() {
 
     return (
         <div className="flex flex-col">
-            <StatusAdvarselWrapper>
+            <StatusAdvarselWrapper title={'Ikke digital oppfølging'}>
                 Du har ikke digital oppfølging fra Nav. Du kan derfor ikke ha digital dialog med veileder
             </StatusAdvarselWrapper>
             <Button onClick={fjernManuell} className="mt-4 self-center">

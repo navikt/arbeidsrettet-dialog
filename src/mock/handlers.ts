@@ -21,7 +21,7 @@ import { Aktivitet } from '../utils/aktivitetTypes';
 import { AktivitetsplanResponse } from '../api/aktivitetsplanGraphql';
 
 const delayIfNotTest = async (ms: number) => {
-    if (process.env.NODE_ENV === 'test') {
+    if (import.meta.env.NODE_ENV === 'test') {
         return;
     }
     await delay(ms);
@@ -105,14 +105,21 @@ export const handlers = [
         '/veilarbdialog/api/dialog',
         failOrGetResponse(harNyDialogEllerSendMeldingFeilerSkruddPa, opprettEllerOppdaterDialog),
     ),
-    http.post('/veilarbdialog/api/logger/event', () => new Response()),
     http.post(
         '/veilarbdialog/graphql',
         failOrGetResponse(
             harDialogFeilerSkruddPa,
             async (request) => {
                 const dialogerPayload = ingenOppfPerioder() ? [] : dialoger();
-                return { data: { dialoger: dialogerPayload, kladder: [] }, errors: [] };
+                return {
+                    data: {
+                        dialoger: dialogerPayload,
+                        kladder: [],
+                        tilgang: { harSkrivetilgangTilBruker: true },
+                        stansVarsel: { tilhorendeDialogId: 2 },
+                    },
+                    errors: [],
+                };
             },
             1500,
         ),
@@ -120,7 +127,7 @@ export const handlers = [
 
     // veilarboppfolging
     http.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker, 1000)),
-    http.post('/veilarboppfolging/api/v3/oppfolging/hent-status', jsonResponse(oppfolging)),
+    http.post('/veilarboppfolging/api/graphql', jsonResponse({ data: oppfolging, errors: [] })),
     http.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
     // veilarbaktivitet

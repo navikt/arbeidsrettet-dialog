@@ -29,8 +29,10 @@ const MemoryRouterMedBareDialogOversikt = () => (
 );
 
 const rootLoaderData = {
-    dialoger: Promise.resolve([])
+    dialoger: Promise.resolve([]),
 };
+
+vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
 
 describe('<DialogContainer/>', () => {
     afterAll(() => {
@@ -39,21 +41,20 @@ describe('<DialogContainer/>', () => {
 
     test('Bruker uten oppf.perioder og ikke under oppf skjuler store deler av appen', async () => {
         gitt.veileder().som.harIngenDialog().som.harBrukerSomAldriHarVærtUnderOppfolging();
-        const { queryByText, getByRole } = render(<MemoryRouterMedBareDialogListe />);
+        const { queryByText, findByRole } = render(<MemoryRouterMedBareDialogListe />);
+        expect((await findByRole('navigation')).children.length).toBe(0);
         expect(queryByText('Ny dialog')).toBeNull();
-        expect(getByRole('navigation').children.length).toBe(0);
     });
-    test('Bruker ikke under oppf. skjuler knapper/checkbox', () => {
+    test('Bruker ikke under oppf. skjuler knapper/checkbox', async () => {
         gitt.veileder().som.harDialog().som.harBrukerIkkeLengerErUnderOppfolging();
-        const { queryByText, getByRole } = render(<MemoryRouterMedBareDialogListe />);
+        const { queryByText, findByRole } = render(<MemoryRouterMedBareDialogListe />);
+        expect((await findByRole('navigation')).children.length).toBeGreaterThan(0);
         expect(queryByText('Ny dialog')).toBeNull();
-        expect(getByRole('navigation').children.length).toBeGreaterThan(0);
     });
     test('Bruker under oppf, elementer synes', async () => {
-        vi.mock('../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
         gitt.veileder().som.harDialog().som.harBrukerUnderOppfolging();
-        const { getByText } = await act(() => render(<MemoryRouterMedBareDialogOversikt />));
-        getByText('Ny dialog');
+        const { getByText, findByText } = render(<MemoryRouterMedBareDialogOversikt />);
+        await findByText('Ny dialog');
         getByText(dialoger[0].overskrift);
     });
 });
@@ -64,7 +65,7 @@ describe('<Dialog/>', () => {
         worker.listen({
             onUnhandledRequest: (request, er) => {
                 console.error(request, er);
-            }
+            },
         });
     });
     afterAll(() => {

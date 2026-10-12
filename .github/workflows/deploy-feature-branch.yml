@@ -19,7 +19,7 @@ jobs:
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
     with:
-      kommando: npm run build:dev-ekstern
+      kommando: pnpm run build:dev-ekstern
       bucket: arbeidsrettet-dialog-dev-ekstern
 
   dev-intern:
@@ -28,5 +28,5 @@ jobs:
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
     with:
-      kommando: npm run build:dev-intern
+      kommando: pnpm run build:dev-intern
       bucket: arbeidsrettet-dialog-dev-intern

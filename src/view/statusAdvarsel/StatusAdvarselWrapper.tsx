@@ -3,15 +3,15 @@ import React from 'react';
 
 interface Props {
     readonly children: React.ReactNode;
-    readonly title?: string;
+    readonly title: string;
 }
 
 export default function StatusAdvarselWrapper({ children, title }: Props) {
     return (
-        <GlobalAlert status="warning">
+        <GlobalAlert status={'warning'}>
             {title && (
                 <GlobalAlert.Header>
-                    <GlobalAlert.Title>{title}</GlobalAlert.Title>
+                    <GlobalAlert.Title> {title}</GlobalAlert.Title>
                 </GlobalAlert.Header>
             )}
             <GlobalAlert.Content>{children}</GlobalAlert.Content>
@@ -21,7 +21,7 @@ export default function StatusAdvarselWrapper({ children, title }: Props) {
 
 const linkKanIkkeVarsles = 'https://www.norge.no/nb/digital-borger/oppdater-kontaktinformasjon';
 
-export function KanIkkeKontakteElektroniskVeileder() {
+export function UtdatertKontaktInformasjonIKrrVeileder() {
     return (
         <GlobalAlert status="warning">
             <GlobalAlert.Header>

@@ -5,19 +5,19 @@ const ticketUrl = `/please/ws-auth-ticket`;
 const socketUrl = `ws://${PLEASE_URL}/ws`;
 
 enum EventTypes {
-    NY_MELDING = 'NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV'
+    NY_MELDING = 'NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV',
 }
 
 enum ReadyState {
     CONNECTING = 0,
     OPEN = 1,
     CLOSING = 2,
-    CLOSED = 3
+    CLOSED = 3,
 }
 
 export enum EventType {
     NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV = 'NY_DIALOGMELDING_FRA_BRUKER_TIL_NAV',
-    NY_DIALOGMELDING_FRA_NAV_TIL_BRUKER = 'NY_DIALOGMELDING_FRA_NAV_TIL_BRUKER'
+    NY_DIALOGMELDING_FRA_NAV_TIL_BRUKER = 'NY_DIALOGMELDING_FRA_NAV_TIL_BRUKER',
 }
 
 interface SubscriptionPayload {
@@ -72,8 +72,8 @@ const getTicket = (body: SubscriptionPayload): Promise<string> => {
         headers: {
             'Content-Type': 'application/json',
             'Nav-Consumer-Id': 'arbeidsrettet-dialog',
-            'Nav-Call-Id': uuidv4()
-        }
+            'Nav-Call-Id': uuidv4(),
+        },
     })
         .then((response) => {
             if (!response.ok) throw Error('Failed to fetch ticket for websocket');
@@ -118,7 +118,6 @@ export const listenForNyDialogEvents = (callback: () => void, fnr: string | unde
         console.log('Socket looks good, keep going');
     }
     return () => {
-        console.log('Closing websocket');
         if (currentReadyState === ReadyState.CLOSING) return;
         if (socketSingleton) {
             // Clear reconnect try on intentional close
@@ -129,7 +128,6 @@ export const listenForNyDialogEvents = (callback: () => void, fnr: string | unde
 };
 
 export const closeWebsocket = () => {
-    console.log('Closing websocket');
     if (socketSingleton?.readyState === ReadyState.CLOSING) return;
     if (socketSingleton) {
         // Clear reconnect try on intentional close

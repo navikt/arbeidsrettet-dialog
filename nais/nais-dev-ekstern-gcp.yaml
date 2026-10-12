@@ -2,11 +2,11 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: arbeidsrettet-dialog
-  namespace: pto
+  namespace: dab
   labels:
-    team: pto
+    team: dab
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.03.06_09.39-bb4656a3c909
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.10.06_09.54-e2a1389f00be
   port: 8080
   liveness:
     path: /internal/alive
@@ -57,9 +57,6 @@ spec:
   tokenx:
     enabled:
       true
-  gcp:
-    buckets:
-      - name: arbeidsrettet-dialog-dev
   env:
     - name: JSON_CONFIG
       value: >

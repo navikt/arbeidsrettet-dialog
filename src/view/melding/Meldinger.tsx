@@ -45,16 +45,16 @@ export function Meldinger(props: Props) {
         <section
             id="henvendelse-scroll-list"
             aria-label="Meldinger"
-            className="grow overflow-y-scroll relative bg-ax-bg-neutral-soft px-4 xl:justify-center"
+            className="grow overflow-y-scroll relative bg-ax-bg-sunken px-4 xl:justify-center"
             ref={meldingListRef}
             tabIndex={0}
             role="grid"
         >
-            <div className="xl:w-full xl:max-w-248 flex flex-col justify-end">
+            <div className="xl:w-full flex flex-col justify-end">
                 <Heading level="3" size={'medium'} className="hidden">
                     Meldinger
                 </Heading>
-                <div className="mb-4">
+                <div className="mb-4 flex flex-col">
                     {sorterteHenvendelser.map((henvendelse, index) => (
                         <React.Fragment key={henvendelse.id}>
                             <Melding

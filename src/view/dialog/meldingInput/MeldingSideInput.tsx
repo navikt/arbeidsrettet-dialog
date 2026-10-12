@@ -1,11 +1,11 @@
 import { Button, LocalAlert, Textarea } from '@navikt/ds-react';
 import React, { MutableRefObject, useContext, useRef, useState } from 'react';
+import React, { RefObject, useContext, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { betterErrorMessage, setCursorBeforeHilsen, MeldingInputContext, useFocusBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
 import ManagedDialogCheckboxes from '../DialogCheckboxes';
-import { dataOrUndefined } from '../../Provider';
-import { useOppfolgingContext } from '../../OppfolgingProvider';
+import { useErUnderOppfolging } from '../../OppfolgingProvider';
 import KladdLagret from './KladdLagret';
 import { useSelectedDialog } from '../../utils/useAktivitetId';
 import MeldingPreview from './MeldingPreview';
@@ -18,7 +18,7 @@ const MeldingSideInputInner = () => {
         watch,
         formState: { errors, isSubmitting },
     } = useFormContext<MeldingFormValues>();
-    const textAreaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
+    const textAreaRef: RefObject<HTMLTextAreaElement | null> = useRef(null);
     useFocusBeforeHilsen(textAreaRef);
     const [visForhandsvisning, setVisForhandsvisning] = useState(false);
     const melding = watch('melding');
@@ -73,15 +73,14 @@ const MeldingSideInputInner = () => {
 };
 
 export const MeldingSideInput = () => {
-    const oppfolgingContext = useOppfolgingContext();
-    const oppfolging = dataOrUndefined(oppfolgingContext);
+    const underOppfolging = useErUnderOppfolging();
     const dialog = useSelectedDialog();
     if (!dialog) return null;
     return (
         <section aria-label="Ny melding" className="flex flex-1 bg-white p-4">
             <div className="w-full flex flex-col">
                 <ManagedDialogCheckboxes dialog={dialog} />
-                {!oppfolging?.underOppfolging || dialog.historisk ? null : <MeldingSideInputInner />}
+                {!underOppfolging || dialog.historisk ? null : <MeldingSideInputInner />}
             </div>
         </section>
     );

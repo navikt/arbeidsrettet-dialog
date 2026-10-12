@@ -7,12 +7,12 @@ export const betterErrorMessage = (error: FieldError, melding: string): FieldErr
         ...error,
         message: tooBig
             ? `Meldingen kan ikke være mer enn ${maxMeldingsLengde} tegn, men er ${melding.length}`
-            : error.message
+            : error.message,
     };
 };
 
 export const debounced = <T extends Function>(
-    fn: T
+    fn: T,
 ): { hasPendingTask: () => boolean; cleanup: () => void; invoke: T } => {
     let timer: any | undefined;
     const invoke = (...args: any): void => {
@@ -39,7 +39,7 @@ export interface MeldingInputArgs {
 export const MeldingInputContext = React.createContext<MeldingInputArgs>({
     onSubmit: (_) => Promise.resolve(),
     noeFeilet: false,
-    kladdErLagret: false
+    kladdErLagret: false,
 });
 
 export const useFocusBeforeHilsen = (textAreaRef: MutableRefObject<HTMLTextAreaElement | null>) => {

@@ -1,12 +1,14 @@
 import { EventDataValue } from './initAnalytics';
 
 const timeoutMs = 5000;
+type TimeoutHandle = ReturnType<typeof setTimeout>;
+type IntervalHandle = ReturnType<typeof setInterval>;
 
 let umamiLoadedPromise: Promise<void> | undefined;
 export const startWaitingForUmamiToAppearOnWindow = () => {
     umamiLoadedPromise = new Promise((resolve, reject) => {
-        let timeout: NodeJS.Timeout | undefined;
-        let interval: NodeJS.Timeout | undefined;
+        let timeout: TimeoutHandle | undefined;
+        let interval: IntervalHandle | undefined;
 
         timeout = setTimeout(() => {
             clearTimeout(timeout);

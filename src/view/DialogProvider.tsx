@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Status } from '../api/typer';
 import { DialogApi } from '../api/UseApiBasePath';
 import { fetchData } from '../utils/Fetch';
-import { DialogData } from '../utils/Typer';
+import { DialogData, TilgangData } from '../utils/Typer';
 import { useDialogStore } from './dialogProvider/dialogStore';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -48,11 +48,15 @@ export interface DialogDataProviderType {
     setVenterPaSvar: (dialog: DialogData, venterPaSvar: boolean) => Promise<DialogData>;
 }
 
+export type StansVarsel = { tilhorendeDialogId: number | undefined };
+
 export interface DialogState {
     isSessionExpired: boolean;
     status: Status;
     sistOppdatert: Date;
     dialoger: DialogData[];
+    tilgang?: TilgangData;
+    stansVarsel: StansVarsel | null;
     error?: string;
 }
 

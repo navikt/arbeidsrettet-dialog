@@ -41,5 +41,6 @@ injectDecoratorClientSide({
     params: {
         chatbot: false,
         simple: false,
+        teamName: 'dab',
     },
 });

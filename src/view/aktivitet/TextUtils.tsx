@@ -100,6 +100,14 @@ export function getTypeText(type: AlleAktivitetTypes): string {
             return 'Høyere yrkesfaglig utdanning';
         case EksternAktivitetTypes.HOYEREUTD:
             return 'Høyere utdanning';
+        case EksternAktivitetTypes.SOMMERJOBB:
+            return 'Sommerjobb';
+        case EksternAktivitetTypes.TILRETTELAGT_ARBEID_ORDINAER:
+            return 'Tilrettelagt arbeid i ordinær virksomhet';
+        case EksternAktivitetTypes.WORKOP:
+            return 'Møteplass for arbeidsgivere og unge arbeidssøkere';
+        case EksternAktivitetTypes.DELE_CV_MED_ARBEIDSGIVER:
+            return 'Stilling fra Nav';
     }
 }
 

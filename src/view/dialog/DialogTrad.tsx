@@ -2,7 +2,7 @@ import { Loader } from '@navikt/ds-react';
 import classNames from 'classnames';
 import React, { ReactNode, Suspense, useEffect, useMemo, useState } from 'react';
 import { Await, useLocation } from 'react-router';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router';
 import { useRoutes } from '../../routing/routes';
 import { dispatchUpdate, UpdateTypes } from '../../utils/UpdateEvent';
 import { useVisAktivitet } from '../AktivitetToggleContext';
@@ -129,7 +129,7 @@ const ValgtDialog = ({
 
 const DialogLoader = () => {
     return (
-        <div className="flex w-full bg-ax-bg-neutral-soft items-center justify-center">
+        <div className="flex w-full bg-ax-bg-sunken items-center justify-center">
             <Loader size="2xlarge" />
         </div>
     );

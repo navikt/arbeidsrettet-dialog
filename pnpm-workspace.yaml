@@ -1,0 +1,14 @@
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - "@navikt/*"
+allowBuilds:
+  '@swc/core': true
+  core-js: true
+  esbuild: true
+  msw: true
+  protobufjs: true
+
+registries:
+  default: 'https://registry.npmjs.org/'
+  '@nais': 'https://npm.pkg.github.com/'
+  '@navikt': 'https://npm.pkg.github.com/'

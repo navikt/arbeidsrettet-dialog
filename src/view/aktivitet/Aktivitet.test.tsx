@@ -6,7 +6,7 @@ import {
     moteAktivitet,
     samtalereferatAktivitet,
     stilingAktivitet,
-    stillingFraNav
+    stillingFraNav,
 } from '../../mock/Aktivitet';
 import { SimpleRouterWithoutProvider } from '../../test/integrationTestSetup';
 import React from 'react';
@@ -30,13 +30,12 @@ const MemoryRouterMedBareDialogTråd = () => (
 );
 const rootLoaderData = {
     dialoger: Promise.resolve([]),
-    aktiviteter: Promise.resolve([])
+    aktiviteter: Promise.resolve([]),
 };
-describe('aktivteter', () => {
-    beforeAll(() => {
-        vi.mock('../../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
-    });
 
+vi.mock('../../routing/loaders', () => ({ useRootLoaderData: () => rootLoaderData }));
+
+describe('aktivteter', () => {
     it('skal vise behandling', async () => {
         gitt.bruker().som.harDialogMedAktivitet(behandlingAktivitet);
         const { getAllByText } = await act(() => render(<MemoryRouterMedBareDialogTråd />));

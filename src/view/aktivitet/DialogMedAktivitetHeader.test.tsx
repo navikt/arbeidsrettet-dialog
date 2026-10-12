@@ -13,7 +13,7 @@ describe('getInfoText', () => {
         const aktivitet: any = {
             type: AktivitetTypes.STILLING,
             tilDato: '2019-10-24T15:44:21.993+02:00',
-            arbeidsgiver: 'Testesen'
+            arbeidsgiver: 'Testesen',
         };
 
         const text = getInfoText(aktivitet);
@@ -23,7 +23,7 @@ describe('getInfoText', () => {
     it('skal returnere korrekt tekst for møteaktivitet', () => {
         const aktivitet: any = {
             type: AktivitetTypes.MOTE,
-            fraDato: '2019-10-24T15:44:21.993+02:00'
+            fraDato: '2019-10-24T15:44:21.993+02:00',
         };
 
         const text = getInfoText(aktivitet);
@@ -34,7 +34,7 @@ describe('getInfoText', () => {
         const aktivitet: any = {
             type: AktivitetTypes.SOKEAVTALE,
             tilDato: '2019-10-25T15:44:21.993+02:00',
-            fraDato: '2019-10-24T15:44:21.993+02:00'
+            fraDato: '2019-10-24T15:44:21.993+02:00',
         };
 
         const text = getInfoText(aktivitet);
@@ -44,7 +44,7 @@ describe('getInfoText', () => {
     it('skal returnere korrekt tekst for medisinsk behandling', () => {
         const aktivitet: any = {
             type: AktivitetTypes.BEHANDLING,
-            behandlingType: 'Kiropraktor'
+            behandlingType: 'Kiropraktor',
         };
 
         const text = getInfoText(aktivitet);
@@ -54,7 +54,7 @@ describe('getInfoText', () => {
     it('skal returnere korrekt tekst for møteaktivitet', () => {
         const aktivitet: any = {
             type: AktivitetTypes.SAMTALEREFERAT,
-            fraDato: '2019-10-24T15:44:21.993+02:00'
+            fraDato: '2019-10-24T15:44:21.993+02:00',
         };
 
         const text = getInfoText(aktivitet);
@@ -103,14 +103,14 @@ const aktivitet: Aktivitet = {
     type: AktivitetTypes.STILLING,
     tilDato: '2019-10-24T15:44:21.993+02:00',
     arbeidsgiver: 'Testesen',
-    oppfolgingsperiodeId: '1'
+    oppfolgingsperiodeId: '1',
 };
 
 const aktivitetRes: AktivitetDataProviderType = {
     aktiviteterStatus: Status.OK,
     arenaAktiviteterStatus: Status.OK,
     aktiviteter: [aktivitet],
-    arenaAktiviteter: []
+    arenaAktiviteter: [],
 };
 
 describe('<DialogMedAktivitetHeader />', () => {
@@ -118,9 +118,9 @@ describe('<DialogMedAktivitetHeader />', () => {
         vi.spyOn(AktivitetProvider, 'useAktivitetContext').mockImplementation(() => aktivitetRes);
 
         const wrapper = render(
-            <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <MemoryRouter>
                 <DialogMedAktivitetHeader />
-            </MemoryRouter>
+            </MemoryRouter>,
         );
 
         expect(wrapper.baseElement).toMatchSnapshot();
