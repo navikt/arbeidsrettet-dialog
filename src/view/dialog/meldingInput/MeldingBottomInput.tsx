@@ -1,8 +1,7 @@
 import { Button, ErrorMessage, LocalAlert, Textarea } from '@navikt/ds-react';
-import React, { RefObject, useContext, useRef } from 'react';
-import React, { MutableRefObject, useContext, useRef, useState } from 'react';
+import React, { RefObject, useContext, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { betterErrorMessage, MeldingInputContext, useFocusBeforeHilsen, setCursorBeforeHilsen } from './inputUtils';
+import { betterErrorMessage, MeldingInputContext, setCursorBeforeHilsen, useFocusBeforeHilsen } from './inputUtils';
 import { MeldingFormValues } from './MeldingInputBox';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { Breakpoint, useBreakpoint } from '../../utils/useBreakpoint';
