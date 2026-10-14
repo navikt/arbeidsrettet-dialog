@@ -11,6 +11,7 @@ import { createBrowserRouter } from 'react-router';
 import { Theme } from '@navikt/ds-react';
 
 interface Props {
+    erVeileder: boolean;
     enhet?: string;
     visAktivitetDefault?: boolean;
     createRouter: typeof createBrowserRouter;
@@ -20,7 +21,7 @@ const App = (props: Props) => {
     const { visAktivitetDefault } = props;
     const fnr = useFnrStore(useShallow((state) => state.fnr));
     return (
-        <Provider visAktivitetDefault={visAktivitetDefault} fnr={fnr} erVeileder={!!fnr}>
+        <Provider visAktivitetDefault={visAktivitetDefault} fnr={fnr} erVeileder={props.erVeileder}>
             <Theme theme="light">
                 <UppdateEventHandler />
                 <div

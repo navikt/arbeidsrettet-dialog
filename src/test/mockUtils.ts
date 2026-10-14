@@ -1,7 +1,6 @@
 import * as OppfolgingProvider from '../view/OppfolgingProvider';
-import * as BrukerProvider from '../view/BrukerProvider';
 import * as DialogProvider from '../view/DialogProvider';
-import { Bruker, DialogData, PeriodeData } from '../utils/Typer';
+import { DialogData, PeriodeData } from '../utils/Typer';
 import { Status } from '../api/typer';
 import * as Provider from '../view/Provider';
 import { Aktivitet } from '../utils/aktivitetTypes';
@@ -10,8 +9,6 @@ import { AktivitetDataProviderType } from '../view/AktivitetProvider';
 import { OppfolgingDataGraphqlResponse } from '../view/OppfolgingProvider';
 
 const testFnr = '01234567890';
-const veilederUserInfo: Bruker = { id: '010101', erVeileder: true, erBruker: false };
-const bukerUserInfo: Bruker = { id: testFnr, erVeileder: false, erBruker: true };
 const oppfPerioder: PeriodeData[] = [];
 const enLukketOppfølgingsPeriode: OppfolgingDataGraphqlResponse['oppfolgingsPerioder'] = [
     {
@@ -211,13 +208,11 @@ const harBrukerUnderOppfølgingMenUtdatertIKrr = () => {
     return { som: gitt };
 };
 const veileder = () => {
-    vi.spyOn(BrukerProvider, 'useUserInfoContext').mockImplementation(() => veilederUserInfo);
     vi.spyOn(Provider, 'useFnrContext').mockImplementation(() => testFnr);
     vi.spyOn(Provider, 'useErVeileder').mockImplementation(() => true);
     return { som: dialogerConfig };
 };
 const bruker = () => {
-    vi.spyOn(BrukerProvider, 'useUserInfoContext').mockImplementation(() => bukerUserInfo);
     vi.spyOn(Provider, 'useFnrContext').mockImplementation(() => undefined);
     vi.spyOn(Provider, 'useErVeileder').mockImplementation(() => false);
     return { som: dialogerConfig };

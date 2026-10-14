@@ -3,8 +3,7 @@ import React from 'react';
 import { Status } from '../../api/typer';
 import { notEmpty } from '../../utils/TypeHelper';
 import { useDialogContext } from '../DialogProvider';
-import { useFnrContext } from '../Provider';
-import { useUserInfoContext } from '../BrukerProvider';
+import { useErVeileder, useFnrContext } from '../Provider';
 import { useHentDialoger } from '../dialogProvider/dialogStore';
 import useKansendeMelding from '../../utils/UseKanSendeMelding';
 import { DialogData } from '../../utils/Typer';
@@ -59,7 +58,7 @@ const DialogCheckboxes = ({
 };
 
 const ManagedDialogCheckboxes = ({ dialog }: { dialog: DialogData }) => {
-    const visible = useUserInfoContext()?.erVeileder || false;
+    const visible = useErVeileder();
     const fnr = useFnrContext();
     const hentDialoger = useHentDialoger();
     const dialogContext = useDialogContext();

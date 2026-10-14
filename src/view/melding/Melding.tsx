@@ -6,10 +6,10 @@ import React, { ClassAttributes, FunctionComponent, HTMLAttributes } from 'react
 import { ViktigMelding } from '../../felleskomponenter/etiketer/Etikett';
 import { formaterDateAndTime } from '../../utils/Date';
 import { MeldingsData } from '../../utils/Typer';
-import { useUserInfoContext } from '../BrukerProvider';
 import Markdown, { ExtraProps } from 'react-markdown';
 import { linkifyToMarkdown } from './linkify';
 import classNames from 'classnames';
+import { useErVeileder } from '../Provider';
 
 function accessibleText(erBruker: boolean, erMeldingFraBruker: boolean) {
     if (erMeldingFraBruker) {
@@ -31,8 +31,8 @@ export function escapeOrderedList(text: string) {
 export function Melding(props: Props) {
     const { viktigMarkering } = props;
     const { avsender, sendt, tekst, avsenderId } = props.henvendelseData;
-    const brukerData = useUserInfoContext();
-    const erBruker = brukerData?.erBruker ?? false;
+    const erVeileder = useErVeileder();
+    const erBruker = !erVeileder;
 
     const erMeldingFraBruker: boolean = avsender === 'BRUKER';
     const date: string = formaterDateAndTime(sendt);

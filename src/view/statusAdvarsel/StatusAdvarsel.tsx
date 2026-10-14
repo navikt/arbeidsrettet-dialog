@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useUserInfoContext } from '../BrukerProvider';
 import { useOppfolgingContext } from '../OppfolgingProvider';
-import { dataOrUndefined } from '../Provider';
+import { dataOrUndefined, useErVeileder } from '../Provider';
 import AldriUnderOppfolging from './AldriUnderOppfolging';
 import IkkeUnderOppfolging from './IkkeUnderOppfolging';
 import UtdatertKontaktInformasjonIKRRVarsel from './UtdatertKontaktInformasjonIKRRVarsel';
@@ -15,14 +14,13 @@ import IkkeTilgang from './IkkeTilgang';
 export default function StatusAdvarsel() {
     const oppfolgingDataContext = useOppfolgingContext();
     const oppfolgingData = dataOrUndefined(oppfolgingDataContext);
-    const UserInfo = useUserInfoContext();
+    const erVeileder = useErVeileder();
     const harSkrivetilgangTilBruker = useHarSkrivetilgangTilBruker();
 
-    if (!oppfolgingData || !UserInfo) {
+    if (!oppfolgingData) {
         return null;
     }
 
-    const erVeileder = UserInfo.erVeileder;
     const erUnderOppfolging = oppfolgingData.oppfolging.erUnderOppfolging;
     const harOppfolgingsPerioder = oppfolgingData.oppfolgingsPerioder.length > 0;
     const erReservertKrr = oppfolgingData.brukerStatus.krr.reservertIKrr;
