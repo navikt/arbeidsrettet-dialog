@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 
 import { Status, hasData } from '../api/typer';
 import { AktivitetToggleProvider } from './AktivitetToggleContext';
-import { BrukerDataProviderType, useBrukerDataProvider } from './BrukerProvider';
 import { DialogContext, useDialogDataProvider } from './DialogProvider';
 import { useFeatureToggleProvider } from '../featureToggle/FeatureToggleProvider';
 import { ViewStateProvider } from './ViewState';
@@ -34,8 +33,8 @@ interface Props {
 export function Provider(props: Props) {
     const { fnr, children, visAktivitetDefault } = props;
     const { data: feature, status: featureStatus } = useFeatureToggleProvider();
-    const { data: bruker, status: brukerstatus }: BrukerDataProviderType = useBrukerDataProvider();
     const dialogDataProvider = useDialogDataProvider();
+    const erVeileder = useErVeileder();
 
     const { configurePoll, stopPolling, dialogstatus } = useDialogStore(
         useShallow((store) => ({
@@ -49,16 +48,15 @@ export function Provider(props: Props) {
         return () => stopPolling();
     }, [fnr]);
 
-    const brukerStatusErLastet = hasData(brukerstatus);
     const dialogStatusOk = hasData(dialogstatus);
     const featureStatusOk = hasData(featureStatus);
 
-    const klarTilAaPolle = dialogStatusOk && bruker && brukerStatusErLastet && featureStatusOk;
+    const klarTilAaPolle = dialogStatusOk && featureStatusOk;
 
     useEffect(() => {
         if (!klarTilAaPolle) return;
         configurePoll({
-            erBruker: bruker?.erBruker,
+            erBruker: !erVeileder,
             fnr,
             useWebsockets: feature['arbeidsrettet-dialog.websockets'],
         });
