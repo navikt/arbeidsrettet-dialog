@@ -126,7 +126,6 @@ export const handlers = [
     ),
 
     // veilarboppfolging
-    http.get('/veilarboppfolging/api/oppfolging/me', jsonResponse(bruker, 1000)),
     http.post('/veilarboppfolging/api/graphql', jsonResponse({ data: oppfolging, errors: [] })),
     http.post('/veilarboppfolging/api/oppfolging/settDigital', jsonResponse({})),
 
