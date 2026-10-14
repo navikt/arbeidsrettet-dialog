@@ -4,7 +4,6 @@ import { expect } from 'vitest';
 
 import { Status } from '../../api/typer';
 import { Bruker, PeriodeData } from '../../utils/Typer';
-import * as BrukerContext from '../BrukerProvider';
 import * as OppfolgingContext from '../OppfolgingProvider';
 import { OppfolgingDataGraphqlResponse, OppfolgingDataProviderType } from '../OppfolgingProvider';
 import StatusAdvarsel from './StatusAdvarsel';
@@ -72,7 +71,6 @@ describe('<AlertStripeContainer/>', () => {
     it('Bruker registret KRR viser en advarsel - veileder.', () => {
         useFetchOppfolging.data!.oppfolging.erUnderOppfolging = true;
 
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const { getByText } = render(<StatusAdvarsel />);
@@ -115,7 +113,6 @@ describe('<AlertStripeContainer/>', () => {
         useFetchOppfolging.data!.brukerStatus.krr.kanVarsles = true;
         useFetchOppfolging.data!.brukerStatus.krr.registrertIKrr = true;
 
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => veileder);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const wrapper = render(<StatusAdvarsel />);
@@ -128,7 +125,6 @@ describe('<AlertStripeContainer/>', () => {
         useFetchOppfolging.data!.brukerStatus.krr.kanVarsles = true;
         useFetchOppfolging.data!.brukerStatus.krr.registrertIKrr = true;
 
-        vi.spyOn(BrukerContext, 'useUserInfoContext').mockImplementation(() => bruker);
         vi.spyOn(OppfolgingContext, 'useOppfolgingContext').mockImplementation(() => useFetchOppfolging);
 
         const wrapper = render(<StatusAdvarsel />);

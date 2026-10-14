@@ -1,7 +1,6 @@
 import { Features, useFeatureToggleStore } from '../featureToggle/FeatureToggleProvider';
 import { useRouteLoaderData } from 'react-router';
 import { useDialogStore } from '../view/dialogProvider/dialogStore';
-import { useBrukerDataStore } from '../view/BrukerProvider';
 import { useOppfolgingStore } from '../view/OppfolgingProvider';
 import { useVeilederNavnStore, VeilederInfo } from '../api/useHentVeilederData';
 import { useAktivitetStore, useTiltaksAktivitetStore } from '../view/AktivitetProvider';
@@ -24,7 +23,6 @@ export const initialPageLoader = (fnr: string | undefined) => async () => {
     return {
         features: useFeatureToggleStore.getState().fetch(undefined),
         dialoger: useDialogStore.getState().hentVeilarbdialogData(fnr),
-        me: useBrukerDataStore.getState().fetch(undefined),
         oppfolging: useOppfolgingStore.getState().fetch(fnr),
         veilederNavn: fnr ? useVeilederNavnStore.getState().fetch(fnr) : Promise.resolve(null),
         aktiviteter: useAktivitetStore.getState().fetch(fnr),
