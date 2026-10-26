@@ -112,7 +112,7 @@
     "@vitest/coverage-v8": "5.0.5",
     "autoprefixer": "^10.6.1",
     "babel-plugin-transform-regex": "^6.1.0",
-    "chromatic": "^17.2.0",
+    "chromatic": "^18.13.0",
     "classnames": "^2.5.1",
     "cross-env": "^10.1.0",
     "graphql": "^17.0.2",
