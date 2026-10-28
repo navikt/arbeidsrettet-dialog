@@ -45,7 +45,7 @@ jobs:
             - name: Build application
               run: ${{ inputs.kommando }}
             - name: Upload to CDN
-              uses: nais/deploy/actions/cdn-upload/v2@d003bddf74ce5b96fa3056ae60bd4b9b3bbc89ef # master
+              uses: nais/deploy/actions/cdn-upload/v2@6a9dcd6df697ec2d38edc78cadb0b9acd1232f50 # master
               with:
                   team: dab
                   source: ./build/
