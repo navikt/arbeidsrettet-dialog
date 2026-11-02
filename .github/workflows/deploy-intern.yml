@@ -56,7 +56,7 @@ jobs:
                   gcloud storage objects update gs://${BUCKET_NAME}/dab/${{ inputs.bucket }}/build/asset-manifest.json --cache-control="public, max-age=120, stale-while-revalidate=7200, stale-if-error=600"
             - name: Slack Notification (deploy failure)
               if: failure() && inputs.bucket == 'arbeidsrettet-dialog-prod-intern'
-              uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2
+              uses: rtCamp/action-slack-notify@06cc13f74fa8d4d2296c09455d91e9453e4025f4 # v2
               env:
                   SLACK_COLOR: danger
                   SLACK_USERNAME: Github Actions
