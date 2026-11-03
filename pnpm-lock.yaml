@@ -160,8 +160,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       chromatic:
-        specifier: ^17.2.0
-        version: 17.8.0
+        specifier: ^18.13.3
+        version: 18.13.3
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2438,8 +2438,8 @@ packages:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
 
-  chromatic@17.8.0:
-    resolution: {integrity: sha512-xcn2TGdbrKHQbGAo3wZc5qoKaPe+CEvhAEcky9OCpofGd3DJucLFEYpk8wYgHKgR5XAI9X8Op1C6fWlvdjxE/g==}
+  chromatic@18.13.3:
+    resolution: {integrity: sha512-86wzIxGIdDMBvyYWCXF+V0RyckI+3kl6ki9lJoZem6a0UfwHtEEg5ruORpryTpu6c9dVtBk2qSTX4xtkz3gwsA==}
     engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
@@ -6319,7 +6319,7 @@ snapshots:
     dependencies:
       readdirp: 5.1.1
 
-  chromatic@17.8.0:
+  chromatic@18.13.3:
     dependencies:
       semver: 7.8.5
 
