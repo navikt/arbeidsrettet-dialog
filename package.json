@@ -120,7 +120,7 @@
     "import-sort-style-module": "^6.0.0",
     "jsdom": "^31.0.1",
     "lint-staged": "^17.6.1",
-    "msw": "^2.14.6",
+    "msw": "^3.0.6",
     "postcss": "^8.5.33",
     "prettier": "^3.10.1",
     "prettier-plugin-import-sort": "0.0.7",
