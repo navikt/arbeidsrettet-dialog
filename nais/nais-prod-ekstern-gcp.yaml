@@ -6,7 +6,7 @@ metadata:
   labels:
     team: dab
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.11.19_11.01-31e12b83fced
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.11.24_08.48-be53021b15d4
   port: 8080
   liveness:
     path: /internal/alive
